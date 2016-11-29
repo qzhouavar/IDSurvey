@@ -237,6 +237,7 @@
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\Migrations\20161121215200_rate.Designer.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\Migrations\ApplicationDbContextModelSnapshot.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ApplicationUser.cs"
+"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ChartDataViewModel.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\CompleteRate.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\RateViewModel.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs"

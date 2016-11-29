@@ -15,13 +15,13 @@ namespace IDSurvey.Models
         public int ID { get; set; }
 
         [Required]
-        public String QTR { get; set; }
+        public string QTR { get; set; }
         [Required]
-        public String WAVE { get; set; }
+        public string WAVE { get; set; }
         [Required]
-        public String TYPE { get; set; }
+        public string TYPE { get; set; }
         [Required]
-        public String SERVICE_AREA { get; set; }
+        public string SERVICE_AREA { get; set; }
 
         [Required]
         public int TOTAL { get; set; }

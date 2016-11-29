@@ -20,6 +20,27 @@ namespace IDSurvey.Controllers
           
         }
 
+        [HttpGet("[action]", Name ="GetChartDataTotalRates")]
+        public IActionResult GetChartDataTotalRates() {
+            var totalratesList = (from p in _context.CompleteRates
+                                  group p by p.QTR into g
+                                  select new CompleteRate
+                                  {
+                                      QTR = g.Key,
+                                      TOTAL = g.Sum(p => p.TOTAL),
+                                      COMPLETE = g.Sum(p => p.COMPLETE)
+                                  }).ToList();
+            var totalratesChartList = new List<ChartDataViewModel>();
+            foreach (var t in totalratesList)
+            {
+                totalratesChartList.Add(new ChartDataViewModel
+                {
+                    name = t.QTR,
+                    value = (t.COMPLETE * 100.0) / t.TOTAL
+                });
+            }
+            return Json(totalratesChartList);
+        }
      
         public async Task<IActionResult> Index( string quarter)
         {
@@ -41,7 +62,24 @@ namespace IDSurvey.Controllers
             ViewData["ComplaintsRate"] = 100.0 * complaintscomplete/ complaintstotal;
 
 
-            var totalrates = from p in _context.CompleteRates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            //var totalratesList = (from p in _context.CompleteRates
+            //                  group p by p.QTR into g
+            //                  select new CompleteRate
+            //                  {
+            //                      QTR = g.Key,
+            //                      TOTAL = g.Sum(p => p.TOTAL),
+            //                      COMPLETE = g.Sum(p => p.COMPLETE)
+            //                  }).ToList();
+            //var totalratesChartList = new List<ChartDataViewModel>();
+            //foreach( var t in totalratesList)
+            //{
+            //    totalratesChartList.Add(new ChartDataViewModel
+            //    {
+            //        name = t.QTR,
+            //        value = (t.COMPLETE * 100.0 )/ t.TOTAL
+            //    });
+            //}
+
             appealsrates = from p in appealsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
             complaintsrates = from p in complaintsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
@@ -63,7 +101,7 @@ namespace IDSurvey.Controllers
 
             var rateVM = new RateViewModel();
             rateVM.quarters = new SelectList(await genreQuery.Distinct().ToListAsync());
-            rateVM.totalRates = await totalrates.ToListAsync();
+            //rateVM.totalRates = totalrates;
             rateVM.quarterRates = await quarterrates.ToListAsync();
             rateVM.typeRates= await typerates.ToListAsync();
             rateVM.appealsRates = await appealsrates.ToListAsync();

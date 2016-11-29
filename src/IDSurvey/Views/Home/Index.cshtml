@@ -36,20 +36,15 @@
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script>
-    var chartData = generatechartData();
-    function generatechartData() {
-        var chartData = [];
-        @foreach (var item in Model.totalRates) {
-            var newDate = item.QTR;
-            var rates =item.COMPLETE * 100.0 / item.TOTAL;
-            <text>
-        chartData.push({quarter: "@newDate",value: @rates});
-        </text>
 
-        }
+    function generatechartData(url) {
+        var chartData = [];
+        $.getJSON(url, function(data){
+            chartData = data;
+        });
         return chartData;
     }
-
+    var chartData = generatechartData("/GetChartDataTotalRates");
     var chart = AmCharts.makeChart("chartdivtotal", {
         "type": "serial",
         "theme": "light",
@@ -111,6 +106,7 @@
         }
     });
     chart.addListener("dataUpdated", chart.validateData());
+
 </script>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
