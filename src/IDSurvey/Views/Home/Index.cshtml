@@ -1,0 +1,595 @@
+﻿@model RateViewModel
+
+<div class="row tile_count">
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-user"></i> Total</span>
+        <div class="count">@ViewData["OverallTotal"]</div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-user"></i> Complete</span>
+        <div class="count">
+            @ViewData["OverallComplete"]
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-clock-o"></i> Rate</span>
+        <div class="count  green">
+            @String.Format(
+            System.Globalization.CultureInfo.CurrentCulture,
+            "{0:0.00}", ViewData["AveRate"]
+            )%
+        </div>
+    </div>
+</div>
+
+<!-- Styles -->
+<style>
+    #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+<script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<script>
+    var chartData = generatechartData();
+    function generatechartData() {
+        var chartData = [];
+        @foreach (var item in Model.totalRates) {
+            var newDate = item.QTR;
+            var rates =item.COMPLETE * 100.0 / item.TOTAL;
+            <text>
+        chartData.push({quarter: "@newDate",value: @rates});
+        </text>
+
+        }
+        return chartData;
+    }
+
+    var chart = AmCharts.makeChart("chartdivtotal", {
+        "type": "serial",
+        "theme": "light",
+        "marginTop":10,
+        "marginRight": 80,
+        "dataProvider": chartData,
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left",
+            "unit": "%",
+            "guides": [{
+                "dashLength": 6,
+                "inside": true,
+                "label": "Average",
+                "lineAlpha": 1,
+                "value": @ViewData["AveRate"],
+                "lineColor":"#263138",
+                "width": 2
+            }],
+        }],
+        "graphs": [{
+            "balloonColor":"#d1655d",
+            "id":"g1",
+            "balloonText": "Q[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+            "bullet": "round",
+            "bulletSize": 8,
+            "lineColor": "#d1655d",
+            "lineThickness": 2,
+            "negativeLineColor": "#67b7dc",
+            "valueField": "value",
+            "negativeBase":@ViewData["AveRate"],
+            "precision":2,
+        }],
+
+        //"chartScrollbar": {
+        //    "scrollbarHeight": 5,
+        //    "backgroundAlpha": 0.1,
+        //    "selectedBackgroundAlpha": 1
+        //},
+        "chartCursor": {
+            //"valueLineEnabled": true,
+            //"valueLineBalloonEnabled": true
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "quarter",
+        "categoryAxis": {
+            "parseDates": false,
+            "axisAlpha": 0,
+            "minHorizontalGap": 60,
+            "gridAlpha": 0,
+            "labelFunction": function(valueText, quarter, categoryAxis) {
+                return "Q"+valueText;
+            }
+        },
+        "export": {
+            "enabled": true
+        }
+    });
+    chart.addListener("dataUpdated", zoomChart);
+</script>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-12">
+                    <h3>Overall Complete Rate <small></small></h3>
+
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                <div style="width: 100%;">
+                    <div id="chartdivtotal" class="demo-placeholder" style="width: 100%; height:270px;"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<br />
+
+<script>
+    var chartData = generatechartData();
+    function generatechartData() {
+        var chartData = [];
+        @foreach (var item in Model.appealsRates) {
+            var newDate = item.QTR;
+            var rates =item.COMPLETE * 100.0 / item.TOTAL;
+
+                <text>
+        chartData.push({quarter: "@newDate",value: @rates});
+        </text>
+
+         }
+        return chartData;
+    }
+
+    var chart = AmCharts.makeChart("chartdivAPPEALS", {
+        "type": "serial",
+        "theme": "light",
+        "marginTop":10,
+        "marginRight": 80,
+        "dataProvider": chartData,
+
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left",
+            "unit": "%",
+            "guides": [{
+                "dashLength": 6,
+                "inside": true,
+                "label": "Average",
+                "lineAlpha": 1,
+                "value": @ViewData["AppealsRate"],
+                "lineColor":"#263138",
+                "width": 2
+            }],
+        }],
+        "graphs": [{
+            "balloonColor":"#d1655d",
+            "id":"g1",
+            "balloonText": "Q[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+            "bullet": "round",
+            "bulletSize": 8,
+            "lineColor": "#d1655d",
+            "lineThickness": 2,
+            "negativeLineColor": "#67b7dc",
+            "valueField": "value",
+            "negativeBase":@ViewData["AppealsRate"] ,
+            "precision":2,
+        }],
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "quarter",
+        "categoryAxis": {
+            "gridAlpha": 0,
+            "parseDates": false,
+            "axisAlpha": 0,
+            "minHorizontalGap": 60,
+            "labelFunction": function(valueText, quarter, categoryAxis) {
+                return "Q"+valueText;
+            }
+        },
+        "export": {
+            "enabled": true
+        }
+    });
+    chart.addListener("dataUpdated", zoomChart);
+</script>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12" id="hfPosition">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-12">
+                    <h3>Complete Rate of Appeals <small></small></h3>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                <div style="width: 100%;">
+                    <div id="chartdivAPPEALS" class="demo-placeholder" style="width: 100%; height:270px;"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<br />
+
+<script>
+    var chartData = generatechartData();
+    function generatechartData() {
+        var chartData = [];
+        @foreach (var item in Model.complaintsRates) {
+            var newDate = item.QTR;
+            var rates =item.COMPLETE * 100.0 / item.TOTAL;
+                <text>
+        chartData.push({quarter: "@newDate",value: @rates});
+        </text>
+         }
+        return chartData;
+    }
+
+    var chart = AmCharts.makeChart("chartdivCOMPLAINTS", {
+        "type": "serial",
+        "theme": "light",
+        "marginTop":10,
+        "marginRight": 80,
+        "dataProvider": chartData,
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left",
+            "unit": "%",
+            "guides": [{
+                "dashLength": 6,
+                "inside": true,
+                "label": "Average",
+                "lineAlpha": 1,
+                "value": @ViewData["ComplaintsRate"],
+                "lineColor":"#263138",
+                "width": 2
+            }],
+        }],
+
+        "graphs": [{
+            "balloonColor":"#d1655d",
+            "id":"g1",
+            "balloonText": "Q[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+            "bullet": "round",
+            "bulletSize": 8,
+            "lineColor": "#d1655d",
+            "lineThickness": 2,
+            "negativeLineColor": "#67b7dc",
+            "valueField": "value",
+            "negativeBase":@ViewData["ComplaintsRate"] ,
+            "precision":2,
+        }],
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "quarter",
+        "categoryAxis": {
+            "gridAlpha": 0,
+            "parseDates": false,
+            "axisAlpha": 0,
+            "minHorizontalGap": 60,
+            "labelFunction": function(valueText, quarter, categoryAxis) {
+                return "Q"+valueText;
+            }
+        },
+        "export": {
+            "enabled": true
+        }
+    });
+    chart.addListener("dataUpdated", zoomChart);
+</script>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12" id="hfPosition">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-12">
+                    <h3>Complete Rate of Complaints <small></small></h3>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                <div style="width: 100%;">
+                    <div id="chartdivCOMPLAINTS" class="demo-placeholder" style="width: 100%; height:270px;"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-4">
+                    <h3>Complete Rate by Quarter <small></small></h3>
+                </div>
+                <div class="col-md-8">
+                    <form asp-controller="Home" asp-action="Index" style="margin: 0; padding: 0;">
+                        <p>
+                            Please select a quarter
+                            <select asp-for="quarter" asp-items="Model.quarters"  id="quarterlist">
+                                <option value="">All</option>
+                            </select>
+                            <input type="submit" value="Search" style="display: inline;" />
+                        </p>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
+                  </div>
+                <div style="width: 100%;">
+                    <div id="chartdivquarter" style="width: 100%; height:270px;"></div>
+                  
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
+                </div>
+                <div style="width: 100%;">
+                    <div id="chartdivtypeAPPEALS" style="width: 100%; height:270px;"></div>
+
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
+                </div>
+                <div style="width: 100%;">
+                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<br />
+<script>
+    var chartData = generatechartData();
+    function generatechartData() {
+        var chartData = [];
+        @foreach (var item in Model.quarterRates) {
+            var newDate = item.SERVICE_AREA;
+            var rates =item.COMPLETE * 100.0 / item.TOTAL;
+            <text>
+        chartData.push({quarter: "@newDate",value: @rates});
+        </text>
+        }
+        return chartData;
+    }
+    var e = document.getElementById("quarterlist");
+    var q = e.options[e.selectedIndex].value;
+    var t="All Quarters";
+    if(q!="") t="Q"+q;
+    var chart = AmCharts.makeChart("chartdivquarter", {
+        "type": "serial",
+        "theme": "light",
+        "marginTop":10,
+        "marginRight": 80,
+        "dataProvider": chartData,
+        "titles": [
+		{
+		    "text":"Complete Rate of "+t,
+		    "size": 12
+		}
+        ],
+
+        "valueAxes": [{
+            "axisAlpha": 0,
+            "position": "left",
+            "unit": "%",
+            "guides": [{
+                "dashLength": 6,
+                "inside": true,
+                "label": "Average",
+                "lineAlpha": 1,
+                "lineColor":"#263138",
+                "width": 2
+            }],
+        }],
+
+        "gridAboveGraphs": true,
+
+        "graphs": [ {
+            "fillAlphas": 0.8,
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "value",
+            "precision":2,
+            "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+        } ],
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField":  "quarter",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "gridAlpha": 0,
+            "tickPosition": "start",
+            "tickLength": 20,
+            "labelFunction": function(valueText, quarter, categoryAxis) {
+                return "Area"+valueText;
+            }
+        },
+        "export": {
+            "enabled": true
+        }
+    });
+    chart.addListener("dataUpdated", zoomChart);
+</script>
+
+
+<script>
+    var e = document.getElementById("quarterlist");
+    var q = e.options[e.selectedIndex].value;
+    var t="All Quarters";
+    if(q!="") t="Q"+q;
+        var chartData = generatechartData();
+        function generatechartData() {
+            var chartData = [];
+            @foreach (var item in Model.typeRates) {
+                var newDate = item.SERVICE_AREA;
+                var rates =item.COMPLETE * 100.0 / item.TOTAL;
+                 if(item.TYPE.Equals("APPEALS")) {
+                    <text>
+                    chartData.push({quarter: "@newDate",value: @rates});
+                    </text>
+                 }
+            }
+            return chartData;
+        }
+
+        var chart = AmCharts.makeChart("chartdivtypeAPPEALS", {
+            "type": "serial",
+            "theme": "light",
+            "marginTop":10,
+            "marginRight": 80,
+            "dataProvider": chartData,
+            "titles": [
+               {
+                   "text":"Complete Rate of Appeals in "+t,
+                   "size": 12
+               }
+            ],
+            "gridAboveGraphs": true,
+            "valueAxes": [{
+                "axisAlpha": 0,
+                "position": "left",
+                "unit": "%",
+                "guides": [{
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Average",
+                    "lineAlpha": 1,
+
+                    "lineColor":"#263138",
+                    "width": 2
+                }],
+            }],
+            "graphs": [{
+                "fillAlphas": 0.8,
+                "lineAlpha": 0.2,
+                "type": "column",
+                "valueField": "value",
+                "precision":2,
+                "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+            }],
+            "chartCursor": {
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "zoomable": false
+            },
+            "categoryField": "quarter",
+            "categoryAxis": {
+                "gridPosition": "start",
+                "gridAlpha": 0,
+                "tickPosition": "start",
+                "tickLength": 20,
+                "labelFunction": function(valueText, quarter, categoryAxis) {
+                    return "Area"+valueText;
+                }
+            },
+            "export": {
+                "enabled": true
+            }
+        });
+        chart.addListener("dataUpdated", zoomChart);
+    </script>
+
+    <script>
+        var e = document.getElementById("quarterlist");
+        var q = e.options[e.selectedIndex].value;
+        var t="All Quarters";
+        if(q!="") t="Q"+q;
+        var chartData = generatechartData();
+        function generatechartData() {
+            var chartData = [];
+            @foreach (var item in Model.typeRates) {
+                var newDate = item.SERVICE_AREA;
+                var rates =item.COMPLETE * 100.0 / item.TOTAL;
+                 if(item.TYPE.Equals("COMPLAINTS")) {
+                    <text>
+                    chartData.push({quarter: "@newDate",value: @rates});
+                    </text>
+                 }
+        }
+        return chartData;
+        }
+
+        var chart = AmCharts.makeChart("chartdivtypeCOMPLAINTS", {
+            "type": "serial",
+            "theme": "light",
+            "marginTop":10,
+            "marginRight": 80,
+            "dataProvider": chartData,
+            "titles": [
+                 {
+                     "text":"Complete Rate of Complaints in "+t,
+                        
+                     "size": 12
+                 }
+            ],
+            "valueAxes": [{
+                "axisAlpha": 0,
+                "position": "left",
+                "unit": "%",
+                "guides": [{
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Average",
+                    "lineAlpha": 1,
+
+                    "lineColor":"#263138",
+                    "width": 2
+                }],
+            }],
+            "graphs": [{
+                "fillAlphas": 0.8,
+                "lineAlpha": 0.2,
+                "type": "column",
+                "valueField": "value",
+                "precision":2,
+                "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
+            }],
+
+            "chartCursor": {
+                //"valueLineEnabled": true,
+                //"valueLineBalloonEnabled": true
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "zoomable": false
+            },
+            "categoryField": "quarter",
+            "categoryAxis": {
+                "gridAlpha": 0,
+                "parseDates": false,
+                "axisAlpha": 0,
+                "minHorizontalGap": 60,
+                "labelFunction": function(valueText, quarter, categoryAxis) {
+                    return "Area"+valueText;
+                }
+            },
+            "export": {
+                "enabled": true
+            }
+        });
+        chart.addListener("dataUpdated", zoomChart);
+    </script>
