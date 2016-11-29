@@ -1,5 +1,5 @@
---temp-output:C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\
---out:C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\bin\Debug\netcoreapp1.0\IDSurvey.dll
+--temp-output:Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\
+--out:Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\bin\Debug\netcoreapp1.0\IDSurvey.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -228,37 +228,37 @@
 --reference:C:\Users\qzhou\.nuget\packages\System.Threading.Timer\4.3.0\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\qzhou\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\qzhou\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll
---resource:"C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Program.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Startup.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Controllers\ManageController.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\ApplicationDbContext.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\Migrations\20161121215200_rate.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\Migrations\20161121215200_rate.Designer.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Data\Migrations\ApplicationDbContextModelSnapshot.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ApplicationUser.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\CompleteRate.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\RateViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\ForgotPasswordViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\LoginViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\RegisterViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\ResetPasswordViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\SendCodeViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\AccountViewModels\VerifyCodeViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\AddPhoneNumberViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\ChangePasswordViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\ConfigureTwoFactorViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\FactorViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\IndexViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\ManageLoginsViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\RemoveLoginViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\SetPasswordViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Models\ManageViewModels\VerifyPhoneNumberViewModel.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Services\IEmailSender.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Services\ISmsSender.cs
-C:\Users\qzhou\Documents\Visual Studio 2015\Projects\IDSurvey\src\IDSurvey\Services\MessageServices.cs
+--resource:"Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Program.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Startup.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Controllers\ManageController.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\ApplicationDbContext.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\Migrations\20161121215200_rate.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\Migrations\20161121215200_rate.Designer.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Data\Migrations\ApplicationDbContextModelSnapshot.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ApplicationUser.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\CompleteRate.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\RateViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\ForgotPasswordViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\LoginViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\RegisterViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\ResetPasswordViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\SendCodeViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\AccountViewModels\VerifyCodeViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\AddPhoneNumberViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\ChangePasswordViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\ConfigureTwoFactorViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\FactorViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\IndexViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\ManageLoginsViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\RemoveLoginViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\SetPasswordViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Models\ManageViewModels\VerifyPhoneNumberViewModel.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Services\IEmailSender.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Services\ISmsSender.cs
+Z:\qzhou\Source\Repos\ID-Survey\IDSurvey\src\IDSurvey\Services\MessageServices.cs
