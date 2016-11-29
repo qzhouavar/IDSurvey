@@ -52,7 +52,7 @@ namespace IDSurvey.Controllers
  
             var quarterrates = completerates;
          
-            if (!String.IsNullOrEmpty(quarter))
+            if (!string.IsNullOrEmpty(quarter))
             {
                 quarterrates = quarterrates.Where(x => x.QTR == quarter);
             }
@@ -68,6 +68,9 @@ namespace IDSurvey.Controllers
             rateVM.typeRates= await typerates.ToListAsync();
             rateVM.appealsRates = await appealsrates.ToListAsync();
             rateVM.complaintsRates = await complaintsrates.ToListAsync();
+
+            ViewData["Title"] = "Complete Rates";
+
             return View(rateVM);
         }
 

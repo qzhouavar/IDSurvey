@@ -18,6 +18,6 @@ namespace IDSurvey.Models
         public List<CompleteRate> typeRates;
 
         public SelectList quarters;
-        public String quarter { get; set; }
+        public string quarter { get; set; }
     }
 }
