@@ -133,8 +133,6 @@ namespace IDSurvey.Controllers
             return View(await rates.ToListAsync());
         }
 
-      
-
         public IActionResult About()
         {
             return View();

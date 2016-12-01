@@ -17,7 +17,7 @@ namespace IDSurvey.Models
         [Required]
         public string QTR { get; set; }
         [Required]
-        public string WAVE { get; set; }
+        public int WAVE { get; set; }
         [Required]
         public string TYPE { get; set; }
         [Required]

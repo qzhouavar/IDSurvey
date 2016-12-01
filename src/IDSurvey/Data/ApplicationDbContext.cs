@@ -25,6 +25,8 @@ namespace IDSurvey.Data
 
         public DbSet<CompleteRate> CompleteRates { set; get; }
         
+        public DbSet<MailSurveyResult> MailSurveyResult { get; set; }
+
         //public DbSet<RateViewModel> Rates { set; get; }
     }
 }

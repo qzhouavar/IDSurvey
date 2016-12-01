@@ -1,0 +1,91 @@
+﻿@{ 
+    Layout = "~/views/shared/_Layout.cshtml";
+    ViewData["Title"] = "Composite Score By Area";
+}
+<div class="row tile_count" style="margin-bottom:0">
+    <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+        <div class="count" id="current-quarter">Quarter: 8</div>
+    </div>
+    <div id="loading">
+        <img src="~/images/hourglass.gif" width="50" alt="loading..." />
+    </div>
+</div>
+<div class="row" style="margin:5px;">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 left">
+        <label for="select-quarter" style="font-size:18px;">Select Quarter: </label>
+        <select id="select-quarter" style="min-width:40px;max-width:60px; padding-top: 6px; padding-bottom: 5px; height: 28px; margin-bottom: 6px; display:inline-block">
+            <option value="1">6</option>
+            <option value="2">7</option>
+            <option value="3,4,5" selected="selected">8</option>
+            <option value="6,7,8">9</option>
+        </select>
+        <button class="btn btn-sm btn-default" style="display:inline-block" id="select-quarter-btn">Submit</button>
+    </div>
+</div>
+
+<div id="composite-score-content">
+    <div class="row">
+        <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12">
+            <h3>Composite Scores by Service Area</h3>
+            <table id="allResult" class="display left table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Overall</th>
+                        <th>Communication</th>
+                        <th>Courtesy and Respect</th>
+                        <th>Access and Responsiveness</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12">
+            <h3>Composite Scores by Service Area: Appeals</h3>
+            <table id="appealResult" class="display left table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Overall</th>
+                        <th>Communication</th>
+                        <th>Courtesy and Respect</th>
+                        <th>Access and Responsiveness</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12">
+            <h3>Composite Scores by Service Area: Complaints</h3>
+            <table id="complaintResult" class="display left table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Overall</th>
+                        <th>Communication</th>
+                        <th>Courtesy and Respect</th>
+                        <th>Access and Responsiveness</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12">
+            <h3>Average Overall Rating by Service Area</h3>
+            <table id="overallRating" class="display left table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Total</th>
+                        <th>Appeals</th>
+                        <th>Complaints</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/compositeScore.js"></script>
