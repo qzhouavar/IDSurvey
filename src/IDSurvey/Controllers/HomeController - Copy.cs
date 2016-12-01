@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IDSurvey.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController1 : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController1(ApplicationDbContext context)
         {
             _context = context;
           
@@ -48,8 +48,8 @@ namespace IDSurvey.Controllers
             IQueryable<string> genreQuery = from m in _context.CompleteRates
                                             orderby m.QTR
                                             select m.QTR;
-            
 
+ 
             var quarterrates = completerates;
          
             if (!String.IsNullOrEmpty(quarter))
@@ -73,33 +73,80 @@ namespace IDSurvey.Controllers
        
         public async Task<IActionResult> RateByQTR()
         {
-            IQueryable<string> genreQuery = from m in _context.CompleteRates
-                                            orderby m.QTR descending
-                                            select m.QTR;
-          
+            var completerates = from rate in _context.CompleteRates select rate;
 
             var appealsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "APPEALS") select rate;
             var complaintsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "COMPLAINTS") select rate;
 
-            var typerates = from c in appealsrates
-                            from p in complaintsrates
-                            where c.QTR.Equals(p.QTR)&&c.SERVICE_AREA.Equals(p.SERVICE_AREA)
-                            select new CompleteRate { ID= c.TOTAL, WAVE = c.COMPLETE.ToString(),QTR = c.QTR, SERVICE_AREA = c.SERVICE_AREA, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
+            appealsrates = from p in appealsrates group p by new
+            {
+                SERVICE_AREA = p.SERVICE_AREA,
+                QTR = p.QTR,
+            }
+            into g orderby g.Key.SERVICE_AREA select new CompleteRate { QTR = g.Key.QTR, SERVICE_AREA=g.Key.SERVICE_AREA, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+            var appealsQuarter = from p in appealsrates
+                                 group p by  p.QTR
+                                 into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+            
+           
+
+            complaintsrates = from p in complaintsrates
+                              group p by new
+                              {
+                                  SERVICE_AREA = p.SERVICE_AREA,
+                                  QTR = p.QTR
+                              }
+            into g orderby g.Key.SERVICE_AREA select new CompleteRate { QTR = g.Key.QTR, SERVICE_AREA = g.Key.SERVICE_AREA, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            var complaintsQuarter = from p in complaintsrates
+                                    group p by p.QTR
+                                    into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
 
-            var appealsquarterrates = from p in appealsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
-            var complaintsquarterrates = from p in complaintsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            var totalrates = from p in completerates
+                             group p by new
+                             {
+                                 SERVICE_AREA = p.SERVICE_AREA,
+                                 QTR = p.QTR,
+                             }
+            into g
+                             orderby g.Key.SERVICE_AREA
+                             select new CompleteRate { QTR = g.Key.QTR, SERVICE_AREA = g.Key.SERVICE_AREA, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
-            var quarterrates = from c in appealsquarterrates
-                               from p in complaintsquarterrates
-                               where c.QTR.Equals(p.QTR)
-                            select new CompleteRate { ID = c.TOTAL, WAVE = c.COMPLETE.ToString(), QTR = c.QTR, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
+
+            IQueryable<string> genreQuery = from m in _context.CompleteRates
+                                            orderby m.QTR
+                                            select m.QTR;
+
+
+            var quarterrates = completerates;
+
+        
+         
+
+            quarterrates = from p in quarterrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+            var typerates = from p in completerates
+                             group p by new
+                             {
+                                 SERVICE_AREA = p.SERVICE_AREA,
+                                 QTR = p.QTR,
+                                 TYPE=p.TYPE
+                             }
+            into g
+                             orderby g.Key.SERVICE_AREA, g.Key.QTR
+                             select new CompleteRate { TYPE=g.Key.TYPE,QTR = g.Key.QTR, SERVICE_AREA = g.Key.SERVICE_AREA, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
             var rateVM = new RateViewModel();
             rateVM.quarters = new SelectList(await genreQuery.Distinct().ToListAsync());
-            rateVM.typeRates = await typerates.ToListAsync();
+            rateVM.totalRates = await totalrates.ToListAsync();
+            rateVM.appealsQuarter = await appealsQuarter.ToListAsync();
+            rateVM.complaintsQuarter = await complaintsQuarter.ToListAsync();
+            rateVM.appealsRates = await appealsrates.ToListAsync();
+            rateVM.complaintsRates = await complaintsrates.ToListAsync();
             rateVM.quarterRates = await quarterrates.ToListAsync();
-
+            rateVM.typeRates = await typerates.ToListAsync();
             return View(rateVM);
         }
 
@@ -125,6 +172,8 @@ namespace IDSurvey.Controllers
                                  group p by p.QTR
                                  into g
                                  select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+
 
 
             complaintsrates = from p in complaintsrates

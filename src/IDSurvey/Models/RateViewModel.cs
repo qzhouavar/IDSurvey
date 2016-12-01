@@ -16,7 +16,8 @@ namespace IDSurvey.Models
         public List<CompleteRate> appealsRates;
         public List<CompleteRate> complaintsRates;
         public List<CompleteRate> typeRates;
-
+        public List<CompleteRate> appealsQuarter;
+        public List<CompleteRate> complaintsQuarter;
         public SelectList quarters;
         public String quarter { get; set; }
     }

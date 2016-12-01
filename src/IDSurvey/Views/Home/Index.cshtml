@@ -1,4 +1,11 @@
 ﻿@model RateViewModel
+<!-- Styles -->
+<style>
+    #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
+        width: 100%;
+        height: 500px;
+    }
+</style>
 
 <div class="row tile_count">
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -22,13 +29,7 @@
     </div>
 </div>
 
-<!-- Styles -->
-<style>
-    #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
-        width: 100%;
-        height: 500px;
-    }
-</style>
+
 <script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
@@ -315,19 +316,19 @@
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="dashboard_graph">
+        <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-4">
                     <h3>Complete Rate by Quarter <small></small></h3>
                 </div>
                 <div class="col-md-8">
-                    <form asp-controller="Home" asp-action="Index" style="margin: 0; padding: 0;">
+                    <form  id="form">
                         <p>
                             Please select a quarter
                             <select asp-for="quarter" asp-items="Model.quarters"  id="quarterlist">
                                 <option value="">All</option>
                             </select>
-                            <input type="submit" value="Search" style="display: inline;" />
+                            <input type="submit" value="Search" style="display: inline;" id="create" AutoPostBack="true"/>
                         </p>
                     </form>
                 </div>
@@ -352,7 +353,7 @@
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
                 </div>
                 <div style="width: 100%;">
-                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
+                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;" ></div>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -360,6 +361,26 @@
     </div>
 </div>
 <br />
+
+<script>
+    var e = document.getElementById("quarterlist");
+    var q = e.options[e.selectedIndex].value;
+    var url="Home/Index"
+    $('#create').click(function(){
+        $.ajax({
+            type: "POST",
+            data: $("#form").serialize(),
+            cache: false,
+            url: url, // the file to call
+            success: function(data) {
+                $('#created').html(response); // update the DIV
+            }
+        });
+    });
+
+</script>
+
+
 <script>
     var chartData = generatechartData();
     function generatechartData() {
