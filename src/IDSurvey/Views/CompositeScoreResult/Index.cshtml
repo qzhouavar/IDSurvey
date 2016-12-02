@@ -3,7 +3,7 @@
     ViewData["Title"] = "Composite Score By Area";
 }
 <div class="row tile_count" style="margin-bottom:0">
-    <div class="col-md-3 col-sm-3 col-xs-3 tile_stats_count">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 tile_stats_count">
         <div class="count" id="current-quarter">Quarter: 8</div>
     </div>
     <div id="loading">
@@ -20,6 +20,21 @@
             <option value="6,7,8">9</option>
         </select>
         <button class="btn btn-sm btn-default" style="display:inline-block" id="select-quarter-btn">Submit</button>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 left">
+        <label for="select-month" style="font-size:18px;">Select Month: </label>
+        <select id="select-month" style="min-width:40px;max-width:60px; padding-top: 6px; padding-bottom: 5px; height: 28px; margin-bottom: 6px; display:inline-block">
+            <option>..</option>
+            <option value="1">6</option>
+            <option value="2">7</option>
+            <option value="3">8-1</option>
+            <option value="4">8-2</option>
+            <option value="5">8-3</option>
+            <option value="6">9-1</option>
+            <option value="7">9-2</option>
+            <option value="8">9-3</option>
+        </select>
+        <button class="btn btn-sm btn-default" style="display:inline-block" id="select-month-btn">Submit</button>
     </div>
 </div>
 
