@@ -20,5 +20,7 @@ namespace IDSurvey.Models
         public List<CompleteRate> complaintsQuarter;
         public SelectList quarters;
         public String quarter { get; set; }
+        public String startQTR { get; set; }
+        public String endQTR { get; set; }
     }
 }

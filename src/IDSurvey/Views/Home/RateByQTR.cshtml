@@ -42,7 +42,7 @@
                                     @foreach (var item in Model.typeRates)
                                     {
                                         var rate = item.COMPLETE * 100.0 / item.TOTAL;
-                                        var complete_complaint= Int32.Parse(item.WAVE);
+                                        var complete_complaint= item.WAVE;
                                         var rate_complaint= complete_complaint * 100.0 / item.ID;
                                       
                                             @if (item.QTR.Equals(item1.Text))
@@ -84,7 +84,7 @@
                                     @foreach (var item in Model.quarterRates)
                                     {
                                         var rate = item.COMPLETE * 100.0 / item.TOTAL;
-                                        var complete_complaint = Int32.Parse(item.WAVE);
+                                        var complete_complaint = item.WAVE;
                                         var rate_complaint = complete_complaint * 100.0 / item.ID;
 
                                         @if (item.QTR.Equals(item1.Text))

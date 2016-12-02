@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- Latest compiled and minified CSS -->
 
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +21,7 @@
 
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
+
 </head>
 
 <body class="nav-md" id=body onscroll=SetCookie("scroll",document.body.scrollTop); onload="scrollback();">
@@ -28,7 +30,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="site_title"><i class="fa fa-paw"></i> <span>ID Survey</span></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="site_title"><i class="fa fa-tachometer" aria-hidden="true"></i><span> ID Survey</span></a>
                     </div>
                     <div class="clearfix"></div>
 
@@ -38,10 +40,14 @@
                             <ul class="nav side-menu">
    
                                 <li>
-                                    <a class="ajax-link"  asp-controller="Home" asp-action="Index" ><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
+                                    <a class="ajax-link"  asp-controller="Home" asp-action="Index" ><i class="fa fa-line-chart" aria-hidden="true"></i><span> Dashboard</span></a>
                                 </li>
                                 <li>
-                                    <a asp-controller="Home" asp-action="RateByQTR"><i class="fa fa-bar-chart-o"></i>Complaints and Appeals Cases by QIO Service Area</a>
+                                    <a asp-controller="Home" asp-action="RateByRange"><i class="fa fa-table" aria-hidden="true"></i>Cumulative Return Rate</a>
+                                </li>
+                                
+                                <li>
+                                    <a asp-controller="Home" asp-action="RateByQTR"><i class="fa fa-table" aria-hidden="true"></i>Wavely Return Rate</a>
                                 </li>
                             </ul>
                         </div>
@@ -88,7 +94,7 @@
 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+  
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js">
     </script>
@@ -185,7 +191,23 @@
 
 
     </script>
+    <script>
+   
+    var url="Home/RateByRange"
+    $('#create2').click(function(){
+        $.ajax({
+            type: "POST",
+            data: $("#form2").serialize(),
+            cache: false,
+            url: url, // the file to call
+            success: function(data) {
+                $('#created2').html(response); // update the DIV
+            }
+        });
+    });
 
+
+    </script>
 
 
 </body>

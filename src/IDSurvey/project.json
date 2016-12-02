@@ -45,7 +45,8 @@
       "version": "1.1.0-preview4-final",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore.Design": "1.1.0"
+    "Microsoft.EntityFrameworkCore.Design": "1.1.0",
+    "bootstrap-select": "1.12.1"
   },
 
   "tools": {

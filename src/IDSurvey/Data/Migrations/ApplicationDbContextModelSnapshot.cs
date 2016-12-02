@@ -85,8 +85,7 @@ namespace IDSurvey.Data.Migrations
                     b.Property<string>("TYPE")
                         .IsRequired();
 
-                    b.Property<string>("WAVE")
-                        .IsRequired();
+                    b.Property<int>("WAVE");
 
                     b.HasKey("ID");
 

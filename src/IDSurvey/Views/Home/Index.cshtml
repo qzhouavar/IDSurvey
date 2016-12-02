@@ -5,6 +5,7 @@
         width: 100%;
         height: 500px;
     }
+
 </style>
 
 <div class="row tile_count">
@@ -13,13 +14,13 @@
         <div class="count">@ViewData["OverallTotal"]</div>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-user"></i> Complete</span>
+        <span class="count_top"><i class="fa fa-trophy" aria-hidden="true"></i> Complete</span>
         <div class="count">
             @ViewData["OverallComplete"]
         </div>
     </div>
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-        <span class="count_top"><i class="fa fa-clock-o"></i> Rate</span>
+        <span class="count_top"><i class="fa fa-pie-chart" aria-hidden="true"></i> Rate</span>
         <div class="count  green">
             @String.Format(
             System.Globalization.CultureInfo.CurrentCulture,
@@ -118,7 +119,7 @@
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3>Overall Complete Rate <small></small></h3>
+                    <h3><strong>Overall Complete Rate</strong></h3>
 
                 </div>
             </div>
@@ -210,7 +211,7 @@
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3>Complete Rate of Appeals <small></small></h3>
+                    <h3><strong>Complete Rate:Appeals Cases</strong></h3>
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -299,7 +300,7 @@
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3>Complete Rate of Complaints <small></small></h3>
+                    <h3><strong>Complete Rate:Complaints Cases</strong></h3>
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -314,22 +315,25 @@
 </div>
 <br />
 
+
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-4">
-                    <h3>Complete Rate by Quarter <small></small></h3>
+                    <h3><strong>Complete Rate by Quarter</strong></h3>
                 </div>
                 <div class="col-md-8">
                     <form  id="form">
                         <p>
-                            Please select a quarter
-                            <select asp-for="quarter" asp-items="Model.quarters"  id="quarterlist">
-                                <option value="">All</option>
-                            </select>
-                            <input type="submit" value="Search" style="display: inline;" id="create" AutoPostBack="true"/>
-                        </p>
+                            <div class="col-md-3">
+                                <select asp-for="quarter" asp-items="Model.quarters" id="quarterlist" class="form-control">
+                                    <option value="">Please select a quarter</option>
+                                </select>
+                             </div>
+                            <div class="col-md-offset-4">
+                                <button class="btn btn-success btn-round" type="submit" style="display: inline;" id="create" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                            </div></p>
                     </form>
                 </div>
             </div>
@@ -362,23 +366,6 @@
 </div>
 <br />
 
-<script>
-    var e = document.getElementById("quarterlist");
-    var q = e.options[e.selectedIndex].value;
-    var url="Home/Index"
-    $('#create').click(function(){
-        $.ajax({
-            type: "POST",
-            data: $("#form").serialize(),
-            cache: false,
-            url: url, // the file to call
-            success: function(data) {
-                $('#created').html(response); // update the DIV
-            }
-        });
-    });
-
-</script>
 
 
 <script>
@@ -406,7 +393,7 @@
         "dataProvider": chartData,
         "titles": [
 		{
-		    "text":"Complete Rate of "+t,
+		    "text":"Complete Rate: Both of "+t,
 		    "size": 12
 		}
         ],
@@ -486,7 +473,7 @@
             "dataProvider": chartData,
             "titles": [
                {
-                   "text":"Complete Rate of Appeals in "+t,
+                   "text":"Complete Rate: Appeals Cases of "+t,
                    "size": 12
                }
             ],
@@ -563,7 +550,7 @@
             "dataProvider": chartData,
             "titles": [
                  {
-                     "text":"Complete Rate of Complaints in "+t,
+                     "text":"Complete Rate: Complaints Cases of "+t,
                         
                      "size": 12
                  }

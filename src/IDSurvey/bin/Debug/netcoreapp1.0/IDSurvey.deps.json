@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "d2e4ce7a6fb3124069a32136455f0542144bc8bf"
+    "signature": "238d4c4aaa5cdaedd146ad28793133b21b135997"
   },
   "compilationOptions": {
     "defines": [
@@ -36,7 +36,8 @@
           "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
-          "Microsoft.EntityFrameworkCore.Design": "1.1.0"
+          "Microsoft.EntityFrameworkCore.Design": "1.1.0",
+          "bootstrap-select": "1.12.1"
         },
         "runtime": {
           "IDSurvey.dll": {}
@@ -45,6 +46,12 @@
           "IDSurvey.dll": {}
         }
       },
+      "bootstrap-select/1.12.1": {
+        "dependencies": {
+          "jQuery": "1.8.0"
+        }
+      },
+      "jQuery/1.8.0": {},
       "Microsoft.ApplicationInsights/2.1.0": {
         "dependencies": {
           "System.Collections": "4.3.0",
@@ -4027,6 +4034,16 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "bootstrap-select/1.12.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3OX8K3Xg6nShKDnChgErvKrlBt5ox8xFA063dWqJxF4nIojloG66bCYWTMZPVaGRwea2SIP2l4sz4hXQG9mcAw=="
+    },
+    "jQuery/1.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-laDFQRJrIRHT0Z0GVYklMt3bE0iu0MZFJwHwg21kt3SHb7Bj8TdNiM3K+ZdK1DzB8ZxKy8z7NkJvwMas+dmHBw=="
     },
     "Microsoft.ApplicationInsights/2.1.0": {
       "type": "package",
