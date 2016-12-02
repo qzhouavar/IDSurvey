@@ -104,7 +104,6 @@ namespace IDSurvey.Controllers
             return View(rateVM);
         }
 
-
         public async Task<IActionResult> RateByRange(string startQTR, string endQTR)
         {
             IQueryable<string> genreQuery = from m in _context.CompleteRates

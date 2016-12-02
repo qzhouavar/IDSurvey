@@ -107,7 +107,7 @@ $(document).ready(function () {
         getData(overallUrl, function (d) {
             createOverallDataTable('#overallRating', d);
         });
-        $('#current-quarter').text('Quarter: ' + $('#select-month option:selected').text());
+        $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
         $(document).ajaxStop();
     });
 
