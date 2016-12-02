@@ -12,31 +12,25 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <!-- Latest compiled and minified CSS -->
 
     <!-- Bootstrap -->
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="/build/css/custom.min.css" rel="stylesheet">
+    <link href="../build/css/custom.min.css" rel="stylesheet">
 
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js">
-    </script>
 </head>
 
-<body class="nav-md" id="body">
+<body class="nav-md" id=body onscroll=SetCookie("scroll",document.body.scrollTop); onload="scrollback();">
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="site_title"><i class="fa fa-paw"></i> <span>ID Survey</span></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="site_title"><i class="fa fa-tachometer" aria-hidden="true"></i><span> ID Survey</span></a>
                     </div>
                     <div class="clearfix"></div>
 
@@ -44,17 +38,16 @@
                         <div class="menu_section">
                             <h3>&nbsp;</h3>
                             <ul class="nav side-menu">
-
+   
                                 <li>
-                                    <a><i class="fa fa-bar-chart-o"></i> Data Presentation @*<span class="fa fa-chevron-down"></span>*@</a>
-
+                                    <a class="ajax-link"  asp-controller="Home" asp-action="Index" ><i class="fa fa-line-chart" aria-hidden="true"></i><span> Dashboard</span></a>
                                 </li>
                                 <li>
-                                    <a class="ajax-link" href="index.html"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
+                                    <a asp-controller="Home" asp-action="RateByRange"><i class="fa fa-table" aria-hidden="true"></i>Cumulative Return Rate</a>
                                 </li>
+                                
                                 <li>
-                                    <a><i class="fa fa-bar-chart-o"></i> Data Presentation @*<span class="fa fa-chevron-down"></span>*@</a>
-
+                                    <a asp-controller="Home" asp-action="RateByQTR"><i class="fa fa-table" aria-hidden="true"></i>Wavely Return Rate</a>
                                 </li>
                             </ul>
                         </div>
@@ -84,10 +77,8 @@
             <!-- page content -->
             <div class="right_col" role="main">
                 @RenderBody()
-
-            
+               
             </div>
-          
         </div>
          
         <!-- footer content -->
@@ -97,15 +88,16 @@
             </div>
             <div class="clearfix"></div>
         </footer>
+    
+
     </div>
 
 
-
- 
-    <script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/js/site.js" asp-append-version="true"></script>
-
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js">
+    </script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
@@ -123,11 +115,9 @@
     </script>
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js">
     </script>
-    <script src="/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
-    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
-    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+
 
  
     @RenderSection("scripts", required: false)
@@ -135,7 +125,12 @@
 
         $(document).ready(function () {
          
-            $('#example').DataTable({
+            $('#example2').DataTable({
+                "paging":   false,
+                "ordering": false,
+                "info": false,
+                "searching": false,
+                //colReorder: true,
                 dom: 'Bfrtip',
                 buttons: [
                 'copy', 'csv', 'excel', 'pdf', 'print'
@@ -144,7 +139,10 @@
         } );
       
     </script>
+  
 
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
     <script type="text/javascript">
         function Trim(strValue)
         {
@@ -175,6 +173,43 @@
              if(GetCookie("scroll")!=null){document.body.scrollTop=GetCookie("scroll")}
         }
     </script>
+    <script>
+    var e = document.getElementById("quarterlist");
+    var q = e.options[e.selectedIndex].value;
+    var url="Home/Index"
+    $('#create').click(function(){
+        $.ajax({
+            type: "POST",
+            data: $("#form").serialize(),
+            cache: false,
+            url: url, // the file to call
+            success: function(data) {
+                $('#created').html(response); // update the DIV
+            }
+        });
+    });
+
+
+    </script>
+    <script>
+   
+    var url="Home/RateByRange"
+    $('#create2').click(function(){
+        $.ajax({
+            type: "POST",
+            data: $("#form2").serialize(),
+            cache: false,
+            url: url, // the file to call
+            success: function(data) {
+                $('#created2').html(response); // update the DIV
+            }
+        });
+    });
+
+
+    </script>
+
+
 </body>
 </html>
 

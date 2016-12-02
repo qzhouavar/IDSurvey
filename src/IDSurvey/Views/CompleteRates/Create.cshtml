@@ -1,0 +1,70 @@
+@model IDSurvey.Models.CompleteRate
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>CompleteRate</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="COMPLETE" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="COMPLETE" class="form-control" />
+                <span asp-validation-for="COMPLETE" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="QTR" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="QTR" class="form-control" />
+                <span asp-validation-for="QTR" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SERVICE_AREA" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SERVICE_AREA" class="form-control" />
+                <span asp-validation-for="SERVICE_AREA" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TOTAL" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TOTAL" class="form-control" />
+                <span asp-validation-for="TOTAL" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="TYPE" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="TYPE" class="form-control" />
+                <span asp-validation-for="TYPE" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="WAVE" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="WAVE" class="form-control" />
+                <span asp-validation-for="WAVE" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

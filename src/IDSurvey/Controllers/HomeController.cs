@@ -20,27 +20,6 @@ namespace IDSurvey.Controllers
           
         }
 
-        [HttpGet("[action]", Name ="GetChartDataTotalRates")]
-        public IActionResult GetChartDataTotalRates() {
-            var totalratesList = (from p in _context.CompleteRates
-                                  group p by p.QTR into g
-                                  select new CompleteRate
-                                  {
-                                      QTR = g.Key,
-                                      TOTAL = g.Sum(p => p.TOTAL),
-                                      COMPLETE = g.Sum(p => p.COMPLETE)
-                                  }).ToList();
-            var totalratesChartList = new List<ChartDataViewModel>();
-            foreach (var t in totalratesList)
-            {
-                totalratesChartList.Add(new ChartDataViewModel
-                {
-                    name = t.QTR,
-                    value = (t.COMPLETE * 100.0) / t.TOTAL
-                });
-            }
-            return Json(totalratesChartList);
-        }
      
         public async Task<IActionResult> Index( string quarter)
         {
@@ -62,89 +41,127 @@ namespace IDSurvey.Controllers
             ViewData["ComplaintsRate"] = 100.0 * complaintscomplete/ complaintstotal;
 
 
-            //var totalratesList = (from p in _context.CompleteRates
-            //                  group p by p.QTR into g
-            //                  select new CompleteRate
-            //                  {
-            //                      QTR = g.Key,
-            //                      TOTAL = g.Sum(p => p.TOTAL),
-            //                      COMPLETE = g.Sum(p => p.COMPLETE)
-            //                  }).ToList();
-            //var totalratesChartList = new List<ChartDataViewModel>();
-            //foreach( var t in totalratesList)
-            //{
-            //    totalratesChartList.Add(new ChartDataViewModel
-            //    {
-            //        name = t.QTR,
-            //        value = (t.COMPLETE * 100.0 )/ t.TOTAL
-            //    });
-            //}
-
+            var totalrates = from p in _context.CompleteRates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
             appealsrates = from p in appealsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
             complaintsrates = from p in complaintsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
             IQueryable<string> genreQuery = from m in _context.CompleteRates
                                             orderby m.QTR
                                             select m.QTR;
+            
 
- 
             var quarterrates = completerates;
          
-            if (!string.IsNullOrEmpty(quarter))
+            if (!String.IsNullOrEmpty(quarter))
             {
                 quarterrates = quarterrates.Where(x => x.QTR == quarter);
             }
             var typerates = from p in quarterrates group p by new {p.TYPE, p.SERVICE_AREA } into g select new CompleteRate { TYPE=g.Key.TYPE,SERVICE_AREA = g.Key.SERVICE_AREA, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
             quarterrates = from p in quarterrates group p by p.SERVICE_AREA into g select new CompleteRate {SERVICE_AREA = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
-            
-
+           
             var rateVM = new RateViewModel();
             rateVM.quarters = new SelectList(await genreQuery.Distinct().ToListAsync());
-            //rateVM.totalRates = totalrates;
+            rateVM.totalRates = await totalrates.ToListAsync();
             rateVM.quarterRates = await quarterrates.ToListAsync();
             rateVM.typeRates= await typerates.ToListAsync();
             rateVM.appealsRates = await appealsrates.ToListAsync();
             rateVM.complaintsRates = await complaintsrates.ToListAsync();
-
-            ViewData["Title"] = "Complete Rates";
-
             return View(rateVM);
         }
 
        
-        public async Task<IActionResult> Rate()
+        public async Task<IActionResult> RateByQTR()
         {
-            var completerates = from rate in _context.CompleteRates select rate;
+            IQueryable<string> genreQuery = from m in _context.CompleteRates
+                                            orderby m.QTR descending
+                                            select m.QTR;
 
-            var overalltotal = completerates.Select(v => v.TOTAL).ToArray().Sum();
+            
+            var appealsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "APPEALS") orderby rate.SERVICE_AREA select rate;
+            var complaintsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "COMPLAINTS") orderby rate.SERVICE_AREA select rate;
 
-            ViewData["OverallTotal"] = overalltotal;
-            var overalcomplete = completerates.Select(v => v.COMPLETE).ToArray().Sum();
-            ViewData["OverallComplete"] = overalcomplete;
-
-            ViewData["AveRate"] = 100.0 * overalcomplete / overalltotal;
-
-
+            var typerates = from c in appealsrates
+                            from p in complaintsrates
+                            where c.QTR.Equals(p.QTR)&&c.SERVICE_AREA.Equals(p.SERVICE_AREA)
+                      
+                            select new CompleteRate { ID= c.TOTAL, WAVE = c.COMPLETE,QTR = c.QTR, SERVICE_AREA = c.SERVICE_AREA, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
 
 
+            var appealsquarterrates = from p in appealsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            var complaintsquarterrates = from p in complaintsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
-            var rates = from p in _context.CompleteRates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
-            return View(await rates.ToListAsync());
+            var quarterrates = from c in appealsquarterrates
+                               from p in complaintsquarterrates
+                               where c.QTR.Equals(p.QTR)
+                               select new CompleteRate { ID = c.TOTAL, WAVE = c.COMPLETE, QTR = c.QTR, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
+
+            var rateVM = new RateViewModel();
+            rateVM.quarters = new SelectList(await genreQuery.Distinct().ToListAsync());
+            rateVM.typeRates = await typerates.ToListAsync();
+            rateVM.quarterRates = await quarterrates.ToListAsync();
+
+            return View(rateVM);
         }
 
+
+        public async Task<IActionResult> RateByRange(string startQTR, string endQTR)
+        {
+            IQueryable<string> genreQuery = from m in _context.CompleteRates
+                                            orderby m.QTR
+                                            select m.QTR;
+
+            var appealsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "APPEALS") select rate;
+            var complaintsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "COMPLAINTS") select rate;
+
+            if (!String.IsNullOrEmpty(startQTR)){
+                appealsrates = appealsrates.Where(x => x.QTR.CompareTo(startQTR)>=0);
+                complaintsrates = complaintsrates.Where(x => x.QTR.CompareTo(startQTR) >= 0);
+            }
+            else
+            {
+                startQTR = genreQuery.Distinct().ToList().First();
+            }
+            if (!String.IsNullOrEmpty(endQTR))
+            {
+                appealsrates = appealsrates.Where(x => x.QTR.CompareTo(endQTR) <= 0);
+                complaintsrates = complaintsrates.Where(x => x.QTR.CompareTo(endQTR) <= 0);
+
+            }
+            else
+            {
+                endQTR = genreQuery.Distinct().ToList().Last();
+            }
+            var typerates = from c in appealsrates
+                            from p in complaintsrates
+                            where c.QTR.Equals(p.QTR) && c.SERVICE_AREA.Equals(p.SERVICE_AREA)
+                            select new CompleteRate { ID = c.TOTAL, WAVE = c.COMPLETE, QTR = c.QTR, SERVICE_AREA = c.SERVICE_AREA, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
+
+            typerates = from p in typerates group p by p.SERVICE_AREA
+             into g select new CompleteRate { SERVICE_AREA = g.Key,ID = g.Sum(p => p.ID), WAVE = g.Sum(p => p.WAVE), TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+            var appealsquarterrates = from p in appealsrates group p by p.TYPE into g select new CompleteRate { TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            var complaintsquarterrates = from p in complaintsrates group p by p.TYPE into g select new CompleteRate {TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+
+
+
+            var quarterrates = from c in appealsquarterrates
+                               from p in complaintsquarterrates
+                               select new CompleteRate { ID = c.TOTAL, WAVE = c.COMPLETE, TOTAL = p.TOTAL, COMPLETE = p.COMPLETE };
+          
+
+            var rateVM = new RateViewModel();
+            rateVM.quarters = new SelectList(await genreQuery.Distinct().ToListAsync());
+            rateVM.typeRates = await typerates.ToListAsync();
+            rateVM.quarterRates = await quarterrates.ToListAsync();
+            rateVM.startQTR = startQTR;
+            rateVM.endQTR = endQTR;
+            return View(rateVM);
+        }
         public IActionResult About()
         {
             return View();
         }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View();

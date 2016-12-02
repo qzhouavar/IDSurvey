@@ -1,0 +1,54 @@
+@model IDSurvey.Models.CompleteRate
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CompleteRate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.COMPLETE)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.COMPLETE)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QTR)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QTR)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SERVICE_AREA)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SERVICE_AREA)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TOTAL)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TOTAL)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TYPE)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TYPE)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WAVE)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WAVE)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
