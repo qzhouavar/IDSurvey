@@ -1,11 +1,14 @@
 ﻿@model RateViewModel
+@{ 
+    ViewData["Title"] = "Reporting Dashboard";
+}
+
 <!-- Styles -->
 <style>
     #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
         width: 100%;
         height: 500px;
     }
-
 </style>
 
 <div class="row tile_count">
@@ -59,6 +62,7 @@
         "marginRight": 80,
         "dataProvider": chartData,
         "valueAxes": [{
+           
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -71,7 +75,9 @@
                 "lineColor":"#263138",
                 "width": 2
             }],
+           
         }],
+      
         "graphs": [{
             "balloonColor":"#d1655d",
             "id":"g1",
@@ -83,7 +89,8 @@
             "negativeLineColor": "#67b7dc",
             "valueField": "value",
             "negativeBase":@ViewData["AveRate"],
-            "precision":2,
+            "precision":1,
+            "labelText": "[[value]]%",
         }],
 
         //"chartScrollbar": {
@@ -112,14 +119,14 @@
             "enabled": true
         }
     });
-    chart.addListener("dataUpdated", zoomChart);
+   
 </script>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Overall Complete Rate</strong></h3>
+                    <h3><strong>Overall Response Rate</strong></h3>
 
                 </div>
             </div>
@@ -159,6 +166,7 @@
         "dataProvider": chartData,
 
         "valueAxes": [{
+        
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -183,7 +191,8 @@
             "negativeLineColor": "#67b7dc",
             "valueField": "value",
             "negativeBase":@ViewData["AppealsRate"] ,
-            "precision":2,
+            "precision":1,
+            "labelText": "[[value]]%",
         }],
         "chartCursor": {
             "categoryBalloonEnabled": false,
@@ -204,14 +213,14 @@
             "enabled": true
         }
     });
-    chart.addListener("dataUpdated", zoomChart);
+   
 </script>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12" id="hfPosition">
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Complete Rate:Appeals Cases</strong></h3>
+                    <h3><strong>Response Rate:Appeal Cases</strong></h3>
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -231,11 +240,11 @@
     function generatechartData() {
         var chartData = [];
         @foreach (var item in Model.complaintsRates) {
-            var newDate = item.QTR;
-            var rates =item.COMPLETE * 100.0 / item.TOTAL;
-                <text>
-        chartData.push({quarter: "@newDate",value: @rates});
-        </text>
+            var newDate = @item.QTR;
+            var rates = @item.COMPLETE * 100.0 / @item.TOTAL;
+            <text>
+                chartData.push({quarter: "@newDate",value: @rates});
+            </text>
          }
         return chartData;
     }
@@ -243,10 +252,11 @@
     var chart = AmCharts.makeChart("chartdivCOMPLAINTS", {
         "type": "serial",
         "theme": "light",
-        "marginTop":10,
-        "marginRight": 80,
+      
         "dataProvider": chartData,
         "valueAxes": [{
+          
+            "maximum":100,
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -272,7 +282,9 @@
             "negativeLineColor": "#67b7dc",
             "valueField": "value",
             "negativeBase":@ViewData["ComplaintsRate"] ,
-            "precision":2,
+            "precision":1,
+            "labelText": "[[value]]%",
+          
         }],
         "chartCursor": {
             "categoryBalloonEnabled": false,
@@ -293,14 +305,14 @@
             "enabled": true
         }
     });
-    chart.addListener("dataUpdated", zoomChart);
+
 </script>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12" id="hfPosition">
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Complete Rate:Complaints Cases</strong></h3>
+                    <h3><strong>Response Rate:Complaint Cases</strong></h3>
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -321,28 +333,29 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-4">
-                    <h3><strong>Complete Rate by Quarter</strong></h3>
+                    <h3><strong>Response Rate by Service Area</strong></h3>
                 </div>
                 <div class="col-md-8">
-                    <form  id="form">
+                    <form id="form">
                         <p>
                             <div class="col-md-3">
                                 <select asp-for="quarter" asp-items="Model.quarters" id="quarterlist" class="form-control">
-                                    <option value="">Please select a quarter</option>
+                                    <option value="">Please select a month</option>
                                 </select>
-                             </div>
+                            </div>
                             <div class="col-md-offset-4">
                                 <button class="btn btn-success btn-round" type="submit" style="display: inline;" id="create" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
-                            </div></p>
+                            </div>
+                        </p>
                     </form>
                 </div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
-                  </div>
+                </div>
                 <div style="width: 100%;">
                     <div id="chartdivquarter" style="width: 100%; height:270px;"></div>
-                  
+
                 </div>
             </div>
             <div class="col-md-4 col-sm-4 col-xs-12">
@@ -357,7 +370,7 @@
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
                 </div>
                 <div style="width: 100%;">
-                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;" ></div>
+                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -393,7 +406,7 @@
         "dataProvider": chartData,
         "titles": [
 		{
-		    "text":"Complete Rate: Both of "+t,
+		    "text":"Response Rate: Total of "+t,
 		    "size": 12
 		}
         ],
@@ -419,7 +432,8 @@
             "lineAlpha": 0.2,
             "type": "column",
             "valueField": "value",
-            "precision":2,
+            "precision":1,
+            "labelText": "[[value]]%",
             "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
         } ],
         "chartCursor": {
@@ -473,7 +487,7 @@
             "dataProvider": chartData,
             "titles": [
                {
-                   "text":"Complete Rate: Appeals Cases of "+t,
+                   "text":"Response Rate: Appeal Cases of "+t,
                    "size": 12
                }
             ],
@@ -497,7 +511,8 @@
                 "lineAlpha": 0.2,
                 "type": "column",
                 "valueField": "value",
-                "precision":2,
+                "precision":1,
+                "labelText": "[[value]]%",
                 "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
             }],
             "chartCursor": {
@@ -519,10 +534,10 @@
                 "enabled": true
             }
         });
-        chart.addListener("dataUpdated", zoomChart);
-    </script>
+       
+</script>
 
-    <script>
+<script>
         var e = document.getElementById("quarterlist");
         var q = e.options[e.selectedIndex].value;
         var t="All Quarters";
@@ -550,8 +565,8 @@
             "dataProvider": chartData,
             "titles": [
                  {
-                     "text":"Complete Rate: Complaints Cases of "+t,
-                        
+                     "text":"Response Rate: Complaint Cases of "+t,
+
                      "size": 12
                  }
             ],
@@ -574,13 +589,12 @@
                 "lineAlpha": 0.2,
                 "type": "column",
                 "valueField": "value",
-                "precision":2,
+                "precision":1,
+                "labelText": "[[value]]%",
                 "balloonText": "Area[[category]]<br><b><span style='font-size:14px;'>[[value]]%</span></b>",
             }],
 
             "chartCursor": {
-                //"valueLineEnabled": true,
-                //"valueLineBalloonEnabled": true
                 "categoryBalloonEnabled": false,
                 "cursorAlpha": 0,
                 "zoomable": false
@@ -599,5 +613,4 @@
                 "enabled": true
             }
         });
-        chart.addListener("dataUpdated", zoomChart);
-    </script>
+</script>
