@@ -234,7 +234,6 @@ C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompleteRatesController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompositeScoreResultController.cs
-C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\HomeController - Copy.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\ManageController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\ApplicationDbContext.cs
@@ -252,6 +251,7 @@ C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ChartDataViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\CompleteRate.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\MailSurveyResult.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\RateViewModel.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\WaveRateViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\AccountViewModels\ForgotPasswordViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\AccountViewModels\LoginViewModel.cs
