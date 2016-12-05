@@ -3,107 +3,67 @@
     ViewData["Title"] = "Return Rate";
 }
 
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="dashboard_graph">
-                <div class="row x_title">
-                    <div class="col-md-12">
-                        <h3><strong>Cumulative Return Rate Q</strong><strong>@Model.startQTR - Q</strong><strong>@Model.endQTR: Complaints and Appeals Cases by QIO Service Area</strong></h3>
-                        
-                    </div>
+<div class="row" style="margin:5px;">
+    <form id="form2">
+        <div>
+            <p>
+                <label for="startQTR" style="font-size:18px;"><strong>Start Month : </strong></label>
+                <select asp-for="startQTR" asp-items="Model.quarters" id="quarterlist" style="font-size:12pt">
+                    <option value="">Please select the start month</option>
+                </select>
+            </p>
+        </div>
+        <div>
+            <p>
+                <label for="endQTR" style="font-size:18px;"><strong>End &nbsp;Month : </strong></label>
+                <select asp-for="endQTR" asp-items="Model.quarters" id="quarterlist" style="font-size:12pt">
+                    <option value="">Please select the end month&nbsp;</option>
+                </select>
+                <button class="btn btn-success btn-round" type="submit" id="create2" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+            </p>
+        </div>
+    </form>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-12">
+                    <h3><strong>Cumulative Return Rate Q</strong><strong>@Model.startQTR - Q</strong><strong>@Model.endQTR: Complaints and Appeals Cases by QIO Service Area</strong></h3>
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
-
-
-                    </div>
-                    <form id="form2">
-                        <div class="col-lg-3 col-md-3 col-xs-6">
-                           <strong>Start Quarter </strong> 
-                            <select asp-for="startQTR" asp-items="Model.quarters" id="quarterlist" >
-                                <option value="">Please select the start quarter</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-xs-6">
-                            <strong>End Quarter </strong>  
-                            <select asp-for="endQTR" asp-items="Model.quarters" id="quarterlist">
-                                <option value="">Please select the end quarter</option>
-                            </select>
-                            
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-xs-12">
-                            <button class="btn btn-success btn-round" type="submit" id="create2" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
-                        </div>
-                    </form>
-                    <br />
-                    <div style="width: 100%;" id="created2">
-                            <table class="table table-bordered" style="font-size:15px; border:solid black" >
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" style="border:1px solid black;text-align:center; background-color:maroon;color:white;vertical-align: middle">Service Area</th>
-                                        <th colspan="3" style="border:1px solid black;text-align: center"> Complaints</th>
-                                        <th colspan="3" style="border:1px solid black;text-align: center">Appeals</th>
-                                    </tr>
-                                    <tr>
-                                        <th style="border:1px solid black;background-color:maroon;color:white">Sample</th>
-                                        <th  style="border:1px solid black;background-color:maroon;color:white">Complete</th>
-                                        <th  style="border:1px solid black;background-color:maroon;color:white">% Complete*</th>
-                                        <th  style="border:1px solid black;background-color:maroon;color:white">Sample</th>
-                                        <th style="border:1px solid black;background-color:maroon;color:white">Complete</th>
-                                        <th style="border:1px solid black;background-color:maroon;color:white">% Complete*</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.typeRates)
-                                    {
-                                        var rate = item.COMPLETE * 100.0 / item.TOTAL;
-                                        var complete_complaint= item.WAVE;
-                                        var rate_complaint= complete_complaint * 100.0 / item.ID;
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                <br />
+                <div style="width: 60%;" id="created2">
+                        <table class="table table-bordered" style="font-size:15px; border:solid black" >
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="border:1px solid black;text-align:center; background-color:maroon;color:white;vertical-align: middle">Service Area</th>
+                                    <th colspan="3" style="border:1px solid black;text-align: center"> Complaints</th>
+                                    <th colspan="3" style="border:1px solid black;text-align: center">Appeals</th>
+                                </tr>
+                                <tr>
+                                    <th style="border:1px solid black;background-color:maroon;color:white">Sample</th>
+                                    <th  style="border:1px solid black;background-color:maroon;color:white">Complete</th>
+                                    <th  style="border:1px solid black;background-color:maroon;color:white">% Complete*</th>
+                                    <th  style="border:1px solid black;background-color:maroon;color:white">Sample</th>
+                                    <th style="border:1px solid black;background-color:maroon;color:white">Complete</th>
+                                    <th style="border:1px solid black;background-color:maroon;color:white">% Complete*</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.typeRates)
+                                {
+                                    var rate = item.COMPLETE * 100.0 / item.TOTAL;
+                                    var complete_complaint= item.WAVE;
+                                    var rate_complaint= complete_complaint * 100.0 / item.ID;
                                       
-                                                <tr>
-                                                    <td style="border:1px solid black;">
-                                                        <strong>@Html.DisplayFor(modelItem => item.SERVICE_AREA)</strong>
-                                                    </td>
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @Html.DisplayFor(modelItem => item.TOTAL)
-                                                    </td>
-
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @Html.DisplayFor(modelItem => item.COMPLETE)
-                                                    </td>
-
-
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate)
-                                                    </td>
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @Html.DisplayFor(modelItem => item.ID)
-                                                    </td>
-
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @Html.DisplayFor(modelItem => item.WAVE)
-                                                    </td>
-                                                    <td align="right" style="border:1px solid black;">
-                                                        @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate_complaint)
-                                                    </td>
-
-                                                </tr>
-
-
-                                          
-
-                                    }
-
-                                   @foreach (var item in Model.quarterRates)
-                                    {
-                                        var rate = item.COMPLETE * 100.0 / item.TOTAL;
-                                        var complete_complaint = item.WAVE;
-                                        var rate_complaint = complete_complaint * 100.0 / item.ID;
-
-                                  
                                             <tr>
                                                 <td style="border:1px solid black;">
-                                                    <strong>National</strong>
+                                                    <strong>@Html.DisplayFor(modelItem => item.SERVICE_AREA)</strong>
                                                 </td>
                                                 <td align="right" style="border:1px solid black;">
                                                     @Html.DisplayFor(modelItem => item.TOTAL)
@@ -112,8 +72,6 @@
                                                 <td align="right" style="border:1px solid black;">
                                                     @Html.DisplayFor(modelItem => item.COMPLETE)
                                                 </td>
-
-
                                                 <td align="right" style="border:1px solid black;">
                                                     @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate)
                                                 </td>
@@ -127,21 +85,49 @@
                                                 <td align="right" style="border:1px solid black;">
                                                     @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate_complaint)
                                                 </td>
-
                                             </tr>
+                                }
+
+                                @foreach (var item in Model.quarterRates)
+                                {
+                                    var rate = item.COMPLETE * 100.0 / item.TOTAL;
+                                    var complete_complaint = item.WAVE;
+                                    var rate_complaint = complete_complaint * 100.0 / item.ID;
+                                        <tr>
+                                            <td style="border:1px solid black;">
+                                                <strong>National</strong>
+                                            </td>
+                                            <td align="right" style="border:1px solid black;">
+                                                @Html.DisplayFor(modelItem => item.TOTAL)
+                                            </td>
+
+                                            <td align="right" style="border:1px solid black;">
+                                                @Html.DisplayFor(modelItem => item.COMPLETE)
+                                            </td>
 
 
-                                    
-                                    }
-                                </tbody>
+                                            <td align="right" style="border:1px solid black;">
+                                                @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate)
+                                            </td>
+                                            <td align="right" style="border:1px solid black;">
+                                                @Html.DisplayFor(modelItem => item.ID)
+                                            </td>
 
-                            </table>
-                        </div>
-                                   
-                </div>
-                <div>*Completion percentage represents the proportion of the total sample that has returned a completed survey.</div>
-                <div class="clearfix"></div>
+                                            <td align="right" style="border:1px solid black;">
+                                                @Html.DisplayFor(modelItem => item.WAVE)
+                                            </td>
+                                            <td align="right" style="border:1px solid black;">
+                                                @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate_complaint)
+                                            </td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>                           
             </div>
+            <div>*Completion percentage represents the proportion of the total sample that has returned a completed survey.</div>
+            <div class="clearfix"></div>
         </div>
     </div>
-    <br />
+</div>
+<br />
