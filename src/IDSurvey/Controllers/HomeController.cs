@@ -74,7 +74,7 @@ namespace IDSurvey.Controllers
         public async Task<IActionResult> RateByQTR()
         {
             IQueryable<string> genreQuery = from m in _context.CompleteRates
-                                            orderby m.QTR descending
+                                            orderby m.QTR ascending
                                             select m.QTR;
 
             

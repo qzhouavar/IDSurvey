@@ -1,4 +1,11 @@
-﻿#chart {
-    height: 440px;
-    width: 100%;
+﻿
+@media print {
+  body {
+    width: 210mm;
+   
+  }
+  /* ... the rest of the rules ... */
+
+    .page-break-chart {page-break-before: always;}
+   
 }

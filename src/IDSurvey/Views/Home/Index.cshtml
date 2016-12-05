@@ -7,7 +7,7 @@
 <style>
     #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
         width: 100%;
-        height: 500px;
+        height: 270px;
     }
 </style>
 
@@ -32,7 +32,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
@@ -131,10 +130,10 @@
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
-                <div style="width: 100%;">
+             
+              
                     <div id="chartdivtotal" class="demo-placeholder" style="width: 100%; height:270px;"></div>
-                </div>
+               
             </div>
             <div class="clearfix"></div>
         </div>
@@ -225,7 +224,7 @@
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
-                <div style="width: 100%;">
+                <div class="chart-wrap">
                     <div id="chartdivAPPEALS" class="demo-placeholder" style="width: 100%; height:270px;"></div>
                 </div>
             </div>
@@ -255,7 +254,7 @@
       
         "dataProvider": chartData,
         "valueAxes": [{
-          
+          "minimum":0,
             "maximum":100,
             "axisAlpha": 0,
             "position": "left",
@@ -307,8 +306,8 @@
     });
 
 </script>
-<div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12" id="hfPosition">
+<div class="row page-break-chart">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
@@ -316,10 +315,10 @@
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
-                <div style="width: 100%;">
-                    <div id="chartdivCOMPLAINTS" class="demo-placeholder" style="width: 100%; height:270px;"></div>
-                </div>
+            
+               
+                    <div id="chartdivCOMPLAINTS" class="demo-placeholder" style="width: 95%; height:270px;"></div>
+               
             </div>
             <div class="clearfix"></div>
         </div>
@@ -327,8 +326,7 @@
 </div>
 <br />
 
-
-<div class="row">
+<div class="row page-break-chart">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
@@ -343,43 +341,36 @@
                                     <option value="">Please select a month</option>
                                 </select>
                             </div>
-                            <div class="col-md-offset-4">
+                            <div class="col-md-9">
                                 <button class="btn btn-success btn-round" type="submit" style="display: inline;" id="create" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
                             </div>
                         </p>
                     </form>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
-                </div>
-                <div style="width: 100%;">
-                    <div id="chartdivquarter" style="width: 100%; height:270px;"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
 
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
-                </div>
-                <div style="width: 100%;">
-                    <div id="chartdivtypeAPPEALS" style="width: 100%; height:270px;"></div>
+                        <div class="page-break-chart" id="chartdivquarter" style="width: 100%; height:270px;"></div>
 
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12 ">
+
+
+                        <div id="chartdivtypeAPPEALS" style="width: 100%; height:270px;"></div>
+
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+
+                        <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
+
+                    </div>
                 </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
-                </div>
-                <div style="width: 100%;">
-                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
     </div>
 </div>
 <br />
-
-
 
 <script>
     var chartData = generatechartData();
@@ -455,9 +446,8 @@
             "enabled": true
         }
     });
-    chart.addListener("dataUpdated", zoomChart);
+  
 </script>
-
 
 <script>
     var e = document.getElementById("quarterlist");
@@ -533,8 +523,7 @@
             "export": {
                 "enabled": true
             }
-        });
-       
+        }); 
 </script>
 
 <script>
