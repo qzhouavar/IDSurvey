@@ -33,7 +33,7 @@
                         <div class="menu_section">
                             <h3>&nbsp;</h3>
                             <ul class="nav side-menu">
-
+                               
                                 <li>
                                     <a class="ajax-link" asp-controller="Home" asp-action="Index"><i class="fa fa-line-chart" aria-hidden="true"></i><span>Graphics</span></a>
                                 </li>
@@ -50,6 +50,7 @@
                             </ul>
                         </div>
                         <div class="menu_section">
+                        
                         </div>
                     </div>
                     <!-- /sidebar menu -->
@@ -66,7 +67,9 @@
                     <nav>
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                          
                         </div>
+                        @await Html.PartialAsync("_LoginPartial")
                     </nav>
                 </div>
             </div>

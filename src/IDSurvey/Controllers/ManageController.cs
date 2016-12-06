@@ -238,6 +238,7 @@ namespace IDSurvey.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
+
         //
         // GET: /Manage/SetPassword
         [HttpGet]
@@ -328,6 +329,9 @@ namespace IDSurvey.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
+
+
+       
         #region Helpers
 
         private void AddErrors(IdentityResult result)

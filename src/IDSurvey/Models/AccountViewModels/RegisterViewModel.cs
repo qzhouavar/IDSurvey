@@ -23,5 +23,10 @@ namespace IDSurvey.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Invitation Code")]
+       
+        public string InvitationCode { get; set; }
     }
 }

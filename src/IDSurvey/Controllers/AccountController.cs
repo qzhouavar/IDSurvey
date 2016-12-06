@@ -103,7 +103,8 @@ namespace IDSurvey.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+        
+            if (ModelState.IsValid&&model.InvitationCode=="IDSuveryStatisticsAvar2016")
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -265,7 +266,7 @@ namespace IDSurvey.Controllers
                 var user = await _userManager.FindByNameAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                   // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
@@ -290,6 +291,7 @@ namespace IDSurvey.Controllers
         {
             return View();
         }
+
 
         //
         // GET: /Account/ResetPassword
@@ -317,6 +319,7 @@ namespace IDSurvey.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
             }
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
