@@ -26,6 +26,7 @@ namespace IDSurvey.Controllers
         public static string AdmUsrRole { get; set; }
         public static string AdmNameSrch { get; set; }
         public static string AdmRankSrch { get; set; }
+        public static string AdmPassword { get; set; }
 
         #endregion Vars/Props
 
@@ -100,6 +101,7 @@ namespace IDSurvey.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditUser(string id, AdminEditViewModel model)
         {
+            
             try
             {
                 //TODO: Add update logic here
@@ -107,6 +109,8 @@ namespace IDSurvey.Controllers
                 model.Email = user.Email;
                 var roles = await _userManager.GetRolesAsync(user);
                 model.UserName = user.UserName;
+                model.Password = user.PasswordHash;
+
                 foreach (var role in roles)
                 {
                     model.GroupName = role;
@@ -114,6 +118,7 @@ namespace IDSurvey.Controllers
                 AdmUsrName = model.UserName;
                 AdmUsrEmail = model.Email;
                 AdmUsrRole = model.GroupName;
+                AdmPassword = model.Password;
                 return RedirectToAction("EditUser");
             }
             catch
@@ -125,7 +130,7 @@ namespace IDSurvey.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveUser(string id, AdminEditViewModel model)
-        {
+        { 
             try
             {
                 AdmUsrRole = model.GroupName;
@@ -139,10 +144,23 @@ namespace IDSurvey.Controllers
                 }
 
                 await _userManager.AddToRoleAsync(user, AdmUsrRole);
-                return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserUpdated });
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
+
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserUpdated });
+                }
+                else
+                {
+                    AddErrors(result);
+                    return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.Error });
+                }
             }
             catch
             {
+
                 return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.Error });
             }
         }
@@ -176,7 +194,16 @@ namespace IDSurvey.Controllers
             return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserDeleted });
         }
 
-        #region Helper
+       #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
 
         public IEnumerable<SelectListItem> GetUserRoles(string usrrole)
         {
