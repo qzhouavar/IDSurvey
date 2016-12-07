@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using IDSurvey.Data;
 using IDSurvey.Models;
 using IDSurvey.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace IDSurvey
 {
@@ -84,7 +85,7 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -116,7 +117,26 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            await CreateRoles(serviceProvider);
         }
 
+
+        // Create roles
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            // Declare role names
+            string[] roleNames = { "Admin", "Manager", "Member", "Deactivated" };
+            foreach (var roleName in roleNames)
+            {
+                //Check if exists
+                if (!await RoleManager.RoleExistsAsync(roleName))
+                {
+                    await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+        }
     }
 }

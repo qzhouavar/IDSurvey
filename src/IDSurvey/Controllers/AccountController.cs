@@ -65,6 +65,7 @@ namespace IDSurvey.Controllers
                     _logger.LogInformation(1, "User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
+               
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
@@ -116,6 +117,35 @@ namespace IDSurvey.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    await _userManager.AddToRoleAsync(user, "Deactivated");
+                    var memberList = new List<String>() {
+                                                        "qzhou@avarconsulting.com",
+                                                    };
+                    var adminList = new List<String>() {
+                                                         "qzhou@avarconsulting.com",
+                                                        "sgou@avarconsulting.com"
+                                                      };
+                    var managerList = new List<String>() {
+                                                         "qzhou@avarconsulting.com",
+                                                        "sgou@avarconsulting.com"
+                                                      };
+
+                    if (adminList.Contains(user.Email.ToLower()))
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else if (memberList.Contains(user.Email.ToLower()))
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
+                        await _userManager.AddToRoleAsync(user, "Member");
+                    }else if (managerList.Contains(user.Email.ToLower()))
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
+                        await _userManager.AddToRoleAsync(user, "Manager");
+                    }
+
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
@@ -425,6 +455,7 @@ namespace IDSurvey.Controllers
             var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
             if (result.Succeeded)
             {
+
                 return RedirectToLocal(model.ReturnUrl);
             }
             if (result.IsLockedOut)

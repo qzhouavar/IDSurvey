@@ -26,7 +26,6 @@ namespace IDSurvey.Models.AccountViewModels
 
         [Required]
         [Display(Name = "Invitation Code")]
-       
         public string InvitationCode { get; set; }
     }
 }
