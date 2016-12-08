@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IDSurvey.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         #region Vars/Props
@@ -135,6 +135,8 @@ namespace IDSurvey.Controllers
             {
                 AdmUsrRole = model.GroupName;
                 AdmUsrName = model.UserName;
+                AdmPassword = model.Password;
+
                 var userid = _context.Users.Where(x => x.UserName == AdmUsrName).Select(x => x.Id).FirstOrDefault();
                 var user = await _userManager.FindByIdAsync(userid);
                 var userRoles = await _userManager.GetRolesAsync(user);
@@ -144,19 +146,24 @@ namespace IDSurvey.Controllers
                 }
 
                 await _userManager.AddToRoleAsync(user, AdmUsrRole);
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
+                
+                if (!string.IsNullOrEmpty(AdmPassword)) { 
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserUpdated });
+                    var result = await _userManager.ResetPasswordAsync(user, code, AdmPassword);
+
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserUpdated });
+                    }
+                   else
+                    {
+                        return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.Error });
+                    }
                 }
-                else
-                {
-                    AddErrors(result);
-                    return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.Error });
-                }
+                return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.UserUpdated });
             }
             catch
             {

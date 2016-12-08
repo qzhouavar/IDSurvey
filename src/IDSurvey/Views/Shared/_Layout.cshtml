@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService 
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,9 +50,12 @@
                                 <li>
                                     <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span> Composite Scores</span></a>
                                 </li>
-                                <li>
-                                    <a asp-controller="Admin" asp-action="Index"><i class="fa fa-wrench" aria-hidden="true"></i><span>Admin</span></a>
-                                </li>
+                                @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
+                                {
+                                    <li>
+                                        <a asp-controller="Admin" asp-action="Index"><i class="fa fa-wrench" aria-hidden="true"></i><span>Admin</span></a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                         <div class="menu_section">

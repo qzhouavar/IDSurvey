@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IDSurvey.Data;
 using IDSurvey.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IDSurvey.Controllers
 {
+    [Authorize(Roles = "Admin,Manager,Member")]
     public class CompositeScoreResultController : Controller
     {
         internal static readonly IEnumerable<string> SurveyTypeList = new[] { "All", "Appeals", "Complaints" };

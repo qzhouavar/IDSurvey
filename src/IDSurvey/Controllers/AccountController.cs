@@ -14,7 +14,7 @@ using IDSurvey.Services;
 
 namespace IDSurvey.Controllers
 {
-    [Authorize]
+    
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -117,7 +117,7 @@ namespace IDSurvey.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _userManager.AddToRoleAsync(user, "Deactivated");
+                    await _userManager.AddToRoleAsync(user, "Member");
                     var memberList = new List<String>() {
                                                         "qzhou@avarconsulting.com",
                                                     };
@@ -156,7 +156,10 @@ namespace IDSurvey.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -167,6 +170,7 @@ namespace IDSurvey.Controllers
             _logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
 
         //
         // POST: /Account/ExternalLogin
