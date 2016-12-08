@@ -232,6 +232,7 @@
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Program.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AdminController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompleteRatesController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompositeScoreResultController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
