@@ -95,19 +95,21 @@ $(document).ready(function () {
 
     $('#select-month-btn').click(function () {
         $(document).ajaxStart();
-        //get current select option
-        var quarter = $('#select-month').val().toString();
-        var compositeUrl = encodeURI("/GetCompositeScoreByArea/" + quarter);
-        var overallUrl = encodeURI("/GetOverallRatingByArea/" + quarter);
-        getData(compositeUrl, function (d) {
-            createCompositeDataTable('#allResult', d['ALL']);
-            createCompositeDataTable('#appealResult', d['APPEALS']);
-            createCompositeDataTable('#complaintResult', d['COMPLAINTS']);
-        });
-        getData(overallUrl, function (d) {
-            createOverallDataTable('#overallRating', d);
-        });
-        $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
+        if ($('#select-month option:selected').text() != '..') {
+            //get current select option
+            var quarter = $('#select-month').val().toString();
+            var compositeUrl = encodeURI("/GetCompositeScoreByArea/" + quarter);
+            var overallUrl = encodeURI("/GetOverallRatingByArea/" + quarter);
+            getData(compositeUrl, function (d) {
+                createCompositeDataTable('#allResult', d['ALL']);
+                createCompositeDataTable('#appealResult', d['APPEALS']);
+                createCompositeDataTable('#complaintResult', d['COMPLAINTS']);
+            });
+            getData(overallUrl, function (d) {
+                createOverallDataTable('#overallRating', d);
+            });
+            $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
+        }
         $(document).ajaxStop();
     });
 
