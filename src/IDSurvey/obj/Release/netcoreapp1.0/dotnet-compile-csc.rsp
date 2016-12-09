@@ -1,14 +1,15 @@
-﻿-d:DEBUG
+﻿-d:RELEASE
 -d:TRACE
 -d:NETCOREAPP1_0
 -nowarn:CS1701
 -nowarn:CS1702
 -nowarn:CS1705
+-optimize
 -debug:full
 -nostdlib
 -nologo
-"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
--out:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\bin\Debug\netcoreapp1.0\IDSurvey.dll"
+"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Release\netcoreapp1.0\dotnet-compile.assemblyinfo.cs"
+-out:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\bin\Release\netcoreapp1.0\IDSurvey.dll"
 -r:"C:\Users\sgou\.nuget\packages\Microsoft.ApplicationInsights\2.1.0\lib\dotnet5.4\Microsoft.ApplicationInsights.dll"
 -r:"C:\Users\sgou\.nuget\packages\Microsoft.ApplicationInsights.AspNetCore\1.0.0\lib\netstandard1.6\Microsoft.ApplicationInsights.AspNetCore.dll"
 -r:"C:\Users\sgou\.nuget\packages\Microsoft.AspNetCore.Antiforgery\1.0.1\lib\netstandard1.3\Microsoft.AspNetCore.Antiforgery.dll"
@@ -224,7 +225,7 @@
 -r:"C:\Users\sgou\.nuget\packages\System.Threading.Timer\4.3.0\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\sgou\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\sgou\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll"
--resource:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Debug\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
+-resource:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Release\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Program.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs"
