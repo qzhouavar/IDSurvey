@@ -13,6 +13,8 @@ using IDSurvey.Data;
 using IDSurvey.Models;
 using IDSurvey.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDSurvey
 {
@@ -55,14 +57,24 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc();
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member","Admin", "Manager"));
             });
+
+
+            
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+           
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -117,6 +129,7 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            
 
             app.UseMvc(routes =>
             {
@@ -135,7 +148,7 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             // Declare role names
-            string[] roleNames = { "Admin", "Manager", "Member", "Deactivated" };
+            string[] roleNames = { "Admin", "Member", "Deactivated","Manager" };
             foreach (var roleName in roleNames)
             {
                 //Check if exists

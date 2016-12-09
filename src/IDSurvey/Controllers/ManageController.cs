@@ -12,6 +12,7 @@ using IDSurvey.Services;
 
 namespace IDSurvey.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ManageController : Controller
     {

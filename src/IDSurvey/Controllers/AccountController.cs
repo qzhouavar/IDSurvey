@@ -14,7 +14,7 @@ using IDSurvey.Services;
 
 namespace IDSurvey.Controllers
 {
-    
+    [RequireHttps]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -105,54 +105,53 @@ namespace IDSurvey.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
         
-            if (ModelState.IsValid&&model.InvitationCode=="IDSuveryStatisticsAvar2016")
+            if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _userManager.AddToRoleAsync(user, "Member");
-                    var memberList = new List<String>() {
-                                                        "qzhou@avarconsulting.com",
-                                                    };
-                    var adminList = new List<String>() {
-                                                         "qzhou@avarconsulting.com",
-                                                        "sgou@avarconsulting.com"
-                                                      };
-                    var managerList = new List<String>() {
-                                                         "qzhou@avarconsulting.com",
-                                                        "sgou@avarconsulting.com"
-                                                      };
-
-                    if (adminList.Contains(user.Email.ToLower()))
+                if(model.InvitationCode == "IDSuveryStatisticsAvar2016") { 
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
                     {
-                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                    }
-                    else if (memberList.Contains(user.Email.ToLower()))
-                    {
-                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
                         await _userManager.AddToRoleAsync(user, "Member");
-                    }else if (managerList.Contains(user.Email.ToLower()))
-                    {
-                        await _userManager.RemoveFromRoleAsync(user, "Deactivated");
-                        await _userManager.AddToRoleAsync(user, "Manager");
+                        var memberList = new List<String>() {
+                                                            "qzhou@avarconsulting.com",
+                                                        };
+                        var adminList = new List<String>() {
+                                                             "qzhou@avarconsulting.com",
+                                                            "sgou@avarconsulting.com"
+                                                          };
+                        var managerList = new List<String>() {
+                                                             "qzhou@avarconsulting.com",
+                                                            "sgou@avarconsulting.com"
+                                                          };
+
+                        if (adminList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Member");
+                            await _userManager.AddToRoleAsync(user, "Admin");
+                        }
+                        else if (memberList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Deactivated");
+                            await _userManager.AddToRoleAsync(user, "Member");
+                        }else if (managerList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Member");
+                            await _userManager.AddToRoleAsync(user, "Manager");
+                        }
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(3, "User created a new account with password.");
+                        return RedirectToLocal(returnUrl);
                     }
-
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    AddErrors(result);
                 }
-                AddErrors(result);
-            }
+                else
+                {
+                    ModelState.AddModelError("", "The Invitation Code is wrong.");
+                }
 
+            }
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }

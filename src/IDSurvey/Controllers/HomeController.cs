@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IDSurvey.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin,Manager,Member")]
     public class HomeController : Controller
     {

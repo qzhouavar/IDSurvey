@@ -1,11 +1,8 @@
 ﻿@model RegisterViewModel
-@{
-    ViewData["Title"] = "Register";
-}
 
 @{
     Layout = null;
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Register";
 }
 
 <!DOCTYPE html>
@@ -16,7 +13,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gentellela Alela! | </title>
+    <title>@ViewData["Title"] | </title>
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -53,7 +50,7 @@
                                 <div class="form-group">
                                     <label asp-for="Password" class="control-label"></label>
                                     <div >
-                                        <input asp-for="Password" class="form-control" />
+                                        <input asp-for="Password" class="form-control" placeholder="* must be at least 6 characters long"/>
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
                                 </div>
@@ -85,8 +82,8 @@
                     </div>
                 </div>
                 <p class="change_link">
-                    Already a member ?
-                    <a asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]"> Log in </a>
+                  
+                    <a asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]">Already a member ? Log in </a>
                 </p>
                 
             </div>

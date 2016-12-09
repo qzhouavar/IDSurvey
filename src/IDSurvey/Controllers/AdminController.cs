@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace IDSurvey.Controllers
 {
+    [RequireHttps]
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
@@ -41,7 +42,8 @@ namespace IDSurvey.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.UserDeleted ? "User account has successfully been deleted."
-                : message == ManageMessageId.UserUpdated ? "User account has been updated"
+                : message == ManageMessageId.UserUpdated ? "User account has been updated."
+                : message == ManageMessageId.DeleteAdmin ? "Admin cannot be deleted. Please change the role first."
                 : "";
 
             ViewBag.ErrorMessage =
@@ -184,7 +186,7 @@ namespace IDSurvey.Controllers
         {
             if (AdmUsrRole.Equals("Admin"))
             {
-                return RedirectToAction(nameof(AdminController.Index));
+                return RedirectToAction(nameof(AdminController.Index), new { Message = ManageMessageId.DeleteAdmin });
             }
             userid = _context.Users.Where(x => x.UserName == AdmUsrName).Select(x => x.Id).FirstOrDefault();
             var user = await _userManager.FindByIdAsync(userid);
@@ -219,7 +221,7 @@ namespace IDSurvey.Controllers
             rlList.Add(new AdminRoleViewModel() { Role = "Admin", RoleId = "1" });
             rlList.Add(new AdminRoleViewModel() { Role = "Member", RoleId = "2" });
             rlList.Add(new AdminRoleViewModel() { Role = "Manager", RoleId = "3" });
-            rlList.Add(new AdminRoleViewModel() { Role = "Deactived", RoleId = "4" });
+            rlList.Add(new AdminRoleViewModel() { Role = "Deactivated", RoleId = "4" });
             rlList = rlList.OrderBy(x => x.RoleId).ToList();
 
             List<SelectListItem> roleNames = new List<SelectListItem>();
@@ -243,7 +245,8 @@ namespace IDSurvey.Controllers
         {
             Error,
             UserDeleted,
-            UserUpdated
+            UserUpdated,
+            DeleteAdmin
         }
 
         #endregion Helper
