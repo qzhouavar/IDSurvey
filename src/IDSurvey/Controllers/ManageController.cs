@@ -12,6 +12,7 @@ using IDSurvey.Services;
 
 namespace IDSurvey.Controllers
 {
+    [RequireHttps]
     [Authorize]
     public class ManageController : Controller
     {
@@ -238,6 +239,7 @@ namespace IDSurvey.Controllers
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
 
+
         //
         // GET: /Manage/SetPassword
         [HttpGet]
@@ -328,6 +330,9 @@ namespace IDSurvey.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
+
+
+       
         #region Helpers
 
         private void AddErrors(IdentityResult result)

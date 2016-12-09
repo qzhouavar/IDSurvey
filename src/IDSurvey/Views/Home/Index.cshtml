@@ -1,7 +1,10 @@
 ﻿@model RateViewModel
+
 @{ 
     ViewData["Title"] = "Reporting Dashboard";
 }
+
+
 
 <!-- Styles -->
 <style>
@@ -61,7 +64,8 @@
         "marginRight": 80,
         "dataProvider": chartData,
         "valueAxes": [{
-           
+            "minimum":0,
+            "maximum":100,
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -165,7 +169,8 @@
         "dataProvider": chartData,
 
         "valueAxes": [{
-        
+            "minimum":0,
+            "maximum":100,
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -254,7 +259,7 @@
       
         "dataProvider": chartData,
         "valueAxes": [{
-          "minimum":0,
+            "minimum":0,
             "maximum":100,
             "axisAlpha": 0,
             "position": "left",
@@ -317,7 +322,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
             
                
-                    <div id="chartdivCOMPLAINTS" class="demo-placeholder" style="width: 95%; height:270px;"></div>
+                    <div id="chartdivCOMPLAINTS" class="demo-placeholder" style="width: 96%; height:270px;"></div>
                
             </div>
             <div class="clearfix"></div>
@@ -403,6 +408,8 @@
         ],
 
         "valueAxes": [{
+            "minimum":0,
+            "maximum":100,
             "axisAlpha": 0,
             "position": "left",
             "unit": "%",
@@ -483,6 +490,8 @@
             ],
             "gridAboveGraphs": true,
             "valueAxes": [{
+                "minimum":0,
+                "maximum":100,
                 "axisAlpha": 0,
                 "position": "left",
                 "unit": "%",
@@ -560,6 +569,8 @@
                  }
             ],
             "valueAxes": [{
+                "minimum":0,
+                "maximum":100,
                 "axisAlpha": 0,
                 "position": "left",
                 "unit": "%",

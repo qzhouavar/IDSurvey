@@ -26,8 +26,6 @@ namespace IDSurvey.Models.AccountViewModels
 
         [Required]
         [Display(Name = "Invitation Code")]
-        [RegularExpression(@"^[A-Za-z0-9]*$", ErrorMessage = "Please enter a valid code")]
-        public string InvitaionCode { get; set; }
-
+        public string InvitationCode { get; set; }
     }
 }

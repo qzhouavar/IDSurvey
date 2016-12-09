@@ -95,8 +95,8 @@ $(document).ready(function () {
 
     $('#select-month-btn').click(function () {
         $(document).ajaxStart();
-        //get current select option
         if ($('#select-month option:selected').text() != '..') {
+            //get current select option
             var quarter = $('#select-month').val().toString();
             var compositeUrl = encodeURI("/GetCompositeScoreByArea/" + quarter);
             var overallUrl = encodeURI("/GetOverallRatingByArea/" + quarter);
@@ -110,7 +110,6 @@ $(document).ready(function () {
             });
             $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
         }
-        
         $(document).ajaxStop();
     });
 

@@ -14,7 +14,7 @@ using IDSurvey.Services;
 
 namespace IDSurvey.Controllers
 {
-    [Authorize]
+    [RequireHttps]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -65,6 +65,7 @@ namespace IDSurvey.Controllers
                     _logger.LogInformation(1, "User logged in.");
                     return RedirectToLocal(returnUrl);
                 }
+               
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
@@ -103,24 +104,61 @@ namespace IDSurvey.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid && model.InvitaionCode.Equals("thisisarandomtempcode"))
+        
+            if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "Member");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
+                if(model.InvitationCode == "IDSuveryStatisticsAvar2016") { 
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, "Member");
+                        var memberList = new List<String>() {
+                                                            "qzhou@avarconsulting.com",
+                                                        };
+                        var adminList = new List<String>() {
+                                                             "qzhou@avarconsulting.com",
+                                                            "sgou@avarconsulting.com"
+                                                          };
+                        var managerList = new List<String>() {
+                                                             "qzhou@avarconsulting.com",
+                                                            "sgou@avarconsulting.com"
+                                                          };
 
+                        if (adminList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Member");
+                            await _userManager.AddToRoleAsync(user, "Admin");
+                        }
+                        else if (memberList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Deactivated");
+                            await _userManager.AddToRoleAsync(user, "Member");
+                        }else if (managerList.Contains(user.Email.ToLower()))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Member");
+                            await _userManager.AddToRoleAsync(user, "Manager");
+                        }
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(3, "User created a new account with password.");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    AddErrors(result);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The Invitation Code is wrong.");
+                }
+
+            }
+            
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -131,6 +169,7 @@ namespace IDSurvey.Controllers
             _logger.LogInformation(4, "User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
 
         //
         // POST: /Account/ExternalLogin
@@ -260,7 +299,7 @@ namespace IDSurvey.Controllers
                 var user = await _userManager.FindByNameAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                   // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
@@ -285,6 +324,7 @@ namespace IDSurvey.Controllers
         {
             return View();
         }
+
 
         //
         // GET: /Account/ResetPassword
@@ -312,6 +352,7 @@ namespace IDSurvey.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
             }
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
@@ -417,6 +458,7 @@ namespace IDSurvey.Controllers
             var result = await _signInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
             if (result.Succeeded)
             {
+
                 return RedirectToLocal(model.ReturnUrl);
             }
             if (result.IsLockedOut)

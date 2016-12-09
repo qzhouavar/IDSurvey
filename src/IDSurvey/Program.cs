@@ -17,7 +17,6 @@ namespace IDSurvey
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
-
             host.Run();
         }
     }

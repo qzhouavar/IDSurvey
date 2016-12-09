@@ -7,9 +7,12 @@ using IDSurvey.Data;
 using IDSurvey.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IDSurvey.Controllers
 {
+    [RequireHttps]
+    [Authorize(Roles = "Admin,Manager,Member")]
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,7 +23,7 @@ namespace IDSurvey.Controllers
           
         }
 
-     
+       
         public async Task<IActionResult> Index( string quarter)
         {
             var completerates = from rate in _context.CompleteRates select rate;
