@@ -15,6 +15,10 @@ namespace IDSurvey.Data
         {
         }
 
+        public ApplicationDbContext()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +30,8 @@ namespace IDSurvey.Data
         public DbSet<CompleteRate> CompleteRates { set; get; }
         
         public DbSet<MailSurveyResult> MailSurveyResult { get; set; }
+        
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         //public DbSet<RateViewModel> Rates { set; get; }
     }

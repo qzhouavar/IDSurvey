@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 using IDSurvey.Data;
 using IDSurvey.Models;
 using IDSurvey.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IDSurvey
 {
@@ -54,13 +57,54 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc();
 
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member","Admin", "Manager"));
+            });
+
+
+            
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+           
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+               
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+
+                // Cookie settings
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            });
         }
 
+       
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -85,6 +129,7 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            
 
             app.UseMvc(routes =>
             {
@@ -92,7 +137,26 @@ options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            await CreateRoles(serviceProvider);
         }
 
+
+        // Create roles
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            // Declare role names
+            string[] roleNames = { "Admin", "Member", "Deactivated","Manager" };
+            foreach (var roleName in roleNames)
+            {
+                //Check if exists
+                if (!await RoleManager.RoleExistsAsync(roleName))
+                {
+                    await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+        }
     }
 }

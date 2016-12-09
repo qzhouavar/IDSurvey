@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService 
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,7 +36,7 @@
                         <div class="menu_section">
                             <h3>&nbsp;</h3>
                             <ul class="nav side-menu">
-
+                               
                                 <li>
                                     <a class="ajax-link" asp-controller="Home" asp-action="Index"><i class="fa fa-line-chart" aria-hidden="true"></i><span>Graphics</span></a>
                                 </li>
@@ -47,9 +50,26 @@
                                 <li>
                                     <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span> Composite Scores</span></a>
                                 </li>
+                              
+                                @if (await AuthorizationService.AuthorizeAsync(User, "RequireMemberRole"))
+                                {
+
+                                        <li>
+                                            <a asp-controller="Manage" asp-action="ChangePassword"><i class="fa fa-cog fa-fw" aria-hidden="true"></i><span> Change Password</span></a>
+                                        </li>
+                                   
+                                }
+
+                                @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
+                                {
+                                    <li>
+                                        <a asp-controller="Admin" asp-action="Index"><i class="fa fa-wrench" aria-hidden="true"></i><span> Admin</span></a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                         <div class="menu_section">
+                        
                         </div>
                     </div>
                     <!-- /sidebar menu -->
@@ -66,7 +86,9 @@
                     <nav>
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                          
                         </div>
+                        @await Html.PartialAsync("_LoginPartial")
                     </nav>
                 </div>
             </div>
