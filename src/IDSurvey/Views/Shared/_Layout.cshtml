@@ -8,7 +8,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="600">
     <title>@ViewData["Title"] - IDSurvey</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
@@ -50,16 +49,7 @@
                                 <li>
                                     <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span> Composite Scores</span></a>
                                 </li>
-                              
-                                @if (await AuthorizationService.AuthorizeAsync(User, "RequireMemberRole"))
-                                {
-
-                                        <li>
-                                            <a asp-controller="Manage" asp-action="ChangePassword"><i class="fa fa-cog fa-fw" aria-hidden="true"></i><span> Change Password</span></a>
-                                        </li>
-                                   
-                                }
-
+                                            
                                 @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
                                 {
                                     <li>
@@ -125,6 +115,7 @@
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js">
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @RenderSection("scripts", required: false)
 
     <!-- Custom Theme Scripts -->

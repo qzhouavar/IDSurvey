@@ -55,7 +55,6 @@ namespace IDSurvey.Controllers
             result.Add("ALL", allResult);
             result.Add("APPEALS", appealResult);
             result.Add("COMPLAINTS", complaintResult);
-
             return Json(result);
         }
 
