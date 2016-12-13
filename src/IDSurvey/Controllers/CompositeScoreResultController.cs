@@ -16,6 +16,8 @@ namespace IDSurvey.Controllers
         internal static readonly IEnumerable<string> SurveyTypeList = new[] { "All", "Appeals", "Complaints" };
         internal static readonly List<string> ServiceAreaList = new List<string>() { "1", "2", "3", "4", "5", "National" };
         internal static readonly string[] AllSurveyTypes = new[] { "APPEALS","COMPLAINTS"};
+        internal static readonly List<string> ChartCategory= new List<string>() { "CommunicationComp", "ResponsivenessComp", "CourtesyComp"};
+
 
         private readonly ApplicationDbContext _context;
 
@@ -25,6 +27,10 @@ namespace IDSurvey.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult Figure()
         {
             return View();
         }
@@ -39,9 +45,7 @@ namespace IDSurvey.Controllers
             }
             // convert string into list of int
             var waveList = wave.Split(',').Distinct().Select(int.Parse).ToArray();
-
             var result = new Dictionary<string, List<CompositeScoreByAreaViewModel>>();
-
             var allResult = new List<CompositeScoreByAreaViewModel>();
             var appealResult = new List<CompositeScoreByAreaViewModel>();
             var complaintResult = new List<CompositeScoreByAreaViewModel>();
@@ -51,12 +55,14 @@ namespace IDSurvey.Controllers
                 appealResult.Add(AverageOneAreaCompositeScore(area, waveList, new[] { "APPEALS" }));
                 complaintResult.Add(AverageOneAreaCompositeScore(area, waveList, new[] { "COMPLAINTS" }));
             }
-
             result.Add("ALL", allResult);
             result.Add("APPEALS", appealResult);
             result.Add("COMPLAINTS", complaintResult);
             return Json(result);
         }
+
+
+
 
         [HttpGet("[action]/{wave}", Name = "GetOverallRatingByArea")]
         public IActionResult GetOverallRatingByArea(string wave)
@@ -73,13 +79,11 @@ namespace IDSurvey.Controllers
             {
                 result.Add(AverageOverallRating(area, waveList));
             }
-
             return Json(result);
         }
 
         private CompositeScoreByAreaViewModel AverageOneAreaCompositeScore(string area, int[] waveList, string[] surveyTypes)
         {
-
             decimal overall = 0.0M;
             decimal communication = 0.0M;
             decimal responsiveness = 0.0M;

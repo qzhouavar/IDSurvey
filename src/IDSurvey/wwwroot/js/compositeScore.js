@@ -57,14 +57,22 @@ $(document).ready(function () {
         var chart = AmCharts.makeChart(eleid, {
             "type": "serial",
             "theme": "light",
-            "rotate": true,
-           
+            "rotate": true,  
             "dataProvider": data,
             "valueAxes": [{
                 "minimum": 0,
                 "maximum": 100,
                 "axisAlpha": 0,
                 "position": "left",
+                "guides": [{
+                    "dashLength": 6,
+                    "inside": true,
+
+                    "lineAlpha": 1,
+                    "value": 70,
+                    "lineColor":"red",
+                    "width": 2
+                }]
             }],
 
             "graphs": [{
@@ -80,7 +88,6 @@ $(document).ready(function () {
                 "precision": 1,
                 "labelText": "[[value]]",
             }],
-
 
             "chartCursor": {
                 "categoryBalloonEnabled": false,
