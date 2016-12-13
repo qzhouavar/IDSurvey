@@ -62,12 +62,11 @@ $(document).ready(function () {
             "valueAxes": [{
                 "minimum": 0,
                 "maximum": 100,
-                "axisAlpha": 0,
+             
                 "position": "left",
                 "guides": [{
                     "dashLength": 6,
                     "inside": true,
-
                     "lineAlpha": 1,
                     "value": 70,
                     "lineColor":"red",
@@ -112,6 +111,121 @@ $(document).ready(function () {
 
     }
 
+    function createCompositeScoreFigure(eleid, data) {
+
+        AmCharts.addInitHandler(function (chart) {
+            // check if there are graphs with autoColor: true set
+            for (var i = 0; i < chart.graphs.length; i++) {
+                var graph = chart.graphs[i];
+                if (graph.autoColor !== true)
+                    continue;
+                var colorKey = "autoColor-" + i;
+                graph.lineColorField = colorKey;
+                graph.fillColorsField = colorKey;
+                for (var x = 0; x < chart.dataProvider.length; x++) {
+                    var color = chart.colors[x]
+                    chart.dataProvider[x][colorKey] = color;
+                }
+            }
+
+        }, ["serial"]);
+
+
+        var chart = AmCharts.makeChart(eleid, {
+            "type": "serial",
+            "theme": "light",
+            "rotate": false,
+            "dataProvider": data,
+            "valueAxes": [{
+                "minimum": 0,
+                "maximum": 100,
+                //"axisAlpha": 0.1,
+                "autoGridCount": false,
+                "gridCount":10
+            }],
+            "legend": {
+                "horizontalGap": 10,
+                "useGraphSettings": true,
+                "markerSize": 10
+            },
+
+            "graphs": [{
+                //"balloonText": "<b>[[title]]</b><br><span>[[category]]: <b>[[area1]]</b></span>",
+                "fillAlphas": 0.8,
+                //"labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Area 1",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "area1"
+            }, {
+                //"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area2]]</b></span>",
+                "fillAlphas": 0.8,
+                //"labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Area 2",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "area2"
+            }, {
+                //"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[are3]]</b></span>",
+                "fillAlphas": 0.8,
+                //"labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Area 3",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "area3"
+            }, {
+                //"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area4]]</b></span>",
+                "fillAlphas": 0.8,
+                //"labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Area 4",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "area4"
+            }, {
+                //"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area5]]</b></span>",
+                "fillAlphas": 0.8,
+                //"labelText": "[[value]]",
+                "lineAlpha": 0.3,
+                "title": "Area 5",
+                "type": "column",
+                "color": "#000000",
+                "valueField": "area5"
+            }],
+
+            "chartCursor": {
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "zoomable": false
+            },
+            "categoryField": "chartCategory",
+            "categoryAxis": {
+                "parseDates": false,
+                "axisAlpha": 0,
+                "minHorizontalGap": 60,
+                "gridThickness": 0,
+                "gridAlpha": 0,
+                "labelFunction": function (valueText, quarter, categoryAxis) {
+                    if (valueText == "CommunicationComp")
+                        return "Benificiary-Centered Communications";
+                    else if (valueText == "ResponsivenessComp")
+                        return "Access and Responsiveness";
+                    else if (valueText == "CourtesyComp")
+                        return "Courtesy and Respect";
+
+                }
+            },
+            "export": {
+                "enabled": true
+            }
+        });
+
+    }
+
+
     var $loading = $('#loading').hide();
     $(document)
       .ajaxStart(function () {
@@ -142,7 +256,7 @@ $(document).ready(function () {
     }
 
     //get initial data from server (quarter 8)
-    getData("/GetCompositeScoreByArea/3,4,5", function (d) {
+    getData("/GetCompositeScoreByArea/6,7,8", function (d) {
         $(document).ajaxStart();
         createCompositeDataTable('#allResult', d['ALL']);
        
@@ -154,11 +268,19 @@ $(document).ready(function () {
 
         $(document).ajaxStop();
     });
-    getData("/GetOverallRatingByArea/3,4,5", function (d) {
+    getData("/GetOverallRatingByArea/6,7,8", function (d) {
         $(document).ajaxStart();
         createOverallDataTable('#overallRating', d);
         $(document).ajaxStop();
     });
+    getData("/GetCompositeScoreFigure/6,7,8", function (d) {
+        $(document).ajaxStart();
+        createCompositeScoreFigure('compositesScoresAppeals', d['APPEALS']);
+       
+        createCompositeScoreFigure('compositesScoresComplaints', d['COMPLAINTS']);
+        $(document).ajaxStop();
+    });
+
 
     $('#select-quarter-btn').click(function () {
         $(document).ajaxStart();
@@ -166,6 +288,7 @@ $(document).ready(function () {
         var quarter = $('#select-quarter').val().toString();
         var compositeUrl = encodeURI("/GetCompositeScoreByArea/" + quarter);
         var overallUrl = encodeURI("/GetOverallRatingByArea/" + quarter);
+        var figureUrl = encodeURI("/GetCompositeScoreFigure/" + quarter);
         getData(compositeUrl, function (d) {
             createCompositeDataTable('#allResult', d['ALL']);
          
@@ -178,6 +301,11 @@ $(document).ready(function () {
         getData(overallUrl, function (d) {
             createOverallDataTable('#overallRating', d);
         });
+        getData(figureUrl, function (d) {
+            createCompositeScoreFigure('compositesScoresAppeals', d['APPEALS']);
+            createCompositeScoreFigure('compositesScoresComplaints', d['COMPLAINTS']);
+        });
+
         $('#current-quarter').text('Quarter: ' + $('#select-quarter option:selected').text());
         $(document).ajaxStop();
     });
@@ -188,6 +316,7 @@ $(document).ready(function () {
         var quarter = $('#select-month').val().toString();
         var compositeUrl = encodeURI("/GetCompositeScoreByArea/" + quarter);
         var overallUrl = encodeURI("/GetOverallRatingByArea/" + quarter);
+        var figureUrl = encodeURI("/GetCompositeScoreFigure/" + quarter);
         getData(compositeUrl, function (d) {
             createCompositeDataTable('#allResult', d['ALL']);
 
@@ -200,6 +329,10 @@ $(document).ready(function () {
         });
         getData(overallUrl, function (d) {
             createOverallDataTable('#overallRating', d);
+        });
+        getData(figureUrl, function (d) {
+            createCompositeScoreFigure('compositesScoresAppeals', d['APPEALS']);
+            createCompositeScoreFigure('compositesScoresComplaints', d['COMPLAINTS']);
         });
         $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
         $(document).ajaxStop();

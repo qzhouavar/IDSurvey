@@ -16,7 +16,7 @@ namespace IDSurvey.Controllers
         internal static readonly IEnumerable<string> SurveyTypeList = new[] { "All", "Appeals", "Complaints" };
         internal static readonly List<string> ServiceAreaList = new List<string>() { "1", "2", "3", "4", "5", "National" };
         internal static readonly string[] AllSurveyTypes = new[] { "APPEALS","COMPLAINTS"};
-        internal static readonly List<string> ChartCategory= new List<string>() { "CommunicationComp", "ResponsivenessComp", "CourtesyComp"};
+        internal static readonly List<string> ChartCategoryList= new List<string>() { "CommunicationComp", "CourtesyComp", "ResponsivenessComp" };
 
 
         private readonly ApplicationDbContext _context;
@@ -62,7 +62,29 @@ namespace IDSurvey.Controllers
         }
 
 
-
+        // return Table VI-1, VI-2, VI-3
+        [HttpGet("[action]/{wave}", Name = "GetCompositeScoreFigure")]
+        public IActionResult GetCompositeScoreFigure(string wave)
+        {
+            if (string.IsNullOrEmpty(wave))
+            {
+                return new BadRequestResult();
+            }
+            // convert string into list of int
+            var waveList = wave.Split(',').Distinct().Select(int.Parse).ToArray();
+            var result = new Dictionary<string, List<CompositeScoreFigureViewModel>>();
+          
+            var appealResult = new List<CompositeScoreFigureViewModel>();
+            var complaintResult = new List<CompositeScoreFigureViewModel>();
+            foreach (var category in ChartCategoryList)
+            {
+                appealResult.Add(AverageCompositeScoreFigure(category, waveList, new[] { "APPEALS" }));
+                complaintResult.Add(AverageCompositeScoreFigure(category, waveList, new[] { "COMPLAINTS" }));
+            }
+            result.Add("APPEALS", appealResult);
+            result.Add("COMPLAINTS", complaintResult);
+            return Json(result);
+        }
 
         [HttpGet("[action]/{wave}", Name = "GetOverallRatingByArea")]
         public IActionResult GetOverallRatingByArea(string wave)
@@ -80,6 +102,54 @@ namespace IDSurvey.Controllers
                 result.Add(AverageOverallRating(area, waveList));
             }
             return Json(result);
+        }
+
+        private CompositeScoreFigureViewModel AverageCompositeScoreFigure(string chartCategory, int[] waveList, string[] surveyTypes)
+        {
+            decimal area1 = 0.0M;
+            decimal area2 = 0.0M;
+            decimal area3 = 0.0M;
+            decimal area4 = 0.0M;
+            decimal area5 = 0.0M;
+
+            if (chartCategory.Equals("CommunicationComp"))
+            {
+                area1 = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("1")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                area2 = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("2")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                area3 = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("3")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                area4 = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("4")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                area5 = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("5")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+
+            }else if (chartCategory.Equals("ResponsivenessComp"))
+            {
+                area1 = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("1")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                area2 = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("2")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                area3 = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("3")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                area4 = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("4")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                area5 = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("5")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+
+            }else if (chartCategory.Equals("CourtesyComp"))
+            {
+                area1 = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("1")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                area2 = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("2")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                area3 = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("3")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                area4 = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("4")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                area5 = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse("5")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+
+            }
+
+
+            var result = new CompositeScoreFigureViewModel
+            {
+                ChartCategory = chartCategory,
+                Area1 = Math.Round(area1, 1, MidpointRounding.AwayFromZero),
+                Area2 = Math.Round(area2, 1, MidpointRounding.AwayFromZero),
+                Area3 = Math.Round(area3, 1, MidpointRounding.AwayFromZero),
+                Area4 = Math.Round(area4, 1, MidpointRounding.AwayFromZero),
+                Area5 = Math.Round(area5, 1, MidpointRounding.AwayFromZero)
+            };
+
+            return result;
         }
 
         private CompositeScoreByAreaViewModel AverageOneAreaCompositeScore(string area, int[] waveList, string[] surveyTypes)
