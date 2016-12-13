@@ -127,7 +127,6 @@ $(document).ready(function () {
                     chart.dataProvider[x][colorKey] = color;
                 }
             }
-
         }, ["serial"]);
 
 
