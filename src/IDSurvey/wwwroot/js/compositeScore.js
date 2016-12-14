@@ -80,9 +80,6 @@ $(document).ready(function () {
 
             "graphs": [{
                 "id": "g1",
-                "balloonText": "Area [[area]]<br><b><span style='font-size:14px;'>[[overall]]</span></b>",
-                "bullet": "round",
-                "bulletSize": 8,
                 "autoColor": true,
                 "lineThickness": 2,
                 "fillAlphas": 0.8,
@@ -260,8 +257,6 @@ $(document).ready(function () {
 
     }
 
-    
-
     var $loading = $('#loading').hide();
     $(document)
       .ajaxStart(function () {
@@ -291,7 +286,7 @@ $(document).ready(function () {
         });
     }
 
-    //get initial data from server (quarter 8)
+    //get initial data from server (quarter 9)
     getData("/GetCompositeScoreByArea/6,7,8", function (d) {
         $(document).ajaxStart();
         createCompositeDataTable('#allResult', d['ALL']);
