@@ -35,7 +35,6 @@
                         <div class="menu_section">
                             <h3>&nbsp;</h3>
                             <ul class="nav side-menu">
-
                                 <li>
                                     <a class="ajax-link" asp-controller="Home" asp-action="Index"><i class="fa fa-line-chart" aria-hidden="true"></i><span>Graphics</span></a>
                                 </li>
@@ -50,7 +49,7 @@
                                     <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span> Composite Scores</span></a>
                                 </li>
                                 <li>
-                                    <a asp-controller="CompositeScoreResult" asp-action="Figure"><i class="fa fa-line-chart" aria-hidden="true"></i><span> Composite Scores Figures</span></a>
+                                    <a asp-controller="CompositeScoreResult" asp-action="Figure"><i class="fa fa-bar-chart" aria-hidden="true"></i><span> Composite Scores Figures</span></a>
                                 </li>
 
                                 @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
@@ -79,7 +78,6 @@
                     <nav>
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                          
                         </div>
                         @await Html.PartialAsync("_LoginPartial")
                     </nav>
@@ -141,7 +139,6 @@
                     return unescape(aCrumb[1]);
                 }
             }
-
             return null;
         }
 
@@ -150,7 +147,6 @@
         }
     </script>
     <script>
-
         var url = "Home/Index"
         $('#create').click(function () {
             $.ajax({
@@ -163,8 +159,6 @@
                 }
             });
         });
-
-
     </script>
     <script>
 
