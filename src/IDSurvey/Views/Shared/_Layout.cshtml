@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - IDSurvey</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
@@ -78,8 +78,11 @@
                     <nav>
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                           
                         </div>
-                        @await Html.PartialAsync("_LoginPartial")
+                        <button class="btn btn-lg btn-link" id="printButton"><i class="fa fa-print" aria-hidden="true"></i>Print</button>
+                       @await Html.PartialAsync("_LoginPartial")
+                       
                     </nav>
                 </div>
             </div>
@@ -97,7 +100,7 @@
             <div class="clearfix"></div>
         </footer>
     </div>
-    <script src="http://doersguild.github.io/jQuery.print/jQuery.print.js"></script>
+   
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
@@ -175,5 +178,45 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        
+        $("#printButton").click(function () {
+
+           window.print();
+
+        });
+
+        (function () {
+            var beforePrint = function () {
+                for (var i = 0; i < AmCharts.charts.length; i++) {
+                    var chart = AmCharts.charts[i];
+                    chart.div.style.width = "1000px";
+                    chart.validateNow();
+                }
+            };
+            var afterPrint = function () {
+                for (var i = 0; i < AmCharts.charts.length; i++) {
+                    var chart = AmCharts.charts[i];
+                    chart.div.style.width = "100%";
+                    chart.validateNow();
+                }
+            };
+
+            if (window.matchMedia) {
+                var mediaQueryList = window.matchMedia('print');
+                mediaQueryList.addListener(function (mql) {
+                    if (mql.matches) {
+                        beforePrint();
+                    } else {
+                        afterPrint();
+                    }
+                });
+            }
+
+            window.onbeforeprint = beforePrint;
+            window.onafterprint = afterPrint;
+        }());
+    </script>
+
 </body>
 </html>
