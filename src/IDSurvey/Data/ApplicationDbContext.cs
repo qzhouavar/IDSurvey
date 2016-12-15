@@ -33,6 +33,6 @@ namespace IDSurvey.Data
         
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
-        //public DbSet<RateViewModel> Rates { set; get; }
+        public DbSet<ContactRate> V_Connected_Rates { set; get; }
     }
 }

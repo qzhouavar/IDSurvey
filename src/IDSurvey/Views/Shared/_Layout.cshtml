@@ -51,7 +51,9 @@
                                 <li>
                                     <a asp-controller="CompositeScoreResult" asp-action="Figure"><i class="fa fa-bar-chart" aria-hidden="true"></i><span> Composite Scores Figures</span></a>
                                 </li>
-
+                                <li>
+                                    <a asp-controller="ContactRates" asp-action="Index"><i class="fa fa-phone" aria-hidden="true"></i><span> Contact Rate Tables</span></a>
+                                </li>
                                 @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
                                 {
                                     <li>
