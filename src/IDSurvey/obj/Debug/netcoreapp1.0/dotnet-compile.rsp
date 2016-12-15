@@ -234,6 +234,7 @@ C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Startup.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\AccountController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\AdminController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\CompositeScoreResultController.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\ContactRatesController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\HomeController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\ManageController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Data\ApplicationDbContext.cs
@@ -251,6 +252,7 @@ C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Data\Migrations\ApplicationDbConte
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\ApplicationUser.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\ChartDataViewModel.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\CompleteRate.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\ContactRate.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\MailSurveyResult.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\RateViewModel.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\WaveRateViewModel.cs
