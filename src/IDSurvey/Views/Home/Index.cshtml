@@ -4,15 +4,11 @@
     ViewData["Title"] = "Reporting Dashboard";
 }
 
-
-
-<!-- Styles -->
-<style>
-    #chartdivtotal #chartdivquarter #chartdivtype #chartdivAPPEALS #chartdivCOMPLAINTS #chartdivtypeAPPEALS #chartdivtypeCOMPLAINTS {
-        width: 100%;
-        height: 270px;
-    }
-</style>
+<script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <div class="row tile_count">
     <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -35,12 +31,6 @@
         </div>
     </div>
 </div>
-
-<script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
-<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
-<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script>
     var chartData = generatechartData();
@@ -72,7 +62,7 @@
             "guides": [{
                 "dashLength": 6,
                 "inside": true,
-                "label": "Average",
+                //"label": "Average",
                 "lineAlpha": 1,
                 "value": @ViewData["AveRate"],
                 "lineColor":"#263138",
@@ -136,7 +126,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
              
               
-                    <div id="chartdivtotal" class="demo-placeholder" style="width: 100%; height:270px;"></div>
+                    <div id="chartdivtotal" class="demo-placeholder" style="height:270px;"></div>
                
             </div>
             <div class="clearfix"></div>
@@ -177,7 +167,7 @@
             "guides": [{
                 "dashLength": 6,
                 "inside": true,
-                "label": "Average",
+                //"label": "Average",
                 "lineAlpha": 1,
                 "value": @ViewData["AppealsRate"],
                 "lineColor":"#263138",
@@ -267,7 +257,7 @@
             "guides": [{
                 "dashLength": 6,
                 "inside": true,
-                "label": "Average",
+                //"label": "Average",
                 "lineAlpha": 1,
                 "value": @ViewData["ComplaintsRate"],
                 "lineColor":"#263138",
@@ -311,7 +301,7 @@
     });
 
 </script>
-<div class="row page-break-chart">
+<div class="row ">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">
@@ -338,7 +328,7 @@
                 <div class="col-md-4">
                     <h3><strong>Response Rate by Service Area</strong></h3>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8 hidden-print">
                     <form id="form">
                         <p>
                             <div class="col-md-3">
@@ -354,25 +344,26 @@
                 </div>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="col-md-4 col-sm-6 col-xs-12">
 
-                        <div class="page-break-chart" id="chartdivquarter" style="width: 100%; height:270px;"></div>
+                    <div class="page-break-chart" id="chartdivquarter" style="width: 100%; height:270px;"></div>
 
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-xs-12 ">
-
-
-                        <div id="chartdivtypeAPPEALS" style="width: 100%; height:270px;"></div>
-
-                    </div>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-
-                        <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
-
-                    </div>
                 </div>
-                <div class="clearfix"></div>
+                <div class="col-md-4 col-sm-6 col-xs-12 ">
+
+
+                    <div id="chartdivtypeAPPEALS" style="width: 100%; height:270px;"></div>
+
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12">
+
+                    <div id="chartdivtypeCOMPLAINTS" style="width: 100%; height:270px;"></div>
+
+                </div>
             </div>
+            <div class="clearfix"></div>
+        </div>
+
     </div>
 </div>
 <br />

@@ -16,7 +16,6 @@ namespace IDSurvey.Models
         public SelectList quarters;
         public String quarter { get; set; }
        
-       
 
         [Required]
         public string QTR { get; set; }
