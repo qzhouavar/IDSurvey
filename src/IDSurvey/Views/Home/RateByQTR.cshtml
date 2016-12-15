@@ -6,7 +6,7 @@
 
 @foreach (var item1 in Model.quarters)
 {  
-    <div class="row page-break-chart">
+    <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="dashboard_graph">
                 <div class="row x_title">
@@ -16,8 +16,7 @@
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
-                    <div style="width: 60%;">
-                      
+                    <div style="width: 40%;">
                             <table class="table table-bordered" style="font-size:15px; border:solid black" >
                                 <thead>
                                     <tr>
@@ -33,12 +32,9 @@
                                         <th style="border:1px solid black;background-color:maroon;color:white">Complete</th>
                                         <th style="border:1px solid black;background-color:maroon;color:white">% Complete*</th>
                                     </tr>
-
                                 </thead>
 
                                 <tbody>
-                                   
-
                                     @foreach (var item in Model.typeRates)
                                     {
                                         var rate = item.COMPLETE * 100.0 / item.TOTAL;
@@ -54,31 +50,23 @@
                                                     <td align="right" style="border:1px solid black;">
                                                         @Html.DisplayFor(modelItem => item.TOTAL)
                                                     </td>
-
                                                     <td align="right" style="border:1px solid black;">
                                                         @Html.DisplayFor(modelItem => item.COMPLETE)
                                                     </td>
-
-
                                                     <td align="right" style="border:1px solid black;">
                                                         @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate)
                                                     </td>
                                                     <td align="right" style="border:1px solid black;">
                                                         @Html.DisplayFor(modelItem => item.ID)
                                                     </td>
-
                                                     <td align="right" style="border:1px solid black;">
                                                         @Html.DisplayFor(modelItem => item.WAVE)
                                                     </td>
                                                     <td align="right" style="border:1px solid black;">
                                                         @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate_complaint)
                                                     </td>
-
                                                 </tr>
-
-
                                             }
-
                                     }
 
                                     @foreach (var item in Model.quarterRates)
@@ -96,12 +84,9 @@
                                                 <td align="right" style="border:1px solid black;">
                                                     @Html.DisplayFor(modelItem => item.TOTAL)
                                                 </td>
-
                                                 <td align="right" style="border:1px solid black;">
                                                     @Html.DisplayFor(modelItem => item.COMPLETE)
                                                 </td>
-
-
                                                 <td align="right" style="border:1px solid black;">
                                                     @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate)
                                                 </td>
@@ -115,21 +100,15 @@
                                                 <td align="right" style="border:1px solid black;">
                                                     @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.0}", rate_complaint)
                                                 </td>
-
                                             </tr>
-
-
                                         }
-
                                     }
                                 </tbody>
-
                             </table>
-                    </div>
-                                   
+                    </div>               
                 </div>
                 <div>*Completion percentage represents the proportion of the total sample that has returned a completed survey.</div>
-                @*<div class="clearfix"></div>*@
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>

@@ -13,7 +13,7 @@ using IDSurvey.Services;
 namespace IDSurvey.Controllers
 {
     [RequireHttps]
-    [Authorize]
+    [Authorize(Roles = "Admin,Manager,Member")]
     public class ManageController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

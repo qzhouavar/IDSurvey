@@ -1,15 +1,13 @@
 ﻿
 @media print {
-  body {
-    width: 210mm;
-   
-  }
-  /* ... the rest of the rules ... */
+
+      .amcharts-main-div{
+          max-width: 800px;
+      }
 
     .page-break-chart {page-break-before: always;}
-   
+   /*@page {size: landscape}*/
 }
 
-body{
-    color:#2A3F54;
-}
+
+
