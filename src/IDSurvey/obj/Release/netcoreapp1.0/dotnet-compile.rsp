@@ -234,6 +234,7 @@ C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AdminController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompositeScoreResultController.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\ContactRatesController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\ManageController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\ApplicationDbContext.cs
@@ -251,6 +252,7 @@ C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\Migrations\ApplicationD
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ApplicationUser.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ChartDataViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\CompleteRate.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ContactRate.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\MailSurveyResult.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\RateViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\WaveRateViewModel.cs
