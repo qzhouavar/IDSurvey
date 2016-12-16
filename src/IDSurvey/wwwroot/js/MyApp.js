@@ -116,39 +116,29 @@
                 //"balloonText": "<b>[[title]]</b><br><span>[[category]]: <b>[[area1]]</b></span>",
                 "fillAlphas": 1,
                 //"labelText": "[[value]]",
-
                 "title": "Area 1",
                 "type": "column",
-
-
                 "valueField": "area1",
                 "fillColorsField": "lineColor",
                 "lineColorField": "lineColor",
                 "lineColor": "#94ccf5"
             }, {
                 "id": "v2",//"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area2]]</b></span>",
-
                 //"labelText": "[[value]]",
                 "fillAlphas": 1,
                 "title": "Area 2",
                 "type": "column",
-
-
                 "valueField": "area2",
                 "fillColorsField": "lineColor",
                 "lineColorField": "lineColor",
                 "lineColor": "#85b707"
             }, {
                 "id": "v3",//"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[are3]]</b></span>",
-
                 //"labelText": "[[value]]",
                 "fillAlphas": 1,
                 "title": "Area 3",
                 "type": "column",
-
-
                 "valueField": "area3",
-
                 "fillColorsField": "lineColor",
                 "lineColorField": "lineColor",
                 "lineColor": "#0fb526"
@@ -157,11 +147,8 @@
                 "id": "v4",//"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area4]]</b></span>",
                 "fillAlphas": 1,
                 //"labelText": "[[value]]",
-
                 "title": "Area 4",
                 "type": "column",
-
-
                 "valueField": "area4",
                 "fillColorsField": "lineColor",
                 "lineColorField": "lineColor",
@@ -170,7 +157,6 @@
                 "id": "v5", //"balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[area5]]</b></span>",
                 "fillAlphas": 1,
                 //"labelText": "[[value]]",
-
                 "title": "Area 5",
                 "type": "column",
                 "valueField": "area5",
@@ -194,7 +180,7 @@
                 "gridAlpha": 0,
 
                 "autoWrap": true,
-                "labelFunction": function (valueText, chartCategory, categoryAxis) {
+                "labelFunction": function (valueText, categoryAxis) {
                     if (valueText == "CommunicationComp")
                         return "Beneficiary-Centered Communications";
                     else if (valueText == "ResponsivenessComp")

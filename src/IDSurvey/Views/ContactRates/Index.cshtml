@@ -17,7 +17,7 @@
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
                 <div style="width: 40%;">
 
-                    <table id="contactRate" class="table table-bordered dt-responsive nowrap" cellspacing="0" style="font-size:15px; border:solid black">
+                    <table id="contactRate" class="table table-bordered" cellspacing="0" style="font-size:15px; border:solid black">
 
 
 
@@ -43,29 +43,23 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                var rate = (@item.COMPLETED * 100.0 / @item.TOTAL);
+                                var reached = @item.COMPLETED * 100.0 / @item.TOTAL;
+                                var wrongNos = @item.WRONG_NUMBER * 100.0 / @item.TOTAL;
                                 <tr>
 
-                                    @if (item.QTR == "9-3")
-                                    {
-                                        <td>Q9-3</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@Html.DisplayFor(modelItem => item.QTR)</td>
-                                    }
-
-
-                                    <td>
+                                    <td >
+                                        @item.Description.Substring(43).ToUpper()
+                                    </td>
+                               
+                                    <td align="right" >
                                         @Html.DisplayFor(modelItem => item.TOTAL)
                                     </td>
-                                    <td>
-                                        @String.Format(
-            System.Globalization.CultureInfo.CurrentCulture,
-            "{0:0.00}", @rate
-            )%
+                                    <td align="right">
+                                        @String.Format(System.Globalization.CultureInfo.CurrentCulture,"{0:0.00}", @reached)%
                                     </td>
-                                    <td></td>
+                                    <td align="right">
+                                        @String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:0.00}", @wrongNos)%
+                                    </td>
 
 
                                 </tr>

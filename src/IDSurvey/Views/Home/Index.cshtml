@@ -109,8 +109,23 @@
             }
         },
         "export": {
-            "enabled": true
+            "enabled": true,
+            "menuReviver": function(config, li) {
+                // MODIFY ONLY IMAGE ITEMS
+                if (config.capture) {
+                    var link = li.getElementsByTagName("a")[0];
+
+                    // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                    link.addEventListener("click", function(e) {
+                        config.fileName = "Overall Response Rate";
+                    });
+                }
+
+                // RETURN UNTOUCHED LIST ELEMENT
+                return li;
+            }
         }
+
     });
    
 </script>
@@ -204,8 +219,23 @@
             }
         },
         "export": {
-            "enabled": true
+            "enabled": true,
+            "menuReviver": function(config, li) {
+                // MODIFY ONLY IMAGE ITEMS
+                if (config.capture) {
+                    var link = li.getElementsByTagName("a")[0];
+
+                    // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                    link.addEventListener("click", function(e) {
+                        config.fileName = "Response Rate:Appeal Cases";
+                    });
+                }
+
+                // RETURN UNTOUCHED LIST ELEMENT
+                return li;
+            }
         }
+
     });
    
 </script>
@@ -296,8 +326,23 @@
             }
         },
         "export": {
-            "enabled": true
+            "enabled": true,
+            "menuReviver": function(config, li) {
+                // MODIFY ONLY IMAGE ITEMS
+                if (config.capture) {
+                    var link = li.getElementsByTagName("a")[0];
+
+                    // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                    link.addEventListener("click", function(e) {
+                        config.fileName = "Response Rate:Complaint Cases";
+                    });
+                }
+
+                // RETURN UNTOUCHED LIST ELEMENT
+                return li;
+            }
         }
+
     });
 
 </script>
@@ -441,8 +486,23 @@
             }
         },
         "export": {
-            "enabled": true
+            "enabled": true,
+            "menuReviver": function(config, li) {
+                // MODIFY ONLY IMAGE ITEMS
+                if (config.capture) {
+                    var link = li.getElementsByTagName("a")[0];
+
+                    // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                    link.addEventListener("click", function(e) {
+                        config.fileName = "Response Rate by Service Area_Total";
+                    });
+                }
+
+                // RETURN UNTOUCHED LIST ELEMENT
+                return li;
+            }
         }
+
     });
   
 </script>
@@ -521,9 +581,24 @@
                 }
             },
             "export": {
-                "enabled": true
+                "enabled": true,
+                "menuReviver": function(config, li) {
+                    // MODIFY ONLY IMAGE ITEMS
+                    if (config.capture) {
+                        var link = li.getElementsByTagName("a")[0];
+
+                        // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                        link.addEventListener("click", function(e) {
+                            config.fileName = "Response Rate by Service Area_Appeal Cases";
+                        });
+                    }
+
+                    // RETURN UNTOUCHED LIST ELEMENT
+                    return li;
+                }
             }
-        }); 
+
+        });
 </script>
 
 <script>
@@ -601,7 +676,22 @@
                 }
             },
             "export": {
-                "enabled": true
+                "enabled": true,
+                "menuReviver": function(config, li) {
+                    // MODIFY ONLY IMAGE ITEMS
+                    if (config.capture) {
+                        var link = li.getElementsByTagName("a")[0];
+
+                        // ADD ANOTHER CLICK HANDLER ON TOP TO CHANGE THE FILENAME
+                        link.addEventListener("click", function(e) {
+                            config.fileName = "Response Rate by Service Area_Complaint Cases";
+                        });
+                    }
+
+                    // RETURN UNTOUCHED LIST ELEMENT
+                    return li;
+                }
             }
+
         });
 </script>
