@@ -11,7 +11,7 @@ namespace IDSurvey.Models
     public class ContactRate
     {
         [Key]
-        public string QTR { get; set; }
+        public string Description { get; set; }
       
         [Required]
         public int TOTAL { get; set; }
@@ -19,6 +19,7 @@ namespace IDSurvey.Models
         [Required]
         public int COMPLETED { get; set; }
 
-
+        [Required]
+        public int WRONG_NUMBER{ get; set; }
     }
 }

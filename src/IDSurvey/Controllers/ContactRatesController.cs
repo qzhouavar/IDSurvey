@@ -23,7 +23,7 @@ namespace IDSurvey.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var contactRates= from p in _context.V_Connected_Rates group p by p.QTR into g select new ContactRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETED = g.Sum(p => p.COMPLETED) };
+            var contactRates= from p in _context.V_Connected_Rates group p by p.Description into g select new ContactRate { Description = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETED = g.Sum(p => p.COMPLETED),WRONG_NUMBER=g.Sum(P=>P.WRONG_NUMBER) };
             return View(await contactRates.ToListAsync());
         }
 
@@ -31,7 +31,7 @@ namespace IDSurvey.Controllers
 
         private bool ContactRateExists(string QTR)
         {
-            return _context.V_Connected_Rates.Any(e => e.QTR== QTR);
+            return _context.V_Connected_Rates.Any(e => e.Description== QTR);
         }
     }
 }
