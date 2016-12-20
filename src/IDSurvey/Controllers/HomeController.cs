@@ -44,14 +44,30 @@ namespace IDSurvey.Controllers
             ViewData["ComplaintsRate"] = 100.0 * complaintscomplete/ complaintstotal;
 
 
-            var totalrates = from p in completerates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
-            appealsrates = from p in appealsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
-            complaintsrates = from p in complaintsrates group p by p.QTR into g select new CompleteRate { QTR = g.Key, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            var totalrates = from p in completerates group p by new
+            {
+                WAVE = p.WAVE, QTR = p.QTR
+            } into g select new CompleteRate { QTR = g.Key.QTR, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            appealsrates = from p in appealsrates group p by new
+            {
+                WAVE = p.WAVE,
+                QTR = p.QTR
+            } into g select new CompleteRate { QTR = g.Key.QTR, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
+            complaintsrates = from p in complaintsrates group p by new
+            {
+                WAVE = p.WAVE,
+                QTR = p.QTR
+            } into g select new CompleteRate { QTR = g.Key.QTR, TOTAL = g.Sum(p => p.TOTAL), COMPLETE = g.Sum(p => p.COMPLETE) };
 
-            IQueryable<string> genreQuery = from m in _context.CompleteRates
-                                            orderby m.QTR
-                                            select m.QTR;
-            
+            IQueryable<string> genreQuery = from p in completerates
+                                            group p by new
+                                            {
+                                                WAVE = p.WAVE,
+                                                QTR = p.QTR
+                                            } into g
+                                            select g.Key.QTR;
+
+
 
             var quarterrates = completerates;
          
@@ -76,11 +92,15 @@ namespace IDSurvey.Controllers
        
         public async Task<IActionResult> RateByQTR()
         {
-            IQueryable<string> genreQuery = from m in _context.CompleteRates
-                                            orderby m.QTR ascending
-                                            select m.QTR;
+            IQueryable<string> genreQuery = from p in _context.CompleteRates
+                                            group p by new
+                                            {
+                                                WAVE = p.WAVE,
+                                                QTR = p.QTR
+                                            } into g
+                                            select g.Key.QTR;
 
-            
+
             var appealsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "APPEALS") orderby rate.SERVICE_AREA select rate;
             var complaintsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "COMPLAINTS") orderby rate.SERVICE_AREA select rate;
 
@@ -109,9 +129,13 @@ namespace IDSurvey.Controllers
 
         public async Task<IActionResult> RateByRange(string startQTR, string endQTR)
         {
-            IQueryable<string> genreQuery = from m in _context.CompleteRates
-                                            orderby m.QTR
-                                            select m.QTR;
+            IQueryable<string> genreQuery = from p in _context.CompleteRates
+                                            group p by new
+                                            {
+                                                WAVE = p.WAVE,
+                                                QTR = p.QTR
+                                            } into g
+                                            select g.Key.QTR;
 
             var appealsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "APPEALS") select rate;
             var complaintsrates = from rate in _context.CompleteRates.Where(x => x.TYPE == "COMPLAINTS") select rate;

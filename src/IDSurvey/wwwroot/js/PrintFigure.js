@@ -28,6 +28,6 @@
                 });
             }
 
-            window.onbeforeprint = beforePrint;
+            window.onbeforeprint = beforePrint();
             window.onafterprint = afterPrint();
         }());
