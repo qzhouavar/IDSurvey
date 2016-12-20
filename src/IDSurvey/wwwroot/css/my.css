@@ -1,16 +1,18 @@
 ﻿
-body {
-    color:#2a3f54;
-}
 
 @media print {
 
-      .amcharts-main-div{
-          max-width: 800px;
-      }
+    
+    .page-break-chart {page-break-after: always}
+     /*@page {size: landscape}*/
 
-    .page-break-chart {page-break-before: always;}
-   /*@page {size: landscape}*/
+    h3 {
+        font-size:15px;
+    }
+     
+  
+   table { page-break-inside:avoid;font-size:13px;}
+   tr    { page-break-inside:avoid; page-break-after:auto;font-size:13px; }
 }
 
 
