@@ -38,5 +38,12 @@ namespace IDSurvey.ViewModels
         public int ResponsivenessBeneficiary_N { get; set; }
         public decimal ResponsivenessRepresentative { get; set; }
         public int ResponsivenessRepresentative_N { get; set; }
+
+        public decimal Q19Total{ get; set; }
+        public int Q19Total_N { get; set; }
+        public decimal Q19Beneficiary { get; set; }
+        public int Q19Beneficiary_N { get; set; }
+        public decimal Q19Representative { get; set; }
+        public int Q19Representative_N { get; set; }
     }
 }

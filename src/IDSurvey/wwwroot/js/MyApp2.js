@@ -30,16 +30,61 @@
 
                 { data: 'communication' },
                 { data: 'communication_N' },
+                { data: 'communicationBeneficiary' },
+                { data: 'communicationBeneficiary_N' },
+                { data: 'communicationRepresentative' },
+                { data: 'communicationRepresentative_N' },
 
                 { data: 'courtesyAndRespect' },
                 { data: 'courtesyAndRespect_N' },
+                { data: 'courtesyBeneficiary' },
+                { data: 'courtesyBeneficiary_N' },
+                { data: 'courtesyRepresentative' },
+                { data: 'courtesyRepresentative_N' },
 
                 { data: 'accessAndResponsiveness' },
-                { data: 'accessAndResponsiveness_N' }
+                { data: 'accessAndResponsiveness_N' },
+                { data: 'responsivenessBeneficiary' },
+                { data: 'responsivenessBeneficiary_N' },
+                { data: 'responsivenessRepresentative' },
+                { data: 'responsivenessRepresentative_N' }
+
             ],
             searching: false,
             info: false,
-            paging: false
+            paging: false,
+            "ordering": false,
+            responsive: true,
+            //dom: 'Bfrtip',
+            //buttons: [
+            //    'copy', 'csv', 'excel', 'pdf', 'print'
+            //]
+        });
+    }
+
+    function createQ19DataTable(eleid, data) {
+        //check is datatable or not
+        if ($.fn.DataTable.isDataTable(eleid)) {
+            $(eleid).DataTable().destroy();
+        }
+
+        $(eleid).DataTable({
+            data: data,
+            columns: [
+                { data: 'area' },
+                { data: 'q19Total' },
+                { data: 'q19Total_N' },
+                { data: 'q19Beneficiary' },
+                { data: 'q19Beneficiary_N' },
+                { data: 'q19Representative' },
+                { data: 'q19Representative_N' }
+
+            ],
+            searching: false,
+            info: false,
+            paging: false,
+            "ordering": false,
+            responsive: true
         });
     }
     function createChart(eleid, data) {
@@ -253,6 +298,10 @@
             createCompositeDataTable('#allResult', d['ALL']);
             createCompositeDataTable('#appealResult', d['APPEALS']);
             createCompositeDataTable('#complaintResult', d['COMPLAINTS']);
+
+            createQ19DataTable('#allResultQ19', d['ALL']);
+            createQ19DataTable('#appealResultQ19', d['APPEALS']);
+            createQ19DataTable('#complaintResultQ19', d['COMPLAINTS']);
             $(document).ajaxStop();
         });
     }
