@@ -11,7 +11,6 @@ namespace IDSurvey.Models
     public class RateViewModel
     {
         public List<CompleteRate> totalRates;
-
         public List<CompleteRate> quarterRates;
         public List<CompleteRate> appealsRates;
         public List<CompleteRate> complaintsRates;
