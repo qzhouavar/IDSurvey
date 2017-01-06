@@ -8,10 +8,9 @@ namespace IDSurvey.ViewModels
     public class CompositeScoreFigureViewModel2
     {
         public string ChartCategory { get; set; }
-        public decimal Area1 { get; set; }
-        public decimal Area2 { get; set; }
-        public decimal Area3 { get; set; }
-        public decimal Area4 { get; set; }
-        public decimal Area5 { get; set; }
+      
+        public decimal Beneficiary { get; set; }
+        public decimal BeneRepresentative { get; set; }
+        public int Number  { get; set; }
     }
 }

@@ -5,7 +5,7 @@ $(document).ready(function () {
     }
 
     app.DisplayCompositeScore("/GetCompositeScoreByArea2/6,7,8");
-    app.DisplayOverallScore("/GetOverallRatingByArea2/6,7,8");
+    app.DisplayCompositeFigure("/GetCompositeScoreFigure2/6,7,8");
 
     $('#select-quarter-btn').click(function () {
         $(document).ajaxStart();
@@ -13,9 +13,11 @@ $(document).ready(function () {
         var quarter = $('#select-quarter').val().toString();
         if (quarter != "..") {
             var compositeUrl = encodeURI("/GetCompositeScoreByArea2/" + quarter);
-            var overallUrl = encodeURI("/GetOverallRatingByArea2/" + quarter);
+            var figureUrl = encodeURI("/GetCompositeScoreFigure2/" + quarter);
+
+            app.DisplayCompositeFigure(figureUrl);
             app.DisplayCompositeScore(compositeUrl);
-            app.DisplayOverallScore(overallUrl);
+           
             $('#current-quarter').text('Quarter: ' + $('#select-quarter option:selected').text());
         }
         $(document).ajaxStop();
@@ -27,9 +29,11 @@ $(document).ready(function () {
         var quarter = $('#select-month').val().toString();
         if (quarter != "..") {
             var compositeUrl = encodeURI("/GetCompositeScoreByArea2/" + quarter);
-            var overallUrl = encodeURI("/GetOverallRatingByArea2/" + quarter);
+            var figureUrl = encodeURI("/GetCompositeScoreFigure2/" + quarter);
+
+            app.DisplayCompositeFigure(figureUrl);
             app.DisplayCompositeScore(compositeUrl);
-            app.DisplayOverallScore(overallUrl);
+           
             $('#current-quarter').text('Month: ' + $('#select-month option:selected').text());
         }
         $(document).ajaxStop();
