@@ -141,7 +141,7 @@
                 "y": "!11",
                 "width": "20%",
                 "size": 8,
-                "bold": false,
+                "bold": true,
                 "align": "right",
              
             }, {
@@ -150,8 +150,9 @@
                 "y": "!11",
                 "width": "20%",
                 "size": 8,
-                "bold": false,
+                "bold": true,
                 "align": "right",
+
             }],
             "chartCursor": {
                 "categoryBalloonEnabled": false,
