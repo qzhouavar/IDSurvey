@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace IDSurvey.ViewModels
 {
-    public class CompositeScoreFigureViewModel2
+    public class BeneAnalysisFigureViewModel
     {
         public string ChartCategory { get; set; }
-      
         public decimal Beneficiary { get; set; }
         public decimal BeneRepresentative { get; set; }
         public int Number  { get; set; }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IDSurvey.ViewModels
 {
-    public class CompositeScoreByAreaViewModel2
+    public class BeneAnalysisByAreaViewModel
     {
         public string Area { get; set; }
         public decimal Overall { get; set; }

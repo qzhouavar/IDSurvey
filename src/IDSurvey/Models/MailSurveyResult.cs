@@ -108,6 +108,9 @@ namespace IDSurvey.Models
         [DataType(DataType.Date)]
         public DateTime LoadDate { get; set; }
 
+        public string ContactType { get; set; }
+        public string CaseType { get; set; }
+
         public int CompareTo(object obj)
         {
             return ((IComparable)key).CompareTo(obj);
