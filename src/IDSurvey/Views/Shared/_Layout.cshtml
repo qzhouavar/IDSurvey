@@ -103,25 +103,25 @@
                                                 <a asp-controller="Home" asp-action="RateByQTR"><i class="fa fa-table" aria-hidden="true"></i>Monthly Response Rate Tables</a>
                                             </li>
                                             <li>
-                                                <a asp-controller="ContactRates" asp-action="Index"><i class="fa fa-phone" aria-hidden="true"></i><span> Contact Rate</span></a>
+                                                <a asp-controller="ContactRates" asp-action="Index"><i class="fa fa-phone" aria-hidden="true"></i><span>Contact Rate</span></a>
                                             </li>
                                             <li>
-                                                <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span> Composite Scores</span></a>
+                                                <a asp-controller="CompositeScoreResult" asp-action="Index"><i class="fa fa-area-chart" aria-hidden="true"></i><span>Composite Scores</span></a>
                                             </li>
                                             <li>
-                                                <a asp-controller="CompositeScoreResult" asp-action="Figure"><i class="fa fa-bar-chart" aria-hidden="true"></i><span> Composite Scores Figures</span></a>
+                                                <a asp-controller="CompositeScoreResult" asp-action="Figure"><i class="fa fa-bar-chart" aria-hidden="true"></i><span>Composite Scores Figures</span></a>
                                             </li>
                                            
                                             <li>
-                                                <a asp-controller="IAAnalysis" asp-action="Index"><i class="fa fa-bar-chart" aria-hidden="true"></i><span> IA Analysis</span></a>
+                                                <a asp-controller="IAAnalysis" asp-action="Index"><i class="fa fa-file" aria-hidden="true"></i><span>IA Analysis</span></a>
                                             </li>
                                             <li>
-                                                <a asp-controller="BeneAnalysis" asp-action="Index"><i class="fa fa-bar-chart" aria-hidden="true"></i><span> Bene Analysis</span></a>
+                                                <a asp-controller="BeneAnalysis" asp-action="Index"><i class="fa fa-user" aria-hidden="true"></i><span>Bene Analysis</span></a>
                                             </li>
                                             @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
                                             {
                                                 <li>
-                                                    <a asp-controller="Admin" asp-action="Index"><i class="fa fa-wrench" aria-hidden="true"></i><span> Admin</span></a>
+                                                    <a asp-controller="Admin" asp-action="Index"><i class="fa fa-wrench" aria-hidden="true"></i><span>Admin</span></a>
                                                 </li>
                                             }
                                         </ul>
