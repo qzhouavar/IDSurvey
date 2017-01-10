@@ -164,6 +164,7 @@
                 "lineColorField": "lineColor",
                 "lineColor": "#1f2f8d"
             }],
+        
 
             "chartCursor": {
                 "categoryBalloonEnabled": false,

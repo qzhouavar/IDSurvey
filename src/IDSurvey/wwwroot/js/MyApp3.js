@@ -141,7 +141,7 @@
                 "y": "!11",
                 "width": "20%",
                 "size": 8,
-                "bold": true,
+                "bold": false,
                 "align": "right",
              
             }, {
@@ -150,9 +150,8 @@
                 "y": "!11",
                 "width": "20%",
                 "size": 8,
-                "bold": true,
+                "bold": false,
                 "align": "right",
-
             }],
             "chartCursor": {
                 "categoryBalloonEnabled": false,
@@ -206,29 +205,13 @@
     this.DisplayCompositeScore = function DisplayCompositeScore(url) {
         getData(url, function (d) {
             $(document).ajaxStart();
-            createCompositeDataTable('#allResult', d['ALL']);
-            createCompositeDataTable('#appealResult', d['APPEALS']);
             createCompositeDataTable('#complaintResult', d['COMPLAINTS']);
-
-            createQ19DataTable('#allResultQ19', d['ALL']);
-            createQ19DataTable('#appealResultQ19', d['APPEALS']);
             createQ19DataTable('#complaintResultQ19', d['COMPLAINTS']);
             $(document).ajaxStop();
         });
     }
 
    
-
-
-
-    this.DisplayCompositeFigure = function DisplayCompositeFigure(url) {
-        getData(url, function (d) {
-            $(document).ajaxStart();
-            createCompositeScoreFigure('beneAnalysisChart', d['ALL']);
-          
-            $(document).ajaxStop();
-        });
-    }
 }
 
 $(document).ready(function () {

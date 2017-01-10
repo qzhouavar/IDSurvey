@@ -233,10 +233,11 @@ C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Program.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Startup.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\AccountController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\AdminController.cs
-C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\CompositeScoreResult2Controller.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\BeneAnalysisController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\CompositeScoreResultController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\ContactRatesController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\HomeController.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\IAAnalysisController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Controllers\ManageController.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Data\ApplicationDbContext.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.cs
@@ -277,9 +278,10 @@ C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Models\ManageViewModels\VerifyPhon
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Services\IEmailSender.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Services\ISmsSender.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\Services\MessageServices.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\BeneAnalysisByAreaViewModel.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\BeneAnalysisFigureViewModel.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\CompositeScoreByAreaViewModel.cs
-C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\CompositeScoreByAreaViewModel2.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\CompositeScoreFigureViewModel.cs
-C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\CompositeScoreFigureViewModel2.cs
+C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\IAAnalysisByAreaViewModel.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\OverallRatingViewModel.cs
 C:\Users\qzhou\Desktop\IDSurvey2\src\IDSurvey\ViewModels\Admin\AdminViewModels.cs
