@@ -1,6 +1,6 @@
 ﻿@{
-    Layout = "~/views/shared/_Layout.cshtml";
-    ViewData["Title"] = "Composite Score By Area";
+    Layout = "~/views/shared/_Layout_non_responsive.cshtml";
+    ViewData["Title"] = "Beneficiary vs. Beneficiary Representative Analysis";
 }
 <!-- Styles -->
 <script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
@@ -10,20 +10,20 @@
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <div class="row tile_count" style="margin-bottom:0;">
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 tile_stats_count">
-        <div class="count" id="current-quarter">Quarter: 9</div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <h1 id="current-quarter"><strong>Quarter: 9</strong></h1>
     </div>
     <div id="loading">
         <img src="~/images/hourglass.gif" width="50" alt="loading..." />
     </div>
 </div>
-<div class="row tile_count" style="margin-bottom:0;">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tile_stats_count">
-        <div class="count" >Beneficiary vs. Beneficiary Representative Analysis</div>
+<div class="row" style="margin-bottom:0;">
+    <div class="col-xs-12">
+        <h1><strong>@ViewData["Title"]</strong></h1>
     </div>
 </div>
-<div class="hidden-print row" style="margin:5px;">
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 left">
+<div class="hidden-print row" style="margin:5px; margin-left:0;">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 left" style="padding-left:0">
         <label for="select-quarter" style="font-size:18px;">Select Quarter: </label>
         <select id="select-quarter" style="min-width:40px;max-width:60px; padding-top: 6px; padding-bottom: 5px; height: 28px; margin-bottom: 6px; display:inline-block">
             <option value="1">6</option>
@@ -198,7 +198,7 @@
                 </div>
 
             </div>
-            
+
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
                 </div>
@@ -278,7 +278,7 @@
                             <tr>
                                 <th rowspan="3">Service Area</th>
                                 <th colspan="6">Q19: Using any number from 0 to 10 where 0 is the worst [appeal/quality of care complaint] process possible and 10 is the best [appeal/quality of care complaint] process possible, what number would you use to rate the overall [appeal/quality of care complaint] process?</th>
-                               
+
                             </tr>
                             <tr>
                                 <th colspan="2">Total</th>
@@ -292,8 +292,8 @@
                                 <th>N</th>
                                 <th>%</th>
                                 <th>N</th>
-                                
-                               
+
+
                             </tr>
                         </thead>
                     </table>
@@ -321,13 +321,13 @@
                             <tr>
                                 <th rowspan="3">Service Area</th>
                                 <th colspan="6">Q19: Using any number from 0 to 10 where 0 is the worst appeal process possible and 10 is the best appeal process possible, what number would you use to rate the overall appeal process?</th>
-                             
+
                             </tr>
                             <tr>
                                 <th colspan="2">Total</th>
                                 <th colspan="2">Beneficiary</th>
                                 <th colspan="2">Beneficiary Representative</th>
-                              
+
                             </tr>
                             <tr>
                                 <th>%</th>
@@ -336,8 +336,8 @@
                                 <th>N</th>
                                 <th>%</th>
                                 <th>N</th>
-                               
-                               
+
+
                             </tr>
                         </thead>
                     </table>
@@ -348,7 +348,7 @@
     </div>
 </div>
 <br />
-<div class="row">
+<div class="row page-break-chart ">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">
@@ -366,13 +366,13 @@
                             <tr>
                                 <th rowspan="3">Service Area</th>
                                 <th colspan="6">Q19: Using any number from 0 to 10 where 0 is the worst quality of care complaint process possible and 10 is the best quality of care complaint process possible, what number would you use to rate the overall quality of care complaint process?</th>
-                             
+
                             </tr>
                             <tr>
                                 <th colspan="2">Total</th>
                                 <th colspan="2">Beneficiary</th>
                                 <th colspan="2">Beneficiary Representative</th>
-                              
+
                             </tr>
                             <tr>
                                 <th>%</th>
@@ -393,7 +393,7 @@
 <br />
 
 
-<div class="row">
+<div class="row ">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">

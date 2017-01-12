@@ -1,6 +1,6 @@
 ﻿@{
-    Layout = "~/views/shared/_Layout_non_responsive.cshtml";
-    ViewData["Title"] = "Immediate Advocacy vs. Medical Record Review Analysis";
+    Layout = "~/views/shared/_Layout.cshtml";
+    ViewData["Title"] = "Appeals vs. Complaints Analysis";
 }
 <!-- Styles -->
 <script src="~/lib/amcharts_3.20.17.free/amcharts/amcharts.js"></script>
@@ -56,54 +56,25 @@
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong></strong></h3>
+                    <h3><strong>Appeals Only:</strong></h3>
                 </div>
-
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
                 </div>
-                <div> 
-                    <table id="complaintResult" class="display left table-bordered" style="width:1000px;border-color:black">
+                <div>
+                    <table id="appealResult" class="display left table-bordered" cellspacing="0" cellpadding="0" style="width:650px;border-color:black">
                         <thead>
                             <tr>
-                                <th rowspan="3">Service Area</th>
-                                <th colspan="6">Overall Process Composite-Communication, Courtesy and Respect, and Access and Responsiveness</th>
-                                <th colspan="6">Communication Composite-Questions 7, 8, and 9</th>
-                                <th colspan="6">Courtesy and Respect Composite-Questions 6 and 10</th>
-                                <th colspan="6">Access and Responsiveness Composite-Questions 11 and 12</th>
+                                <th rowspan="2"></th>
+                                <th rowspan="2">Service Area</th>
+                                <th colspan="2">Overall</th>
+                                <th colspan="2">Communication</th>
+                                <th colspan="2">Courtesy and Respect</th>
+                                <th colspan="2">Access and Responsiveness</th>
                             </tr>
+
                             <tr>
-                                <th colspan="2">Total</th>
-                                <th colspan="2">Immediate Advocacy</th>
-                                <th colspan="2">Medical Record Review</th>
-                                <th colspan="2">Total</th>
-                                <th colspan="2">Immediate Advocacy</th>
-                                <th colspan="2">Medical Record Review</th>
-                                <th colspan="2">Total</th>
-                                <th colspan="2">Immediate Advocacy</th>
-                                <th colspan="2">Medical Record Review</th>
-                                <th colspan="2">Total</th>
-                                <th colspan="2">Immediate Advocacy</th>
-                                <th colspan="2">Medical Record Review</th>
-                            </tr>
-                            <tr>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
-                                <th>%</th>
-                                <th>N</th>
                                 <th>%</th>
                                 <th>N</th>
                                 <th>%</th>
@@ -122,34 +93,34 @@
     </div>
 </div>
 <br />
-
-
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong></strong></h3>
+                    <h3><strong>Complaints Only:</strong></h3>
                 </div>
 
             </div>
+
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder">
                 </div>
-                <div style="width: 45%;">
-                    <table id="complaintResultQ19" class="display left table-bordered" style="border-color:black">
+                <div>
+                    <table id="complaintResult" class="display left table-bordered" style="width:650px;border-color:black">
                         <thead>
                             <tr>
-                                <th rowspan="3">Service Area</th>
-                                <th colspan="6">Q19: Using any number from 0 to 10 where 0 is the worst quality of care complaint process possible and 10 is the best quality of care complaint process possible, what number would you use to rate the overall quality of care complaint process?</th>
-                             
+                                <th rowspan="2"></th>
+                                <th rowspan="2">Service Area</th>
+                                <th colspan="2">Overall</th>
+                                <th colspan="2">Communication</th>
+                                <th colspan="2">Courtesy and Respect</th>
+                                <th colspan="2">Access and Responsiveness</th>
                             </tr>
+
                             <tr>
-                                <th colspan="2">Total</th>
-                                <th colspan="2">Immediate Advocacy</th>
-                                <th colspan="2">Medical Record Review</th>
-                            </tr>
-                            <tr>
+                                <th>%</th>
+                                <th>N</th>
                                 <th>%</th>
                                 <th>N</th>
                                 <th>%</th>
@@ -158,6 +129,49 @@
                                 <th>N</th>
                             </tr>
                         </thead>
+                        </table>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+            <div class="row x_title">
+                <div class="col-md-12">
+                    <h3><strong>Combined: </strong></h3>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
+                <div>
+                    <table id="allResult" class="display dt-responsive left table-bordered" style="width:650px;border-color:black">
+                        <thead>
+                            <tr>
+                                <th rowspan="2"></th>
+                                <th rowspan="2">Service Area</th>
+                                <th colspan="2">Overall</th>
+                                <th colspan="2">Communication</th>
+                                <th colspan="2">Courtesy and Respect</th>
+                                <th colspan="2">Access and Responsiveness</th>
+                            </tr>
+
+                            <tr>
+                                <th>%</th>
+                                <th>N</th>
+                                <th>%</th>
+                                <th>N</th>
+                                <th>%</th>
+                                <th>N</th>
+                                <th>%</th>
+                                <th>N</th>
+                            </tr>
+                        </thead>
+
+
                     </table>
                 </div>
             </div>
@@ -167,7 +181,6 @@
 </div>
 <br />
 
-
-<script type="text/javascript" src="~/js/MyAppIAAnalysis.js"></script>
-<script type="text/javascript" src="~/js/compositeScoreIAAnalysis.js"></script>
+<script type="text/javascript" src="~/js/MyAppFormType.js"></script>
+<script type="text/javascript" src="~/js/compositeScoreFormType.js"></script>
 <script type="text/javascript" src="~/js/PrintFigure.js"></script>
