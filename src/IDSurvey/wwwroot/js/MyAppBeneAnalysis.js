@@ -53,7 +53,7 @@
             searching: false,
             info: false,
             paging: false,
-            "ordering": false,
+            ordering: false,
             responsive: true,
             //dom: 'Bfrtip',
             //buttons: [
