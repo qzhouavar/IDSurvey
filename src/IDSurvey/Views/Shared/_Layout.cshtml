@@ -21,6 +21,8 @@
     <link href="../build/css/custom.min.css" rel="stylesheet">
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
     <link href="~/css/my.css" rel="stylesheet" />
+
+   
 </head>
 <body class="nav-md" id=body onscroll=SetCookie("scroll",document.body.scrollTop); onload="scrollback();">
     <div class="container body">
@@ -135,10 +137,10 @@
                                 <div class="sidebar-footer hidden-small">
                                 </div>
 
-</div>
-                    </div>
+                        </div>
+            </div>
                     <!-- top navigation -->
-                    <div class="top_nav hidden-print">
+                <div class="top_nav hidden-print">
                         <div class="nav_menu">
                             <nav>
                                 <div class="nav toggle">
@@ -151,10 +153,10 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="right_col" role="main" id="print-page">
-                        @RenderBody()
-                    </div>
-                </div>
+            <div class="right_col" role="main" id="print-page">
+                  @RenderBody()
+            </div>
+        </div>
 
         <!-- footer content -->
         <footer class="hidden-print">

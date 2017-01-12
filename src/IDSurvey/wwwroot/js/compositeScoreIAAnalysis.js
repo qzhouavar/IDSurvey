@@ -4,7 +4,7 @@ $(document).ready(function () {
         var app = new MyApp2($, AmCharts);
     }
 
-    app.DisplayCompositeScore("/GetCompositeScoreByArea3/6,7,8");
+    app.DisplayCompositeScore("/GetIAAnalysisByArea/6,7,8");
     
 
     $('#select-quarter-btn').click(function () {
@@ -12,7 +12,7 @@ $(document).ready(function () {
         //get current select option
         var quarter = $('#select-quarter').val().toString();
         if (quarter != "..") {
-            var compositeUrl = encodeURI("/GetCompositeScoreByArea2/" + quarter);
+            var compositeUrl = encodeURI("/GetIAAnalysisByArea/" + quarter);
            
             app.DisplayCompositeScore(compositeUrl);
            
@@ -26,7 +26,7 @@ $(document).ready(function () {
         //get current select option
         var quarter = $('#select-month').val().toString();
         if (quarter != "..") {
-            var compositeUrl = encodeURI("/GetCompositeScoreByArea3/" + quarter);
+            var compositeUrl = encodeURI("/GetIAAnalysisByArea/" + quarter);
           
             app.DisplayCompositeScore(compositeUrl);
            

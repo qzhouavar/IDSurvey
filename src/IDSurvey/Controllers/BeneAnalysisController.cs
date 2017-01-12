@@ -17,8 +17,6 @@ namespace IDSurvey.Controllers
         internal static readonly List<string> ServiceAreaList = new List<string>() { "National","1", "2", "3", "4", "5"};
         internal static readonly string[] AllSurveyTypes = new[] { "APPEALS","COMPLAINTS"};
         internal static readonly List<string> ChartCategoryList= new List<string>() { "OverallAppeals", "CommunicationAppeals", "CourtesyAppeals", "ResponsivenessAppeals", "OverallComplaints", "CommunicationComplaints", "CourtesyComplaints", "ResponsivenessComplaints"};
-     
-
         private readonly ApplicationDbContext _context;
 
         public BeneAnalysisController(ApplicationDbContext context)
@@ -36,8 +34,8 @@ namespace IDSurvey.Controllers
         }
 
         // return Table VI-1, VI-2, VI-3
-        [HttpGet("[action]/{wave}", Name = "GetCompositeScoreByArea2")]
-        public IActionResult GetCompositeScoreByArea2(string wave)
+        [HttpGet("[action]/{wave}", Name = "GetBeneAnalysisByArea")]
+        public IActionResult GetBeneAnalysisByArea(string wave)
         {
             if (string.IsNullOrEmpty(wave))
             {
@@ -51,9 +49,9 @@ namespace IDSurvey.Controllers
             var complaintResult = new List<BeneAnalysisByAreaViewModel>();
             foreach(var area in ServiceAreaList)
             {
-                allResult.Add(AverageOneAreaCompositeScore2(area, waveList, AllSurveyTypes));
-                appealResult.Add(AverageOneAreaCompositeScore2(area, waveList, new[] { "APPEALS" }));
-                complaintResult.Add(AverageOneAreaCompositeScore2(area, waveList, new[] { "COMPLAINTS" }));
+                allResult.Add(AverageOneAreaBeneAnalysis(area, waveList, AllSurveyTypes));
+                appealResult.Add(AverageOneAreaBeneAnalysis(area, waveList, new[] { "APPEALS" }));
+                complaintResult.Add(AverageOneAreaBeneAnalysis(area, waveList, new[] { "COMPLAINTS" }));
             }
             result.Add("ALL", allResult);
             result.Add("APPEALS", appealResult);
@@ -63,8 +61,8 @@ namespace IDSurvey.Controllers
 
 
         // return Table VI-1, VI-2, VI-3
-        [HttpGet("[action]/{wave}", Name = "GetCompositeScoreFigure2")]
-        public IActionResult GetCompositeScoreFigure2(string wave)
+        [HttpGet("[action]/{wave}", Name = "GetBeneAnalysisFigure")]
+        public IActionResult GetBeneAnalysisFigure(string wave)
         {
             if (string.IsNullOrEmpty(wave))
             {
@@ -78,7 +76,7 @@ namespace IDSurvey.Controllers
           
             foreach (var category in ChartCategoryList)
             {
-                allResult.Add(AverageCompositeScoreFigure2(category, waveList));
+                allResult.Add(AverageBeneAnalysisFigure(category, waveList));
             }
             result.Add("ALL", allResult);
             return Json(result);
@@ -86,7 +84,7 @@ namespace IDSurvey.Controllers
 
        
 
-        private BeneAnalysisFigureViewModel AverageCompositeScoreFigure2(string chartCategory, int[] waveList)
+        private BeneAnalysisFigureViewModel AverageBeneAnalysisFigure(string chartCategory, int[] waveList)
         {
             decimal beneficiary = 0.0M;
             decimal beneRepresentative = 0.0M;
@@ -151,7 +149,7 @@ namespace IDSurvey.Controllers
             return result;
         }
 
-        private BeneAnalysisByAreaViewModel AverageOneAreaCompositeScore2(string area, int[] waveList, string[] surveyTypes)
+        private BeneAnalysisByAreaViewModel AverageOneAreaBeneAnalysis(string area, int[] waveList, string[] surveyTypes)
         {
             decimal overall = 0.0M;
             int overall_N = 0;
@@ -188,83 +186,124 @@ namespace IDSurvey.Controllers
             decimal q19BR = 0.0M;
             int q19BR_N = 0;
 
+            var context = from m in _context.MailSurveyResult.Where(m => waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select new {
+                OverallComp=m.OverallComp,
+                ContactType=m.ContactType,
+                CommunicationComp=m.CommunicationComp,
+                ResponsivenessComp=m.ResponsivenessComp,
+                CourtesyComp=m.CourtesyComp,
+                q19=m.q19,
+                RegionCode=m.RegionCode
+            };
             if (area.Equals("National"))
             {
-                overall = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overall_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Count();
-                overallBene = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)&&m.ContactType.Equals("Beneficiary")).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBene_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Count();
-                overallBR = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBR_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                
+                var temp = from m in context.Where(m => m.OverallComp.HasValue) select m;
+                overall = temp.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overall_N = temp.Count();
+                var IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                overallBene = IA.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overallBene_N = IA.Count();
+                var BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                overallBR = BR.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overallBR_N = BR.Count();
 
 
-                communication = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communication_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Count();
-                communicationBene = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBene_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Count();
-                communicationBR = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBR_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.CommunicationComp.HasValue) select m;
+                communication = temp.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communication_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                communicationBene = IA.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communicationBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                communicationBR = BR.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communicationBR_N = BR.Count();
 
-                responsiveness = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsiveness_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Count();
-                responsivenessBene = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBene_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Count();
-                responsivenessBR = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBR_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.ResponsivenessComp.HasValue) select m;
+                responsiveness = temp.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsiveness_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                responsivenessBene = IA.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsivenessBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                responsivenessBR = BR.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsivenessBR_N = BR.Count();
 
-                courtesy = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesy_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Count();
-                courtesyBene = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBene_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Count();
-                courtesyBR = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBR_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.CourtesyComp.HasValue) select m;
+                courtesy = temp.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesy_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                courtesyBene = IA.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesyBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                courtesyBR = BR.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesyBR_N = BR.Count();
 
-                q19Total = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Total_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)).Count();
-                q19Bene = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Bene_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary")).Count();
-                q19BR = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19BR_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.ContactType.Equals("Beneficiary Representative")).Count();
-
+                temp = from m in context.Where(m => m.q19.HasValue) select m;
+                q19Total = temp.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19Total_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                q19Bene = IA.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19Bene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                q19BR = BR.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19BR_N = BR.Count();
             }
             else
             {
-                overall = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode==int.Parse(area)).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overall_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Count();
-                overallBene = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBene_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Count();
-                overallBR = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBR_N = _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                context = from m in context.Where(m => m.RegionCode == int.Parse(area)) select m;
+             
+                var temp = from m in context.Where(m => m.OverallComp.HasValue) select m;
+                overall = temp.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overall_N = temp.Count();
+                var IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                overallBene = IA.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overallBene_N = IA.Count();
+                var BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                overallBR = BR.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
+                overallBR_N = BR.Count();
 
-                communication = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communication_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Count();
-                communicationBene = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBene_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Count();
-                communicationBR = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBR_N = _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Count();
 
-                responsiveness = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsiveness_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Count();
-                responsivenessBene = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBene_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Count();
-                responsivenessBR = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBR_N = _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.CommunicationComp.HasValue) select m;
+                communication = temp.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communication_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                communicationBene = IA.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communicationBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                communicationBR = BR.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
+                communicationBR_N = BR.Count();
 
-                courtesy = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesy_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Count();
-                courtesyBene = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBene_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Count();
-                courtesyBR = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBR_N = _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.ResponsivenessComp.HasValue) select m;
+                responsiveness = temp.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsiveness_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                responsivenessBene = IA.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsivenessBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                responsivenessBR = BR.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
+                responsivenessBR_N = BR.Count();
 
-                q19Total = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Total_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)).Count();
-                q19Bene = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Bene_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary")).Count();
-                q19BR = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19BR_N = _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area) && m.ContactType.Equals("Beneficiary Representative")).Count();
+                temp = from m in context.Where(m => m.CourtesyComp.HasValue) select m;
+                courtesy = temp.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesy_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                courtesyBene = IA.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesyBene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                courtesyBR = BR.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
+                courtesyBR_N = BR.Count();
+
+                temp = from m in context.Where(m => m.q19.HasValue) select m;
+                q19Total = temp.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19Total_N = temp.Count();
+                IA = from m in temp.Where(m => m.ContactType.Equals("Beneficiary")) select m;
+                q19Bene = IA.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19Bene_N = IA.Count();
+                BR = from m in temp.Where(m => m.ContactType.Equals("Beneficiary Representative")) select m;
+                q19BR = BR.Select(m => m.q19.Value).DefaultIfEmpty().Average();
+                q19BR_N = BR.Count();
             }
-
 
 
             var result = new BeneAnalysisByAreaViewModel
