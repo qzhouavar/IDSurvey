@@ -22,7 +22,7 @@
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
-<body class="nav-md" id=body onscroll=SetCookie("scroll",document.body.scrollTop); onload="scrollback();">
+<body class="nav-md" id="body" onscroll=SetCookie("scroll",document.body.scrollTop); onload="scrollback();" style="min-width:1680px;">
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -105,26 +105,9 @@
             <div class="clearfix"></div>
         </footer>
     </div>
-
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js">
     </script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js">
-    </script>
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js">
-    </script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
     @RenderSection("scripts", required: false)
 
     <!-- Custom Theme Scripts -->
@@ -153,35 +136,6 @@
         function scrollback() {
             if (GetCookie("scroll") != null) { document.body.scrollTop = GetCookie("scroll") }
         }
-    </script>
-    <script>
-        var url = "Home/Index"
-        $('#create').click(function () {
-            $.ajax({
-                type: "POST",
-                data: $("#form").serialize(),
-                cache: false,
-                url: url, // the file to call
-                success: function (data) {
-                    $('#created').html(response); // update the DIV
-                }
-            });
-        });
-    </script>
-    <script>
-
-        var url = "Home/RateByRange"
-        $('#create2').click(function () {
-            $.ajax({
-                type: "POST",
-                data: $("#form2").serialize(),
-                cache: false,
-                url: url, // the file to call
-                success: function (data) {
-                    $('#created2').html(response); // update the DIV
-                }
-            });
-        });
     </script>
     <script type="text/javascript">
 
