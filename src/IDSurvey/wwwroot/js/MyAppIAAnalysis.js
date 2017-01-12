@@ -53,12 +53,9 @@
             searching: false,
             info: false,
             paging: false,
-            "ordering": false,
-            responsive: true,
-            //dom: 'Bfrtip',
-            //buttons: [
-            //    'copy', 'csv', 'excel', 'pdf', 'print'
-            //]
+            ordering: false,
+            responsive: true
+           
         });
     }
 
