@@ -60,6 +60,9 @@
                                 <li>
                                     <a asp-controller="BeneAnalysis" asp-action="Index"><i class="fa fa-user" aria-hidden="true"></i><span>Bene Analysis</span></a>
                                 </li>
+                                <li>
+                                    <a asp-controller="FormType" asp-action="Index"><i class="fa fa-building" aria-hidden="true"></i><span>Form Type</span></a>
+                                </li>
                                 @if (await AuthorizationService.AuthorizeAsync(User, "RequireAdminRole"))
                                 {
                                     <li>
