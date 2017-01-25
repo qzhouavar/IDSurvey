@@ -231,11 +231,15 @@
 --resource:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Release\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Program.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ControllerHelpers\EnumerableComparer.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AdminController.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\BeneAnalysisController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\CompositeScoreResultController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\ContactRatesController.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\FormTypeController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\HomeController.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\IAAnalysisController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\ManageController.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\ApplicationDbContext.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Data\Migrations\00000000000000_CreateIdentitySchema.cs
@@ -276,7 +280,11 @@ C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Models\ManageViewModels\Veri
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Services\IEmailSender.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Services\ISmsSender.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Services\MessageServices.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\BeneAnalysisByAreaViewModel.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\BeneAnalysisFigureViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\CompositeScoreByAreaViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\CompositeScoreFigureViewModel.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\FormTypeByAreaViewModel.cs
+C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\IAAnalysisByAreaViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\OverallRatingViewModel.cs
 C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ViewModels\Admin\AdminViewModels.cs

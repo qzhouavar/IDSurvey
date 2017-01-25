@@ -28,6 +28,9 @@ namespace IDSurvey.Controllers
 
         public IActionResult Index()
         {
+            //ViewData["quarterList"] = _context.MailSurveyResult.Select(m => m.SurveyQuarter).Distinct().ToList();
+            //ViewData["waveList"] = _context.MailSurveyResult.Select(m => m.SurveyRound).Distinct().ToList();
+
             return View();
         }
         public IActionResult Figure()

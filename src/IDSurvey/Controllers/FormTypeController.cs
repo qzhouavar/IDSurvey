@@ -28,10 +28,6 @@ namespace IDSurvey.Controllers
         {
             return View();
         }
-        public IActionResult Figure()
-        {
-            return View();
-        }
 
         // return Table VI-1, VI-2, VI-3
         [HttpGet("[action]/{wave}", Name = "GetFormTypeByArea")]
