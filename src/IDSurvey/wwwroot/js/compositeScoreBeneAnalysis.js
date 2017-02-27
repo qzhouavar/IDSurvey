@@ -4,8 +4,8 @@ $(document).ready(function () {
         var app = new MyApp2($, AmCharts);
     }
 
-    app.DisplayCompositeScore("/GetBeneAnalysisByArea/6,7,8");
-    app.DisplayCompositeFigure("/GetBeneAnalysisFigure/6,7,8");
+    app.DisplayCompositeScore("/GetBeneAnalysisByArea/9,10,11");
+    app.DisplayCompositeFigure("/GetBeneAnalysisFigure/9,10,11");
 
     $('#select-quarter-btn').click(function () {
         $(document).ajaxStart();

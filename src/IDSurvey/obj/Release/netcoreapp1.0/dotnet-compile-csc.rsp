@@ -228,7 +228,6 @@
 -resource:"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\obj\Release\netcoreapp1.0\IDSurveydotnet-compile.deps.json",IDSurvey.deps.json
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Program.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Startup.cs"
-"C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\ControllerHelpers\EnumerableComparer.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AccountController.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\AdminController.cs"
 "C:\website\BFCC-Internal-Dash\IDSurvey\src\IDSurvey\Controllers\BeneAnalysisController.cs"

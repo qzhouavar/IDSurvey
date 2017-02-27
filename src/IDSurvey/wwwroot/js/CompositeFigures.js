@@ -3,8 +3,8 @@
     {
         var app = new MyApp($, AmCharts);
     }
-    app.DisplayCompositeOverallChart("/GetCompositeScoreByArea/6,7,8");
-    app.DisplayCompositeFigure("/GetCompositeScoreFigure/6,7,8");
+    app.DisplayCompositeOverallChart("/GetCompositeScoreByArea/9,10,11");
+    app.DisplayCompositeFigure("/GetCompositeScoreFigure/9,10,11");
 
     $('#select-quarter-btn').click(function () {
         $(document).ajaxStart();
