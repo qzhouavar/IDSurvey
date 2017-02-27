@@ -4,7 +4,7 @@ $(document).ready(function () {
         var app = new MyApp2($, AmCharts);
     }
 
-    app.DisplayCompositeScore("/GetFormTypeByArea/6,7,8");
+    app.DisplayCompositeScore("/GetFormTypeByArea/9,10,11");
    
 
     $('#select-quarter-btn').click(function () {

@@ -377,19 +377,24 @@
                     <form id="form">
                         <p>
                             <div class="col-md-3">
-                                <select asp-for="quarter" @*asp-items="Model.quarters"*@ id="quarterlist" class="form-control">
-                                    <option value="">Please select a month</option>
+                                <label for="select-month" style="font-size:18px;">Select Month: </label>
+                                <select asp-for="quarter" id="quarterlist"  @*id="select-month"*@ style="min-width:40px;max-width:100px; padding-top: 6px; padding-bottom: 5px; height: 28px; margin-bottom: 6px; display:inline-block" class="form-control">
+                                    <option value="">...</option>
                                     <option value="6">6</option>
                                     <option value="7">7</option>
                                     <option value="8-1">8-1</option>
                                     <option value="8-2">8-2</option>
-                                    <option value="8-2">8-2</option>
+                                    <option value="8-3">8-3</option>
                                     <option value="9-1">9-1</option>
                                     <option value="9-2">9-2</option>
                                     <option value="9-3">9-3</option>
                                     <option value="10-1">10-1</option>
                                     <option value="10-2">10-2</option>
                                 </select>
+
+                                @*<select asp-for="quarter"  id="quarterlist" class="form-control">
+                                    <option value="">Please select a month</option>
+                                </select>*@
                             </div>
                             <div class="col-md-9">
                                 <button class="btn btn-success btn-round" type="submit" style="display: inline;" id="create" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>

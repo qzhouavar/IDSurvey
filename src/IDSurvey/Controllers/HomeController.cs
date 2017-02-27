@@ -159,6 +159,7 @@ namespace IDSurvey.Controllers
 
         public async Task<IActionResult> RateByRange(string startQTR, string endQTR)
         {
+
             IQueryable<string> genreQuery = from p in _context.CompleteRates
                                             group p by new
                                             {
@@ -172,8 +173,8 @@ namespace IDSurvey.Controllers
 
             if (!String.IsNullOrEmpty(startQTR))
             {
-                appealsrates = appealsrates.Where(x => x.WAVE.CompareTo(Int32.Parse(startQTR)) >= 0);
-                complaintsrates = complaintsrates.Where(x => x.WAVE.CompareTo(Int32.Parse(startQTR)) >= 0);
+                appealsrates = appealsrates.Where(x => x.QTR.CompareTo(startQTR) >= 0);
+                complaintsrates = complaintsrates.Where(x => x.QTR.CompareTo(startQTR) >= 0);
             }
             else
             {
@@ -181,8 +182,8 @@ namespace IDSurvey.Controllers
             }
             if (!String.IsNullOrEmpty(endQTR))
             {
-                appealsrates = appealsrates.Where(x => x.WAVE.CompareTo(Int32.Parse(endQTR)) <= 0);
-                complaintsrates = complaintsrates.Where(x => x.WAVE.CompareTo(Int32.Parse(endQTR)) <= 0);
+                appealsrates = appealsrates.Where(x => x.QTR.CompareTo(endQTR) <= 0);
+                complaintsrates = complaintsrates.Where(x => x.QTR.CompareTo(endQTR) <= 0);
             }
             else
             {

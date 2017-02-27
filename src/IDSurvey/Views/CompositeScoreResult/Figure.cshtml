@@ -1,6 +1,8 @@
 ﻿@{ 
     Layout = "~/views/shared/_Layout.cshtml";
     ViewData["Title"] = "Composite Score Figures";
+    ViewData["Quarter"] = "Q10";
+    ViewData["CurrentQuarter"] = "Quarter: 10";
 }
 
 <!-- Styles -->
@@ -14,7 +16,7 @@
 
 <div class="row tile_count" style="margin-bottom:0">
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 tile_stats_count">
-        <div class="count" id="current-quarter">Quarter: 9</div>
+        <div class="count" id="current-quarter">@ViewData["CurrentQuarter"]</div>
     </div>
     <div id="loading">
         <img src="~/images/hourglass.gif" width="50" alt="loading..." />
@@ -30,8 +32,8 @@
             <option value="1">6</option>
             <option value="2">7</option>
             <option value="3,4,5">8</option>
-            <option value="6,7,8" selected="selected">9</option>
-            <option value="9,10,11">10</option>
+            <option value="6,7,8">9</option>
+            <option value="9,10,11" selected="selected">10</option>
         </select>
         <button class="btn btn-sm btn-default" style="display:inline-block" id="select-quarter-btn">Submit</button>
     </div>
@@ -48,6 +50,7 @@
             <option value="7">9-2</option>
             <option value="8">9-3</option>
             <option value="9">10-1</option>
+            <option value="10">10-2</option>
         </select>
         <button class="btn btn-sm btn-default" style="display:inline-block" id="select-month-btn">Submit</button>
     </div>
@@ -59,7 +62,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure A-1: Beneficiary Positive Experience with Quality of Care Complaints - </strong><strong id="current-quarter-A1">Q9</strong> </h3>
+                    <h3><strong>Figure A-1: Beneficiary Positive Experience with Quality of Care Complaints - </strong><strong id="current-quarter-A1">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -80,7 +83,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure A-2: Beneficiary Positive Experience with Appeals - </strong><strong id="current-quarter-A2">Q9</strong> </h3>
+                    <h3><strong>Figure A-2: Beneficiary Positive Experience with Appeals - </strong><strong id="current-quarter-A2">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -102,7 +105,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-1: Composite Scores Quality of Care Complaints - </strong><strong id="current-quarter-B1">Q9</strong> </h3>
+                    <h3><strong>Figure B-1: Composite Scores Quality of Care Complaints - </strong><strong id="current-quarter-B1">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -124,7 +127,7 @@
         <div class="dashboard_graph">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-2: Composites Scores Appeals - </strong><strong id="current-quarter-B2">Q9</strong> </h3>
+                    <h3><strong>Figure B-2: Composites Scores Appeals - </strong><strong id="current-quarter-B2">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -145,7 +148,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-3: Percent Satisfied with Beneficiary-Centered Communications Items Quality of Care Complaints - </strong><strong id="current-quarter-B3">Q9</strong> </h3>
+                    <h3><strong>Figure B-3: Percent Satisfied with Beneficiary-Centered Communications Items Quality of Care Complaints - </strong><strong id="current-quarter-B3">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -167,7 +170,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-4: Percent Satisfied with Beneficiary-Centered Communications Items Appeals - </strong><strong id="current-quarter-B4">Q9</strong> </h3>
+                    <h3><strong>Figure B-4: Percent Satisfied with Beneficiary-Centered Communications Items Appeals - </strong><strong id="current-quarter-B4">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -188,7 +191,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-5: Percent Satisfied with Courtesy and Respect Items Quality of Care Complaints - </strong><strong id="current-quarter-B5">Q9</strong> </h3>
+                    <h3><strong>Figure B-5: Percent Satisfied with Courtesy and Respect Items Quality of Care Complaints - </strong><strong id="current-quarter-B5">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -209,7 +212,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-6: Percent Satisfied with Courtesy and Respect Items Appeals - </strong><strong id="current-quarter-B6">Q9</strong> </h3>
+                    <h3><strong>Figure B-6: Percent Satisfied with Courtesy and Respect Items Appeals - </strong><strong id="current-quarter-B6">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -230,7 +233,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-7: Percent Satisfied with Access and Responsiveness Items Quality of Care Complaints - </strong><strong id="current-quarter-B7">Q9</strong> </h3>
+                    <h3><strong>Figure B-7: Percent Satisfied with Access and Responsiveness Items Quality of Care Complaints - </strong><strong id="current-quarter-B7">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">
@@ -251,7 +254,7 @@
         <div class="dashboard_graph" id="created">
             <div class="row x_title">
                 <div class="col-md-12">
-                    <h3><strong>Figure B-8: Percent Satisfied with Access and Responsiveness Items Appeals - </strong><strong id="current-quarter-B8">Q9</strong> </h3>
+                    <h3><strong>Figure B-8: Percent Satisfied with Access and Responsiveness Items Appeals - </strong><strong id="current-quarter-B8">@ViewData["Quarter"]</strong> </h3>
                 </div>
             </div>
             <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12">

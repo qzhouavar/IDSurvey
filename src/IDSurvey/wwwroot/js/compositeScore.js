@@ -4,8 +4,8 @@ $(document).ready(function () {
         var app = new MyApp($, AmCharts);
     }
 
-    app.DisplayCompositeScore("/GetCompositeScoreByArea/6,7,8");
-    app.DisplayOverallScore("/GetOverallRatingByArea/6,7,8");
+    app.DisplayCompositeScore("/GetCompositeScoreByArea/9,10,11");
+    app.DisplayOverallScore("/GetOverallRatingByArea/9,10,11");
 
     $('#select-quarter-btn').click(function () {
         $(document).ajaxStart();
