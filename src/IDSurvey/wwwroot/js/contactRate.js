@@ -2,6 +2,9 @@
     $('#contactRate').DataTable({
         searching: false,
         info: false,
-        paging: false
-    })
+        paging: false,
+        columnDefs: [
+            { type: 'natural', targets: 0 }
+        ]
+    });
 } );

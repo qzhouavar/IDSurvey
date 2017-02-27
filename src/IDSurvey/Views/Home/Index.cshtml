@@ -377,8 +377,18 @@
                     <form id="form">
                         <p>
                             <div class="col-md-3">
-                                <select asp-for="quarter" asp-items="Model.quarters" id="quarterlist" class="form-control">
+                                <select asp-for="quarter" @*asp-items="Model.quarters"*@ id="quarterlist" class="form-control">
                                     <option value="">Please select a month</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8-1">8-1</option>
+                                    <option value="8-2">8-2</option>
+                                    <option value="8-2">8-2</option>
+                                    <option value="9-1">9-1</option>
+                                    <option value="9-2">9-2</option>
+                                    <option value="9-3">9-3</option>
+                                    <option value="10-1">10-1</option>
+                                    <option value="10-2">10-2</option>
                                 </select>
                             </div>
                             <div class="col-md-9">
@@ -425,6 +435,7 @@
         }
         return chartData;
     }
+    console.log(chartData);
     var e = document.getElementById("quarterlist");
     var q = e.options[e.selectedIndex].value;
     var t="All Quarters";
@@ -516,8 +527,8 @@
             var chartData = [];
             @foreach (var item in Model.typeRates) {
                 var newDate = item.SERVICE_AREA;
-                var rates =item.COMPLETE * 100.0 / item.TOTAL;
-                 if(item.TYPE.Equals("APPEALS")) {
+                var rates = item.COMPLETE != 0 ? (item.COMPLETE * 100.0 / item.TOTAL) : 0;
+                 if(item.TYPE.Contains("APPEALS")) {
                     <text>
                     chartData.push({quarter: "@newDate",value: @rates});
                     </text>
@@ -525,13 +536,34 @@
             }
             return chartData;
         }
-
+        var placeholder = [
+            {
+                quarter: 1,
+                value: 0
+            },
+            {
+                quarter: 2,
+                value: 0
+            },
+            {
+                quarter: 3,
+                value: 0
+            },
+            {
+                quarter: 4,
+                value: 0
+            },
+            {
+                quarter: 5,
+                value: 0
+            },
+        ];
         var chart = AmCharts.makeChart("chartdivtypeAPPEALS", {
             "type": "serial",
             "theme": "light",
             "marginTop":10,
             "marginRight": 80,
-            "dataProvider": chartData,
+            "dataProvider": chartData.length > 0 ? chartData : placeholder,
             "titles": [
                {
                    "text":"Response Rate: Appeal Cases of "+t,
@@ -609,7 +641,7 @@
             @foreach (var item in Model.typeRates) {
                 var newDate = item.SERVICE_AREA;
                 var rates =item.COMPLETE * 100.0 / item.TOTAL;
-                 if(item.TYPE.Equals("COMPLAINTS")) {
+                 if(item.TYPE.Contains("COMPLAINTS")) {
                     <text>
                     chartData.push({quarter: "@newDate",value: @rates});
                     </text>

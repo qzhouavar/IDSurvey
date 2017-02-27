@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using IDSurvey.Data;
 using IDSurvey.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IDSurvey.Controllers
 {
@@ -14,10 +13,9 @@ namespace IDSurvey.Controllers
     public class IAAnalysisController : Controller
     {
         internal static readonly IEnumerable<string> SurveyTypeList = new[] { "All", "Appeals", "Complaints" };
-        internal static readonly List<string> ServiceAreaList = new List<string>() { "National","1", "2", "3", "4", "5"};
-        internal static readonly string[] AllSurveyTypes = new[] { "APPEALS","COMPLAINTS"};
+        internal static readonly List<string> ServiceAreaList = new List<string>() { "National", "1", "2", "3", "4", "5" };
+        internal static readonly string[] AllSurveyTypes = new[] { "APPEALS", "COMPLAINTS" };
         //internal static readonly List<string> ChartCategoryList= new List<string>() { "OverallAppeals", "CommunicationAppeals", "CourtesyAppeals", "ResponsivenessAppeals", "OverallComplaints", "CommunicationComplaints", "CourtesyComplaints", "ResponsivenessComplaints"};
-     
 
         private readonly ApplicationDbContext _context;
 
@@ -30,7 +28,6 @@ namespace IDSurvey.Controllers
         {
             return View();
         }
-     
 
         // return Table VI-1, VI-2, VI-3
         [HttpGet("[action]/{wave}", Name = "GetIAAnalysisByArea")]
@@ -43,208 +40,125 @@ namespace IDSurvey.Controllers
             // convert string into list of int
             var waveList = wave.Split(',').Distinct().Select(int.Parse).ToArray();
             var result = new Dictionary<string, List<IAAnalysisByAreaViewModel>>();
-           
+
             var complaintResult = new List<IAAnalysisByAreaViewModel>();
-            foreach(var area in ServiceAreaList)
+            var complaintBeneficiaryResult = new List<IAAnalysisByAreaViewModel>();
+            var complaintRepresentativeResult = new List<IAAnalysisByAreaViewModel>();
+            foreach (var area in ServiceAreaList)
             {
-                complaintResult.Add(AverageOneAreaIAAnalysis(area, waveList, new[] { "COMPLAINTS" }));
+                complaintResult.Add(AverageOneAreaIAAnalysis(area, waveList, new[] { "COMPLAINTS" }, new[] { "Beneficiary", "Beneficiary Representative" }));
+                complaintBeneficiaryResult.Add(AverageOneAreaIAAnalysis(area, waveList, new[] { "COMPLAINTS" }, new[] { "Beneficiary" }));
+                complaintRepresentativeResult.Add(AverageOneAreaIAAnalysis(area, waveList, new[] { "COMPLAINTS" }, new[] { "Beneficiary Representative" }));
             }
             result.Add("COMPLAINTS", complaintResult);
+            result.Add("COMPLAINTSBeneficiary", complaintBeneficiaryResult);
+            result.Add("COMPLAINTSRepresentative", complaintRepresentativeResult);
+
             return Json(result);
         }
 
-
-  
-        private IAAnalysisByAreaViewModel AverageOneAreaIAAnalysis(string area, int[] waveList, string[] surveyTypes)
+        private IAAnalysisByAreaViewModel AverageOneAreaIAAnalysis(string area, int[] waveList, string[] surveyTypes, string[] beneTypes)
         {
-            decimal overall = 0.0M;
-            int overall_N = 0;
-            decimal overallBene= 0.0M;
-            int overallBene_N = 0;
-            decimal overallBR = 0.0M;
-            int overallBR_N = 0;
-
-            decimal communication = 0.0M;
-            int communication_N = 0;
-            decimal communicationBene = 0.0M;
-            int communicationBene_N = 0;
-            decimal communicationBR = 0.0M;
-            int communicationBR_N = 0;
-
-            decimal responsiveness = 0.0M;
-            int responsiveness_N = 0;
-            decimal responsivenessBene = 0.0M;
-            int responsivenessBene_N = 0;
-            decimal responsivenessBR = 0.0M;
-            int responsivenessBR_N = 0;
-
-            decimal courtesy = 0.0M;
-            int courtesy_N = 0;
-            decimal courtesyBene = 0.0M;
-            int courtesyBene_N = 0;
-            decimal courtesyBR = 0.0M;
-            int courtesyBR_N = 0;
-
-            decimal q19Total = 0.0M;
-            int q19Total_N = 0;
-            decimal q19Bene = 0.0M;
-            int q19Bene_N = 0;
-            decimal q19BR = 0.0M;
-            int q19BR_N = 0;
-
             if (area.Equals("National"))
             {
-                var temp=from m in _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select m;
-                overall = temp.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overall_N = temp.Count();
-                var IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                overallBene = IA.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBene_N = IA.Count();
-                var BR= from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                overallBR = BR.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBR_N = BR.Count();
+                var overall = (from m in _context.MailSurveyResult
+                               where m.OverallComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)
+                               select new Tuple<decimal, string>(m.OverallComp.Value, m.CaseType)
+                            ).ToList();
 
+                var commTemp = (from m in _context.MailSurveyResult
+                                where m.CommunicationComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)
+                                select new Tuple<decimal, string>(m.CommunicationComp.Value, m.CaseType)
+                                ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select m;
-                communication = temp.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communication_N =temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                communicationBene = IA.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                communicationBR = BR.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBR_N = BR.Count();
+                var resTemp = (from m in _context.MailSurveyResult
+                               where m.ResponsivenessComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)
+                               select new Tuple<decimal, string>(m.ResponsivenessComp.Value, m.CaseType)
+                               ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select m;
-                responsiveness = temp.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsiveness_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                responsivenessBene = IA.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                responsivenessBR = BR.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBR_N =BR.Count();
+                var courtTemp = (from m in _context.MailSurveyResult
+                                 where m.CourtesyComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)
+                                 select new Tuple<decimal, string>(m.CourtesyComp.Value, m.CaseType)
+                                 ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select m;
-                courtesy = temp.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesy_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                courtesyBene = IA.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBene_N =IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                courtesyBR =BR.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBR_N =BR.Count();
+                var q19Temp = (from m in _context.MailSurveyResult
+                               where m.q19.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)
+                               select new Tuple<decimal, string>(m.q19.Value, m.CaseType)
+                               ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType)) select m;
-                q19Total = temp.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Total_N =temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                q19Bene = IA.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Bene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                q19BR = BR.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19BR_N =BR.Count();
-
+                return CalcuateIARecord(area, overall, commTemp, resTemp, courtTemp, q19Temp);
             }
             else
             {
-                var temp = from m in _context.MailSurveyResult.Where(m => m.OverallComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)) select m;
-                overall = temp.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overall_N = temp.Count();
-                var IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                overallBene = IA.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBene_N = IA.Count();
-                var BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                overallBR = BR.Select(m => m.OverallComp.Value).DefaultIfEmpty().Average();
-                overallBR_N = BR.Count();
+                var overall = (from m in _context.MailSurveyResult
+                               where m.OverallComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)
+                               select new Tuple<decimal, string>(m.OverallComp.Value, m.CaseType)
+                                ).ToList();
 
+                var commTemp = (from m in _context.MailSurveyResult
+                                where m.CommunicationComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)
+                                select new Tuple<decimal, string>(m.CommunicationComp.Value, m.CaseType)
+                                ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.CommunicationComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)) select m;
-                communication = temp.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communication_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                communicationBene = IA.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                communicationBR = BR.Select(m => m.CommunicationComp.Value).DefaultIfEmpty().Average();
-                communicationBR_N = BR.Count();
+                var resTemp = (from m in _context.MailSurveyResult
+                               where m.ResponsivenessComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)
+                               select new Tuple<decimal, string>(m.ResponsivenessComp.Value, m.CaseType)
+                               ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.ResponsivenessComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)) select m;
-                responsiveness = temp.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsiveness_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                responsivenessBene = IA.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                responsivenessBR = BR.Select(m => m.ResponsivenessComp.Value).DefaultIfEmpty().Average();
-                responsivenessBR_N = BR.Count();
+                var courtTemp = (from m in _context.MailSurveyResult
+                                 where m.CourtesyComp.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)
+                                 select new Tuple<decimal, string>(m.CourtesyComp.Value, m.CaseType)
+                                 ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.CourtesyComp.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)) select m;
-                courtesy = temp.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesy_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                courtesyBene = IA.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                courtesyBR = BR.Select(m => m.CourtesyComp.Value).DefaultIfEmpty().Average();
-                courtesyBR_N = BR.Count();
+                var q19Temp = (from m in _context.MailSurveyResult
+                               where m.q19.HasValue && beneTypes.Contains(m.ContactType) && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)
+                               select new Tuple<decimal, string>(m.q19.Value, m.CaseType)
+                               ).ToList();
 
-                temp = from m in _context.MailSurveyResult.Where(m => m.q19.HasValue && waveList.Contains(m.SurveyRound) && surveyTypes.Contains(m.SurveyType) && m.RegionCode == int.Parse(area)) select m;
-                q19Total = temp.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Total_N = temp.Count();
-                IA = from m in temp.Where(m => m.CaseType.Equals("Immediate Advocacy")) select m;
-                q19Bene = IA.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19Bene_N = IA.Count();
-                BR = from m in temp.Where(m => m.CaseType.Equals("Medical Record Review")) select m;
-                q19BR = BR.Select(m => m.q19.Value).DefaultIfEmpty().Average();
-                q19BR_N = BR.Count();
-
-
+                return CalcuateIARecord(area, overall, commTemp, resTemp, courtTemp, q19Temp);
             }
-
-
-
-            var result = new IAAnalysisByAreaViewModel
-            {
-                Area = area,
-                Overall = Math.Round(overall, 1, MidpointRounding.AwayFromZero),
-                Overall_N = overall_N,
-                OverallBeneficiary = Math.Round(overallBene, 1, MidpointRounding.AwayFromZero),
-                OverallBeneficiary_N = overallBene_N,
-                OverallRepresentative = Math.Round(overallBR, 1, MidpointRounding.AwayFromZero),
-                OverallRepresentative_N = overallBR_N,
-
-                Communication = Math.Round(communication, 1, MidpointRounding.AwayFromZero),
-                Communication_N = communication_N,
-                CommunicationBeneficiary= Math.Round(communicationBene, 1, MidpointRounding.AwayFromZero),
-                CommunicationBeneficiary_N = communicationBene_N,
-                CommunicationRepresentative= Math.Round(communicationBR, 1, MidpointRounding.AwayFromZero),
-                CommunicationRepresentative_N = communicationBR_N,
-
-                AccessAndResponsiveness = Math.Round(responsiveness, 1, MidpointRounding.AwayFromZero),
-                AccessAndResponsiveness_N = responsiveness_N,
-                ResponsivenessBeneficiary= Math.Round(responsivenessBene, 1, MidpointRounding.AwayFromZero),
-                ResponsivenessBeneficiary_N = responsivenessBene_N,
-                ResponsivenessRepresentative= Math.Round(responsivenessBR, 1, MidpointRounding.AwayFromZero),
-                ResponsivenessRepresentative_N = responsivenessBR_N,
-
-                CourtesyAndRespect = Math.Round(courtesy, 1, MidpointRounding.AwayFromZero),
-                CourtesyAndRespect_N = courtesy_N,
-                CourtesyBeneficiary= Math.Round(courtesyBene, 1, MidpointRounding.AwayFromZero),
-                CourtesyBeneficiary_N = courtesyBene_N,
-                CourtesyRepresentative= Math.Round(courtesyBR, 1, MidpointRounding.AwayFromZero),
-                CourtesyRepresentative_N = courtesyBR_N,
-
-                Q19Total= Math.Round(q19Total, 1, MidpointRounding.AwayFromZero),
-                Q19Total_N=q19Total_N,
-                Q19Beneficiary= Math.Round(q19Bene, 1, MidpointRounding.AwayFromZero),
-                Q19Beneficiary_N = q19Bene_N,
-                Q19Representative= Math.Round(q19BR, 1, MidpointRounding.AwayFromZero),
-                Q19Representative_N = q19BR_N
-            };
-
-            return result;
         }
 
+        private IAAnalysisByAreaViewModel CalcuateIARecord(string area, List<Tuple<decimal, string>> overall, List<Tuple<decimal, string>> commTemp, List<Tuple<decimal, string>> resTemp, List<Tuple<decimal, string>> courtTemp, List<Tuple<decimal, string>> q19Temp)
+        {
+            return new IAAnalysisByAreaViewModel
+            {
+                Area = area,
+                Overall = overall.Count() != 0 ? Math.Round(overall.Average(x => x.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                Overall_N = overall.Count(),
+                OverallBeneficiary = overall.Count(m => m.Item2 == "Immediate Advocacy") !=0 ? Math.Round(overall.Where(m => m.Item2 == "Immediate Advocacy").Average(m => m.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                OverallBeneficiary_N = overall.Count(m => m.Item2 == "Immediate Advocacy"),
+                OverallRepresentative = overall.Count(m => m.Item2 == "Medical Record Review") != 0 ? Math.Round(overall.Where(m => m.Item2 == "Medical Record Review").Average(m => m.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                OverallRepresentative_N = overall.Count(m => m.Item2 == "Medical Record Review"),
+
+                Communication = commTemp.Count() != 0 ? Math.Round(commTemp.Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                Communication_N = commTemp.Count(),
+                CommunicationBeneficiary = commTemp.Count(c => c.Item2 == "Immediate Advocacy") != 0 ? Math.Round(commTemp.Where(c => c.Item2 == "Immediate Advocacy").Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                CommunicationBeneficiary_N = commTemp.Count(c => c.Item2 == "Immediate Advocacy"),
+                CommunicationRepresentative = commTemp.Count(c => c.Item2 == "Medical Record Review") != 0 ? Math.Round(commTemp.Where(c => c.Item2 == "Medical Record Review").Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                CommunicationRepresentative_N = commTemp.Count(c => c.Item2 == "Medical Record Review"),
+
+                AccessAndResponsiveness = resTemp.Count() != 0 ? Math.Round(resTemp.Average(r => r.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                AccessAndResponsiveness_N = resTemp.Count(),
+                ResponsivenessBeneficiary = resTemp.Count(r => r.Item2 == "Immediate Advocacy") != 0 ? Math.Round(resTemp.Where(r => r.Item2 == "Immediate Advocacy").Average(r => r.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                ResponsivenessBeneficiary_N = resTemp.Count(r => r.Item2 == "Immediate Advocacy"),
+                ResponsivenessRepresentative = resTemp.Count(r => r.Item2 == "Medical Record Review") != 0 ? Math.Round(resTemp.Where(r => r.Item2 == "Medical Record Review").Average(r => r.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                ResponsivenessRepresentative_N = resTemp.Count(r => r.Item2 == "Medical Record Review"),
+
+                CourtesyAndRespect = courtTemp.Count() != 0 ? Math.Round(courtTemp.Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                CourtesyAndRespect_N = courtTemp.Count(),
+                CourtesyBeneficiary = courtTemp.Count(c => c.Item2 == "Immediate Advocacy") != 0 ? Math.Round(courtTemp.Where(c => c.Item2 == "Immediate Advocacy").Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                CourtesyBeneficiary_N = courtTemp.Count(c => c.Item2 == "Immediate Advocacy"),
+                CourtesyRepresentative = courtTemp.Count(c => c.Item2 == "Medical Record Review") != 0 ? Math.Round(courtTemp.Where(c => c.Item2 == "Medical Record Review").Average(c => c.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                CourtesyRepresentative_N = courtTemp.Count(c => c.Item2 == "Medical Record Review"),
+
+                Q19Total = q19Temp.Count() != 0 ? Math.Round(q19Temp.Average(q => q.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                Q19Total_N = q19Temp.Count(),
+                Q19Beneficiary = q19Temp.Count(q => q.Item2 == "Immediate Advocacy") != 0 ? Math.Round(q19Temp.Where(q => q.Item2 == "Immediate Advocacy").Average(q => q.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                Q19Beneficiary_N = q19Temp.Count(q => q.Item2 == "Immediate Advocacy"),
+                Q19Representative = q19Temp.Count(q => q.Item2 == "Medical Record Review") !=0 ? Math.Round(q19Temp.Where(q => q.Item2 == "Medical Record Review").Average(q => q.Item1), 1, MidpointRounding.AwayFromZero) : 0.0m,
+                Q19Representative_N = q19Temp.Count(q => q.Item2 == "Medical Record Review")
+            };
+        }
     }
 }

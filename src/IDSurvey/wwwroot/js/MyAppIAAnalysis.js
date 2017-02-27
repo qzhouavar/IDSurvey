@@ -204,6 +204,12 @@
             $(document).ajaxStart();
             createCompositeDataTable('#complaintResult', d['COMPLAINTS']);
             createQ19DataTable('#complaintResultQ19', d['COMPLAINTS']);
+            //Beneficiary
+            createCompositeDataTable('#complaintResultBeneficiary', d['COMPLAINTSBeneficiary']);
+            createQ19DataTable('#complaintResultQ19Beneficiary', d['COMPLAINTSBeneficiary']);
+            //Representative
+            createCompositeDataTable('#complaintResultRepresentative', d['COMPLAINTSRepresentative']);
+            createQ19DataTable('#complaintResultQ19Representative', d['COMPLAINTSRepresentative']);
             $(document).ajaxStop();
         });
     }

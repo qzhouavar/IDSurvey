@@ -2,6 +2,10 @@
     color: #2a3f54;
 }
 
+#current-quarter {
+    font-weight:bold;
+}
+
 @media print {
 
     

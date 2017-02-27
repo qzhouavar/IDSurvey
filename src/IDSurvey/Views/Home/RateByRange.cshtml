@@ -8,16 +8,36 @@
         <div>
             <p>
                 <label for="startQTR" style="font-size:18px;"><strong>Start Month : </strong></label>
-                <select asp-for="startQTR" asp-items="Model.quarters" id="quarterlist" style="font-size:12pt">
-                    <option value="">Please select the start month</option>
+                <select asp-for="startQTR" @*asp-items="Model.quarters"*@ id="quarterlist" style="font-size:12pt">
+                    <option value="">Please select the end month&nbsp;</option>
+                    <option value="1">6</option>
+                    <option value="2">7</option>
+                    <option value="3">8-1</option>
+                    <option value="4">8-2</option>
+                    <option value="5">8-2</option>
+                    <option value="6">9-1</option>
+                    <option value="7">9-2</option>
+                    <option value="8">9-3</option>
+                    <option value="9">10-1</option>
+                    <option value="10">10-2</option>
                 </select>
             </p>
         </div>
         <div>
             <p>
                 <label for="endQTR" style="font-size:18px;"><strong>End &nbsp;Month : </strong></label>
-                <select asp-for="endQTR" asp-items="Model.quarters" id="quarterlist" style="font-size:12pt">
+                <select asp-for="endQTR" @*asp-items="Model.quarters"*@ id="quarterlist" style="font-size:12pt">
                     <option value="">Please select the end month&nbsp;</option>
+                    <option value="1">6</option>
+                    <option value="2">7</option>
+                    <option value="3">8-1</option>
+                    <option value="4">8-2</option>
+                    <option value="5">8-2</option>
+                    <option value="6">9-1</option>
+                    <option value="7">9-2</option>
+                    <option value="8">9-3</option>
+                    <option value="9">10-1</option>
+                    <option value="10">10-2</option>
                 </select>
                 <button class="btn btn-success btn-round" type="submit" id="create2" AutoPostBack="true"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
             </p>
@@ -25,6 +45,10 @@
     </form>
 </div>
 <br />
+<script>
+    var e = document.getElementById("quarterlist");
+    var q = e.options[e.selectedIndex].text;
+</script>
 
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
